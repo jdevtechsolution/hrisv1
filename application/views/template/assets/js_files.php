@@ -28,6 +28,6 @@
 <script type="text/javascript" src="assets/plugins/notify/pnotify.buttons.js"></script>
 <script type="text/javascript" src="assets/plugins/notify/pnotify.nonblock.js"></script>
 
-
+<script src="assets/js/blockUI.js" type="text/javascript"></script>
 
 

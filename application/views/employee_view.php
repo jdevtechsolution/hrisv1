@@ -696,7 +696,7 @@
                                 <div class="panel-footer">
                                     <div class="row">
                                         <div class="col-sm-9 col-sm-offset-3">
-                                            <button id="btn_save" class="btn-primary btn" style="text-transform: capitalize;font-family: Tahoma, Georgia, Serif;">Save Changes</button>
+                                            <button id="btn_save" class="btn-primary btn" style="text-transform: capitalize;font-family: Tahoma, Georgia, Serif;"><span></span>Save Changes</button>
                                             <button id="btn_cancelempfields" class="btn-default btn" style="text-transform: capitalize;font-family: Tahoma, Georgia, Serif;">Cancel</button>
                                         </div>
                                     </div>
@@ -1854,7 +1854,7 @@ $(document).ready(function(){
                         clearFields($('#frm_employee'))
 
                     }).always(function(){
-                        showSpinningProgress($('#btn_save'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -1865,7 +1865,7 @@ $(document).ready(function(){
                         clearFields($('#frm_employee'))
                         showList(true);
                     }).always(function(){
-                        showSpinningProgress($('#btn_save'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -1883,7 +1883,7 @@ $(document).ready(function(){
                         clearFields($('#frm_ratesandduties'))
 s
                     }).always(function(){
-                        showSpinningProgress($('#btn_createratesandduties'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -1894,7 +1894,7 @@ s
                         dt.row(_selectRowObj).data(response.row_update[0]).draw(); //for updating employee list 
                         clearFields($('#frm_entitlement'))
                     }).always(function(){
-                        showSpinningProgress($('#btn_createentitlement'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -1912,7 +1912,7 @@ s
                         clearFields($('#frm_ratesandduties'))
 s
                     }).always(function(){
-                        showSpinningProgress($('#btn_createratesandduties'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -1923,7 +1923,7 @@ s
                         dt.row(_selectRowObj).data(response.row_update[0]).draw(); //for updating employee list 
                         clearFields($('#frm_ratesandduties'))
                     }).always(function(){
-                        showSpinningProgress($('#btn_createratesandduties'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -1946,7 +1946,7 @@ s
                         clearFields($('#frm_religion'))
 
                     }).always(function(){
-                        showSpinningProgress($('#btn_new_religion'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -1973,7 +1973,7 @@ s
                         $('#ref_employment_type_id').val(data.ref_employment_type_id);
 
                     }).always(function(){
-                        showSpinningProgress($('#btn_new_create_reference'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -1992,7 +1992,7 @@ s
                         $('#ref_payment_type_id').val(data.ref_payment_type_id);
 
                     }).always(function(){
-                        showSpinningProgress($('#btn_new_create_reference'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -2011,7 +2011,7 @@ s
                         $('#ref_department_id').val(data.ref_department_id);
 
                     }).always(function(){
-                        showSpinningProgress($('#btn_new_create_reference'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -2030,7 +2030,7 @@ s
                         $('#ref_position_id').val(data.ref_position_id);
 
                     }).always(function(){
-                        showSpinningProgress($('#btn_new_create_reference'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -2049,7 +2049,7 @@ s
                         $('#ref_branch_id').val(data.ref_branch_id);
 
                     }).always(function(){
-                        showSpinningProgress($('#btn_new_create_reference'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -2067,7 +2067,7 @@ s
                         $('#postdescription').val('');
                         $('#ref_section_id').val(data.ref_section_id);
                     }).always(function(){
-                        showSpinningProgress($('#btn_new_create_reference'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -2346,7 +2346,16 @@ s
         });
 	
     var showSpinningProgress=function(e){
-        $(e).find('span').toggleClass('glyphicon glyphicon-refresh spinning');
+        $.blockUI({ css: { 
+            border: 'none', 
+            padding: '15px', 
+            backgroundColor: '#000', 
+            '-webkit-border-radius': '10px', 
+            '-moz-border-radius': '10px', 
+            opacity: .5, 
+            color: '#fff' 
+        } });
+        $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
     };
 
     var clearFields=function(f){
