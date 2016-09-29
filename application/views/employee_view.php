@@ -1910,7 +1910,6 @@ s
                         dt_rates.row.add(response.row_added[0]).draw();
                         dt.row(_selectRowObj).data(response.row_update[0]).draw(); //for updating employee list 
                         clearFields($('#frm_ratesandduties'))
-s
                     }).always(function(){
                         $.unblockUI();
                     });
@@ -2353,7 +2352,8 @@ s
             '-webkit-border-radius': '10px', 
             '-moz-border-radius': '10px', 
             opacity: .5, 
-            color: '#fff' 
+            color: '#fff',
+            zIndex: 20000,
         } });
         $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
     };
