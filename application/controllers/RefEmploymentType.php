@@ -44,8 +44,27 @@ class RefEmploymentType extends CORE_Controller
             case 'create':
                 $m_employmenttype = $this->RefEmploymentType_model;
                
+                $m_employmenttype->employment_type = $this->input->post('employment_type', TRUE);
+                $m_employmenttype->description = $this->input->post('description', TRUE);
+                $m_employmenttype->save();
+
+                $ref_employmenttype_id = $m_employmenttype->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Employment Type information successfully created.';
+
+                $response['row_added'] = $this->RefEmploymentType_model->get_list($ref_employmenttype_id);
+                echo json_encode($response);
+
+                break;
+
+            case 'createdirect':
+                $m_employmenttype = $this->RefEmploymentType_model;
+               
                 $m_employmenttype->employment_type = $this->input->post('postname', TRUE);
-                $m_employmenttype->description = $this->input->post('postdescription', TRUE);
+                $m_employmenttype->description = $this->input->post('post_description', TRUE);
                 $m_employmenttype->save();
 
                 $ref_employmenttype_id = $m_employmenttype->last_insert_id();
@@ -92,6 +111,8 @@ class RefEmploymentType extends CORE_Controller
                 echo json_encode($response);
 
                 break;
+
+            
 
         }
     }

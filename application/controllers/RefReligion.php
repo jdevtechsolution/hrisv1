@@ -59,6 +59,25 @@ class RefReligion extends CORE_Controller
 
                 break;
 
+            case 'createdirect':
+                $m_religion = $this->RefReligion_model;
+               
+                $m_religion->religion = $this->input->post('postname', TRUE);
+                $m_religion->description = $this->input->post('post_description', TRUE);
+                $m_religion->save();
+
+                $ref_religion_id = $m_religion->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Religion information successfully created.';
+
+                $response['row_added'] = $this->RefReligion_model->get_list($ref_religion_id);
+                echo json_encode($response);
+
+                break;
+
             case 'delete':
                 $m_religion=$this->RefReligion_model;
 

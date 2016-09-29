@@ -63,6 +63,25 @@ class RefCertificate extends CORE_Controller
 
                 break;
 
+            case 'createdirect':
+                $m_certificate = $this->RefCertificate_model;
+               
+                $m_certificate->certificate = $this->input->post('postname', TRUE);
+                $m_certificate->description = $this->input->post('post_description', TRUE);
+                $m_certificate->save();
+
+                $ref_certificate_id = $m_certificate->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Certificate information successfully created.';
+
+                $response['row_added'] = $this->RefCertificate_model->get_list($ref_certificate_id);
+                echo json_encode($response);
+
+                break;
+
             case 'delete':
                 $m_certificate=$this->RefCertificate_model;
 

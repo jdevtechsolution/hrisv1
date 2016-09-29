@@ -41,8 +41,27 @@ class RefBranch extends CORE_Controller
             case 'create':
                 $m_branch = $this->RefBranch_model;
                
+                $m_branch->branch = $this->input->post('branch', TRUE);
+                $m_branch->description = $this->input->post('description', TRUE);
+                $m_branch->save();
+
+                $ref_branch_id = $m_branch->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Branch information successfully created.';
+
+                $response['row_added'] = $this->RefBranch_model->get_list($ref_branch_id);
+                echo json_encode($response);
+
+                break;
+
+            case 'createdirect':
+                $m_branch = $this->RefBranch_model;
+               
                 $m_branch->branch = $this->input->post('postname', TRUE);
-                $m_branch->description = $this->input->post('postdescription', TRUE);
+                $m_branch->description = $this->input->post('post_description', TRUE);
                 $m_branch->save();
 
                 $ref_branch_id = $m_branch->last_insert_id();

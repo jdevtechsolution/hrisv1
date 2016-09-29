@@ -105,7 +105,7 @@
                                              <center><h2 style="color:white;font-weight:300;">Branch List</h2></center>
                                         </div>
                                     <div class="panel-body table-responsive" style="padding-top:8px;">
-                                        <table id="tbl_employee_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <table id="tbl_branch" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                             <thead>
                                                 <tr>
                                                     <th></th>
@@ -157,7 +157,7 @@
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:#2ecc71;">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Branch : New</h4>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Branch : <transaction class="transaction_type"></transaction></h4>
                         </div>
 
                         <div class="modal-body">
@@ -234,7 +234,7 @@ $(document).ready(function(){
     var dt; var _txnMode; var _selectedID; var _selectRowObj;
 
     var initializeControls=function(){
-        dt=$('#tbl_employee_list').DataTable({
+        dt=$('#tbl_branch').DataTable({
             "dom": '<"toolbar">frtip',
 
             "bLengthChange":false,
@@ -285,7 +285,7 @@ $(document).ready(function(){
     var bindEventHandlers=(function(){
         var detailRows = [];
 
-        $('#tbl_employee_list tbody').on( 'click', 'tr td.details-control', function () {
+        $('#tbl_branch tbody').on( 'click', 'tr td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = dt.row( tr );
             var idx = $.inArray( tr.attr('id'), detailRows );
@@ -308,8 +308,9 @@ $(document).ready(function(){
         } );
 
 
-        $('#tbl_employee_list tbody').on('click','button[name="edit_info"]',function(){
+        $('#tbl_branch tbody').on('click','button[name="edit_info"]',function(){
             _txnMode="edit";
+            $('.transaction_type').text('Edit');
             $('#modal_create_branch').modal('show');
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
@@ -336,7 +337,7 @@ $(document).ready(function(){
 
         });
 
-        $('#tbl_employee_list tbody').on('click','button[name="remove_info"]',function(){
+        $('#tbl_branch tbody').on('click','button[name="remove_info"]',function(){
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
             _selectedID=data.ref_branch_id;
@@ -381,6 +382,7 @@ $(document).ready(function(){
 
         $('#btn_new').click(function(){
             _txnMode="new";
+            $('.transaction_type').text('New');
             $('#modal_create_branch').modal('show');
             clearFields($('#frm_branch'));
         });
@@ -393,9 +395,8 @@ $(document).ready(function(){
                         showNotification(response);
                         dt.row.add(response.row_added[0]).draw();
                         clearFields($('#frm_branch'))
-
                     }).always(function(){
-                        showSpinningProgress($('#btn_create'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -404,35 +405,13 @@ $(document).ready(function(){
                     updateBranch().done(function(response){
                         showNotification(response);
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
-                       //clearFields($('#frm_branch'))
-
                     }).always(function(){
-                        showSpinningProgress($('#btn_create'));
+                        $.unblockUI();
                     });
                     return;
                 }
             }
             else{}
-        });
-
-
-        $('#btn_saveratesandduties').click(function(){
-            if(validateRequiredFields($('#frm_branch'))){
-                if(_txnMode=="ratesduties"){
-                    createRatesandDuties().done(function(response){
-                        showNotification(response);
-                        dt.row.add(response.row_added[0]).draw();
-                        clearFields($('#frm_branch'))
-
-                    }).always(function(){
-                       
-                    });
-                    return;
-                }
-                else{
-                    //do nothing :D
-                }
-            }
         });
 
     })();
@@ -519,8 +498,16 @@ $(document).ready(function(){
         });
     
     var showSpinningProgress=function(e){
-        $(e).find('span').toggleClass('glyphicon glyphicon-refresh spinning');
-    };
+                $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Saving Changes</h4>',
+                    css: { 
+                    border: 'none', 
+                    padding: '15px', 
+                    backgroundColor: 'none', 
+                    opacity: 1,
+                    zIndex: 20000,
+                } });
+                $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
+            };
 
     var clearFields=function(f){
         $('input,textarea',f).val('');

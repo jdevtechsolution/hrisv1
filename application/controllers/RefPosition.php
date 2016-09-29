@@ -40,8 +40,27 @@ class RefPosition extends CORE_Controller
             case 'create':
                 $m_position = $this->RefPosition_model;
                
+                $m_position->position = $this->input->post('position', TRUE);
+                $m_position->description = $this->input->post('description', TRUE);
+                $m_position->save();
+
+                $ref_position_id = $m_position->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Position information successfully created.';
+
+                $response['row_added'] = $this->RefPosition_model->get_list($ref_position_id);
+                echo json_encode($response);
+
+                break;
+
+                case 'createdirect':
+                $m_position = $this->RefPosition_model;
+               
                 $m_position->position = $this->input->post('postname', TRUE);
-                $m_position->description = $this->input->post('postdescription', TRUE);
+                $m_position->description = $this->input->post('post_description', TRUE);
                 $m_position->save();
 
                 $ref_position_id = $m_position->last_insert_id();

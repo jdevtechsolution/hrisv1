@@ -66,6 +66,25 @@ class RefCompensation extends CORE_Controller
 
                 break;
 
+            case 'createdirect':
+                $m_compensation = $this->RefCompensation_model;
+               
+                $m_compensation->compensation_type = $this->input->post('postname', TRUE);
+                $m_compensation->description = $this->input->post('post_description', TRUE);
+                $m_compensation->save();
+
+                $ref_compensation_type_id = $m_compensation->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Compensation Type information successfully created.';
+
+                $response['row_added'] = $this->RefCompensation_model->get_list($ref_compensation_type_id);
+                echo json_encode($response);
+
+                break;
+
             case 'delete':
                 $m_compensation=$this->RefCompensation_model;
 

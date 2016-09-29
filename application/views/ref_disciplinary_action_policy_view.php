@@ -105,7 +105,7 @@
                                              <center><h2 style="color:white;font-weight:300;">Disciplinary Action Policy List</h2></center>
                                         </div>
                                     <div class="panel-body table-responsive" style="padding-top:8px;">
-                                        <table id="tbl_employee_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <table id="tbl_disciplinary" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                             <thead>
                                                 <tr>
                                                     <th></th>
@@ -157,7 +157,7 @@
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:#2ecc71;">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Disciplinary Action Policy : New</h4>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Disciplinary Action Policy : <transaction class="transaction_type"></transaction></h4>
                         </div>
 
                         <div class="modal-body">
@@ -234,7 +234,7 @@ $(document).ready(function(){
     var dt; var _txnMode; var _selectedID; var _selectRowObj;
 
     var initializeControls=function(){
-        dt=$('#tbl_employee_list').DataTable({
+        dt=$('#tbl_disciplinary').DataTable({
             "dom": '<"toolbar">frtip',
 
             "bLengthChange":false,
@@ -285,7 +285,7 @@ $(document).ready(function(){
     var bindEventHandlers=(function(){
         var detailRows = [];
 
-        $('#tbl_employee_list tbody').on( 'click', 'tr td.details-control', function () {
+        $('#tbl_disciplinary tbody').on( 'click', 'tr td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = dt.row( tr );
             var idx = $.inArray( tr.attr('id'), detailRows );
@@ -308,8 +308,9 @@ $(document).ready(function(){
         } );
 
 
-        $('#tbl_employee_list tbody').on('click','button[name="edit_info"]',function(){
+        $('#tbl_disciplinary tbody').on('click','button[name="edit_info"]',function(){
             _txnMode="edit";
+            $('.transaction_type').text('Edit');
             $('#modal_create_discipline').modal('show');
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
@@ -336,7 +337,7 @@ $(document).ready(function(){
 
         });
 
-        $('#tbl_employee_list tbody').on('click','button[name="remove_info"]',function(){
+        $('#tbl_disciplinary tbody').on('click','button[name="remove_info"]',function(){
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
             _selectedID=data.ref_disciplinary_action_policy_id;
@@ -381,6 +382,7 @@ $(document).ready(function(){
 
         $('#btn_new').click(function(){
             _txnMode="new";
+            $('.transaction_type').text('New');
             $('#modal_create_discipline').modal('show');
             clearFields($('#frm_discipline'));
         });
@@ -393,9 +395,8 @@ $(document).ready(function(){
                         showNotification(response);
                         dt.row.add(response.row_added[0]).draw();
                         clearFields($('#frm_discipline'))
-
                     }).always(function(){
-                        showSpinningProgress($('#btn_create'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -404,10 +405,8 @@ $(document).ready(function(){
                     updateDiscipline().done(function(response){
                         showNotification(response);
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
-                       //clearFields($('#frm_discipline'))
-
                     }).always(function(){
-                        showSpinningProgress($('#btn_create'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -415,25 +414,6 @@ $(document).ready(function(){
             else{}
         });
 
-
-        $('#btn_saveratesandduties').click(function(){
-            if(validateRequiredFields($('#frm_discipline'))){
-                if(_txnMode=="ratesduties"){
-                    createRatesandDuties().done(function(response){
-                        showNotification(response);
-                        dt.row.add(response.row_added[0]).draw();
-                        clearFields($('#frm_discipline'))
-
-                    }).always(function(){
-                       
-                    });
-                    return;
-                }
-                else{
-                    //do nothing :D
-                }
-            }
-        });
 
     })();
 
@@ -519,8 +499,16 @@ $(document).ready(function(){
         });
     
     var showSpinningProgress=function(e){
-        $(e).find('span').toggleClass('glyphicon glyphicon-refresh spinning');
-    };
+                $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Saving Changes</h4>',
+                    css: { 
+                    border: 'none', 
+                    padding: '15px', 
+                    backgroundColor: 'none', 
+                    opacity: 1,
+                    zIndex: 20000,
+                } });
+                $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
+            };
 
     var clearFields=function(f){
         $('input,textarea',f).val('');
@@ -532,64 +520,8 @@ $(document).ready(function(){
     function format ( d ) {
         return '<div class="container-fluid">'+
         '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><span class="glyphicon glyphicon-user fa-lg"></span> ' + d.emp_fname +' ' + d.emp_mname + ' ' +d.emp_lname + '</h3>'+
-        '<p>[ ECODE : '+d.ecode+' ] [ ID : '+d.emp_idnumber+' ]</p>'+
-        '<hr style="height:1px;background-color:black;"></hr>'+
+        '<h5 class="boldlabel"><center>Nothing Follows</center></h5>'+
         '</div>'+ //First Row//
-        '<div class="row">'+
-        '<div class="col-md-2">'+
-        '<center><img style="margin-top:4px;" src="assets/img/anonymous-icon.png"></img></center>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Gender</b> : '+d.emp_gender+'</p>'+
-        '<p class="nomargin"><b>Birthdate</b> : '+d.emp_birthdate+'</p>'+
-        '<p class="nomargin"><b>Civil Status</b> : '+d.emp_civilstatus+'</p>'+
-        '<p class="nomargin"><b>Blood Type</b> : '+d.emp_bloodtype+'</p>'+
-        '<p class="nomargin"><b>Height</b> : '+d.emp_height+'</p>'+
-        '<p class="nomargin"><b>Weight</b> : '+d.emp_weight+'</p>'+
-        '<p class="nomargin"><b>Religion</b> : '+d.emp_religion+'</p>'+
-        '</div>'+
-        '<div class="col-md-4">'+
-        '<p class="nomargin"><b>SSS</b> : '+d.emp_sss+'</p>'+
-        '<p class="nomargin"><b>Phil Health</b> : '+d.emp_philhealth+'</p>'+
-        '<p class="nomargin"><b>Pag-Ibig :</b> : '+d.emp_pagibig+'</p>'+
-        '<p class="nomargin"><b>TIN :</b> : '+d.emp_tin+'</p>'+
-        '<p class="nomargin"><b>Account No.</b> : '+d.emp_accountno+'</p>'+
-        '<p class="nomargin"><b>Tax Code</b> : '+d.emp_taxcode+'</p>'+
-        '</div>'+
-        '</div>'+
-        '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><h4 class="boldlabel"><span class="glyphicon glyphicon-info-sign fa-lg"></span> Employee Information</h4><hr style="height:1px;background-color:black;"></hr></div>'+
-        '<div class="row">'+ //Second Row//
-        '<div class="col-md-2">'+
-        '<center></center>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Employee Type</b> : '+d.emp_gender+'</p>'+
-        '<p class="nomargin"><b>Remarks</b> : '+d.emp_birthdate+'</p>'+
-        '<p class="nomargin"><b>Department</b> : '+d.emp_civilstatus+'</p>'+
-        '<p class="nomargin"><b>Position</b> : '+d.emp_bloodtype+'</p>'+
-        '<p class="nomargin"><b>Branch</b> : '+d.emp_height+'</p>'+
-        '</div>'+
-        '<div class="col-md-4">'+
-        '<p class="nomargin"><b>Section</b> : '+d.emp_weight+'</p>'+
-        '<p class="nomargin"><b>Pay Type</b> : '+d.emp_religion+'</p>'+
-        '<p class="nomargin"><b>Employment Date</b> : '+d.emp_employmentdate+'</p>'+
-        '<p class="nomargin"><b>Date Regular</b> : '+d.emp_philhealth+'</p>'+
-        '</div>'+
-        '</div>'+
-        '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><h4 class="boldlabel"><span class="glyphicon glyphicon-info-sign fa-lg"></span> Contact Information</h4><hr style="height:1px;background-color:black;"></hr></div>'+
-        '<div class="row">'+ //Second Row//
-        '<div class="col-md-2">'+
-        '<center></center>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Address 1</b> : '+d.emp_address1+'</p>'+
-        '<p class="nomargin"><b>Address 2</b> : '+d.emp_address2+'</p>'+
-        '<p class="nomargin"><b>Email Address</b> : '+d.emp_email+'</p>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Mobile No.</b> : '+d.emp_cell+'</p>'+
-        '<p class="nomargin"><b> Phone No.</b> : '+d.emp_phone+'</p>'+
-        '</div>'+
-        '</div>'+
         '</div>';
     };
 

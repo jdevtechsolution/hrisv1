@@ -64,6 +64,25 @@ class RefAction extends CORE_Controller
 
                 break;
 
+            case 'createdirect':
+                $m_action = $this->RefAction_model;
+               
+                $m_action->action_taken = $this->input->post('postname', TRUE);
+                $m_action->description = $this->input->post('post_description', TRUE);
+                $m_action->save();
+
+                $ref_action_taken_id = $m_action->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Action Taken information successfully created.';
+
+                $response['row_added'] = $this->RefAction_model->get_list($ref_action_taken_id);
+                echo json_encode($response);
+
+                break;
+
             case 'delete':
                 $m_action=$this->RefAction_model;
 

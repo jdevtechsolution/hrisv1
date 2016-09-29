@@ -60,6 +60,25 @@ class RefRelationship extends CORE_Controller
 
                 break;
 
+            case 'createdirect':
+                $m_relationship = $this->RefRelationship_model;
+               
+                $m_relationship->relationship = $this->input->post('postname', TRUE);
+                $m_relationship->description = $this->input->post('post_description', TRUE);
+                $m_relationship->save();
+
+                $ref_relationship_id = $m_relationship->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Relationship information successfully created.';
+
+                $response['row_added'] = $this->RefRelationship_model->get_list($ref_relationship_id);
+                echo json_encode($response);
+
+                break;
+
             case 'delete':
                 $m_relationship=$this->RefRelationship_model;
 

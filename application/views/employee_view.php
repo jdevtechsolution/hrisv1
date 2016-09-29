@@ -2206,7 +2206,7 @@ s
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefReligion/transaction/create",
+            "url":"RefReligion/transaction/createdirect",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_new_religion'))
         });
@@ -2218,7 +2218,7 @@ s
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefEmploymentType/transaction/create",
+            "url":"RefEmploymentType/transaction/createdirect",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_new_religion'))
         });
@@ -2230,7 +2230,7 @@ s
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefPaymentType/transaction/create",
+            "url":"RefPaymentType/transaction/createdirect",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_new_payment_type'))
         });
@@ -2242,7 +2242,7 @@ s
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefDepartment/transaction/create",
+            "url":"RefDepartment/transaction/createdirect",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_new_department'))
         });
@@ -2254,7 +2254,7 @@ s
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefPosition/transaction/create",
+            "url":"RefPosition/transaction/createdirect",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_new_position'))
         });
@@ -2266,7 +2266,7 @@ s
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefBranch/transaction/create",
+            "url":"RefBranch/transaction/createdirect",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_new_branch'))
         });
@@ -2278,7 +2278,7 @@ s
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefSection/transaction/create",
+            "url":"RefSection/transaction/createdirect",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_new_section'))
         });

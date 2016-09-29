@@ -45,6 +45,25 @@ class RefPaymentType extends CORE_Controller
             case 'create':
                 $m_paymenttype = $this->RefPaymentType_model;
                
+                $m_paymenttype->payment_type = $this->input->post('payment_type', TRUE);
+                $m_paymenttype->description = $this->input->post('description', TRUE);
+                $m_paymenttype->save();
+
+                $ref_paymenttype_id = $m_paymenttype->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Payment Type information successfully created.';
+
+                $response['row_added'] = $this->RefPaymentType_model->get_list($ref_paymenttype_id);
+                echo json_encode($response);
+
+                break;
+
+            case 'createdirect':
+                $m_paymenttype = $this->RefPaymentType_model;
+               
                 $m_paymenttype->payment_type = $this->input->post('postname', TRUE);
                 $m_paymenttype->description = $this->input->post('postdescription', TRUE);
                 $m_paymenttype->save();

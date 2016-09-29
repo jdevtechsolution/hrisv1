@@ -39,6 +39,25 @@ class RefDepartment extends CORE_Controller
             case 'create':
                 $m_department = $this->RefDepartment_model;
                
+                $m_department->department = $this->input->post('department', TRUE);
+                $m_department->description = $this->input->post('description', TRUE);
+                $m_department->save();
+
+                $ref_department_id = $m_department->last_insert_id();
+                
+                
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Department information successfully created.';
+
+                $response['row_added'] = $this->RefDepartment_model->get_list($ref_department_id);
+                echo json_encode($response);
+
+                break;
+
+            case 'createdirect':
+                $m_department = $this->RefDepartment_model;
+               
                 $m_department->department = $this->input->post('postname', TRUE);
                 $m_department->description = $this->input->post('post_description', TRUE);
                 $m_department->save();

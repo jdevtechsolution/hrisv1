@@ -42,8 +42,27 @@ class RefSection extends CORE_Controller
             case 'create':
                 $m_section = $this->RefSection_model;
                
+                $m_section->section = $this->input->post('section', TRUE);
+                $m_section->description = $this->input->post('description', TRUE);
+                $m_section->save();
+
+                $ref_section_id = $m_section->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Section information successfully created.';
+
+                $response['row_added'] = $this->RefSection_model->get_list($ref_section_id);
+                echo json_encode($response);
+
+                break;
+
+            case 'createdirect':
+                $m_section = $this->RefSection_model;
+               
                 $m_section->section = $this->input->post('postname', TRUE);
-                $m_section->description = $this->input->post('postdescription', TRUE);
+                $m_section->description = $this->input->post('post_description', TRUE);
                 $m_section->save();
 
                 $ref_section_id = $m_section->last_insert_id();

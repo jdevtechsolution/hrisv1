@@ -60,6 +60,25 @@ class RefCourse extends CORE_Controller
 
                 break;
 
+            case 'createdirect':
+                $m_course = $this->RefCourse_model;
+               
+                $m_course->course_degree = $this->input->post('postname', TRUE);
+                $m_course->description = $this->input->post('post_description', TRUE);
+                $m_course->save();
+
+                $ref_course_degree_id = $m_course->last_insert_id();
+
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Course information successfully created.';
+
+                $response['row_added'] = $this->RefCourse_model->get_list($ref_course_degree_id);
+                echo json_encode($response);
+
+                break;
+
             case 'delete':
                 $m_course=$this->RefCourse_model;
 

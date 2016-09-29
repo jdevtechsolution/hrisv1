@@ -59,8 +59,6 @@
                                 </li>
                                 <li><a href="RefRelationship" class="departmentjs" id="departmentjs">Relationship</a>
                                 </li>
-                                <li><a href="RefCompensation" class="departmentjs" id="departmentjs">Compensation Type</a>
-                                </li>
                                 
                             </ul>
                         </li>

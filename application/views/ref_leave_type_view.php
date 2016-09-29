@@ -105,7 +105,7 @@
                                              <center><h2 style="color:white;font-weight:300;">Leave Type List</h2></center>
                                         </div>
                                     <div class="panel-body table-responsive" style="padding-top:8px;">
-                                        <table id="tbl_employee_list" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <table id="tbl_leave" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                             <thead>
                                                 <tr>
                                                     <th></th>
@@ -157,7 +157,7 @@
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:#2ecc71;">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Leave : New</h4>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Leave : <transaction class="transaction_type"></transaction></h4>
                         </div>
 
                         <div class="modal-body">
@@ -234,7 +234,7 @@ $(document).ready(function(){
     var dt; var _txnMode; var _selectedID; var _selectRowObj;
 
     var initializeControls=function(){
-        dt=$('#tbl_employee_list').DataTable({
+        dt=$('#tbl_leave').DataTable({
             "dom": '<"toolbar">frtip',
 
             "bLengthChange":false,
@@ -285,7 +285,7 @@ $(document).ready(function(){
     var bindEventHandlers=(function(){
         var detailRows = [];
 
-        $('#tbl_employee_list tbody').on( 'click', 'tr td.details-control', function () {
+        $('#tbl_leave tbody').on( 'click', 'tr td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = dt.row( tr );
             var idx = $.inArray( tr.attr('id'), detailRows );
@@ -308,13 +308,13 @@ $(document).ready(function(){
         } );
 
 
-        $('#tbl_employee_list tbody').on('click','button[name="edit_info"]',function(){
+        $('#tbl_leave tbody').on('click','button[name="edit_info"]',function(){
             _txnMode="edit";
             $('#modal_create_leave').modal('show');
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
             _selectedID=data.ref_leave_type_id;
-
+            $('.transaction_type').text('Edit');
             //$('#emp_exemptpagibig').val(data.emp_exemptphilhealth);
 
            // alert($('input[name="tax_exempt"]').length);
@@ -336,7 +336,7 @@ $(document).ready(function(){
 
         });
 
-        $('#tbl_employee_list tbody').on('click','button[name="remove_info"]',function(){
+        $('#tbl_leave tbody').on('click','button[name="remove_info"]',function(){
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
             _selectedID=data.ref_leave_type_id;
@@ -381,6 +381,7 @@ $(document).ready(function(){
 
         $('#btn_new').click(function(){
             _txnMode="new";
+            $('.transaction_type').text('New');
             $('#modal_create_leave').modal('show');
             clearFields($('#frm_leave'));
         });
@@ -393,9 +394,8 @@ $(document).ready(function(){
                         showNotification(response);
                         dt.row.add(response.row_added[0]).draw();
                         clearFields($('#frm_leave'))
-
                     }).always(function(){
-                        showSpinningProgress($('#btn_create'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -404,10 +404,8 @@ $(document).ready(function(){
                     updateLeave().done(function(response){
                         showNotification(response);
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
-                       //clearFields($('#frm_leave'))
-
                     }).always(function(){
-                        showSpinningProgress($('#btn_create'));
+                        $.unblockUI();
                     });
                     return;
                 }
@@ -415,25 +413,6 @@ $(document).ready(function(){
             else{}
         });
 
-
-        $('#btn_saveratesandduties').click(function(){
-            if(validateRequiredFields($('#frm_leave'))){
-                if(_txnMode=="ratesduties"){
-                    createRatesandDuties().done(function(response){
-                        showNotification(response);
-                        dt.row.add(response.row_added[0]).draw();
-                        clearFields($('#frm_leave'))
-
-                    }).always(function(){
-                       
-                    });
-                    return;
-                }
-                else{
-                    //do nothing :D
-                }
-            }
-        });
 
     })();
 
@@ -518,9 +497,17 @@ $(document).ready(function(){
 
         });
     
-    var showSpinningProgress=function(e){
-        $(e).find('span').toggleClass('glyphicon glyphicon-refresh spinning');
-    };
+        var showSpinningProgress=function(e){
+                $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Saving Changes</h4>',
+                    css: { 
+                    border: 'none', 
+                    padding: '15px', 
+                    backgroundColor: 'none', 
+                    opacity: 1,
+                    zIndex: 20000,
+                } });
+                $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
+            };
 
     var clearFields=function(f){
         $('input,textarea',f).val('');
