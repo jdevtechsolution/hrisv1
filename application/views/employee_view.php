@@ -2345,14 +2345,12 @@ s
         });
 	
     var showSpinningProgress=function(e){
-        $.blockUI({ css: { 
+        $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Saving Changes</h4>',
+            css: { 
             border: 'none', 
             padding: '15px', 
-            backgroundColor: '#000', 
-            '-webkit-border-radius': '10px', 
-            '-moz-border-radius': '10px', 
-            opacity: .5, 
-            color: '#fff',
+            backgroundColor: 'none', 
+            opacity: 1,
             zIndex: 20000,
         } });
         $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
