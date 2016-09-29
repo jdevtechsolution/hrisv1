@@ -37,7 +37,7 @@
 								
                             </ul>
                         </li>
-                        <li><a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i><span>Leave</span></a>
+                        <li><a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i><span>Leave Management</span></a>
                             <ul class="acc-menu">
                                 <li><a href="RefLeave" class="departmentjs" id="departmentjs">Leave Type</a>
                                 </li>

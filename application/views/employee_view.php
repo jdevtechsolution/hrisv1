@@ -110,7 +110,7 @@
                                         <button class="btn"  id="btn_new" style="width:95px;height:80px;border:1px solid #2c3e50;font-family: Tahoma, Georgia, Serif;background-color:#27ae60;color:white;margin-top:10px;margin-left:17px;" title="Create New Employee" >
                                         <i class="fa fa-user-plus fa-2x"></i><h4 style="font-size:14px;margin:0px;color:white;">New<br>Employee</h4></button>
                                         <button class="btn"  id="edit_entitlement" style="width:95px;height:80px;border:1px solid #2c3e50;font-family: Tahoma, Georgia, Serif;background-color:#27ae60;color:white;margin-top:10px;margin-left:none;" title="Create New Employee" >
-                                        <i class="fa fa-area-chart fa-2x"></i><h4 style="font-size:12px;margin:0px;color:white;">Entitlement</h4></button>
+                                        <i class="fa fa-area-chart fa-2x"></i><h4 style="font-size:12px;margin:0px;color:white;">Leave<br>Entitlement</h4></button>
                                         <button class="btn"  id="edit_duties" style="width:95px;height:80px;border:1px solid #2c3e50;font-family: Tahoma, Georgia, Serif;background-color:#27ae60;color:white;margin-top:10px;margin-left:none;" title="Create New Employee" >
                                         <i class="fa fa-area-chart fa-2x"></i><h4 style="font-size:14px;margin:0px;color:white;">Rates &<br>Duties</h4></button>
                                         <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
@@ -1281,8 +1281,8 @@ $(document).ready(function(){
                 {
                     targets:[4],
                     render: function (data, type, full, meta){
-                        var btn_edit='<button class="btn btn-default btn-sm" name="entitlement_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
-                        var btn_trash='<button class="btn btn-default btn-sm" name="entitlement_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+                        var btn_edit='<button class="btn btn-default btn-sm" name="rates_duties_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                        var btn_trash='<button class="btn btn-default btn-sm" name="rates_duties_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 
                         return '<center>'+btn_edit+btn_trash+'</center>';
                     }
@@ -1327,10 +1327,11 @@ $(document).ready(function(){
                     "bDestroy": true,
                 },
                 { targets:[1],data: "leave_type" },
-                { targets:[2],data: "date_start" },
-                { targets:[3],data: "date_end" },
+                { targets:[2],data: "ref_leave_type_short_name" },
+                { targets:[3],data: "is_payable" },
+                { targets:[4],data: "is_forwardable" },
                 {
-                    targets:[4],
+                    targets:[5],
                     render: function (data, type, full, meta){
                         var btn_edit='<button class="btn btn-default btn-sm" name="entitlement_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
                         var btn_trash='<button class="btn btn-default btn-sm" name="entitlement_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
@@ -1757,6 +1758,7 @@ $(document).ready(function(){
             removeEmployee().done(function(response){
                 showNotification(response);
                 dt.row(_selectRowObj).remove().draw();
+                $.unblockUI();
             });
         });
 
@@ -1764,6 +1766,7 @@ $(document).ready(function(){
             removeRates().done(function(response){
                 showNotification(response);
                 dt_rates.row(_selectRowObjrates).remove().draw();
+                $.unblockUI();
             });
         });
 
@@ -1881,7 +1884,6 @@ $(document).ready(function(){
                         dt_entitlement.row.add(response.row_added[0]).draw();
                         dt.row(_selectRowObj).data(response.row_update[0]).draw(); //for updating employee list 
                         clearFields($('#frm_ratesandduties'))
-s
                     }).always(function(){
                         $.unblockUI();
                     });
@@ -2132,6 +2134,16 @@ s
         });
     };
 
+    var removeEmployee=function(){
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Employee/transaction/delete",
+            "data":{employee_id : _selectedID},
+            "beforeSend": showSpinningProgress($('#'))
+        });
+    };
+
     var createRatesandDuties=function(){
         var _data=$('#frm_ratesandduties').serializeArray();
         _data.push({name : "employee_id" ,value : _selectedID});
@@ -2157,6 +2169,16 @@ s
         });
     };
 
+    var removeRates=function(){
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"RatesDuties/transaction/delete",
+            "data":{emp_rates_duties_id : _selectedIDrates},
+            "beforeSend": showSpinningProgress($('#'))
+        });
+    };
+
     var createEntitlement=function(){
         var _data=$('#frm_entitlement').serializeArray();
         _data.push({name : "employee_id" ,value : _selectedID});
@@ -2179,24 +2201,6 @@ s
             "url":"Entitlement/transaction/update",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_createentitlement'))
-        });
-    };
-
-    var removeEmployee=function(){
-        return $.ajax({
-            "dataType":"json",
-            "type":"POST",
-            "url":"Employee/transaction/delete",
-            "data":{employee_id : _selectedID}
-        });
-    };
-
-    var removeRates=function(){
-        return $.ajax({
-            "dataType":"json",
-            "type":"POST",
-            "url":"RatesDuties/transaction/delete",
-            "data":{emp_rates_duties_id : _selectedIDrates}
         });
     };
 

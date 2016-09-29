@@ -69,8 +69,8 @@
         }
 
         .numeric{
-            text-align: right;
-            width: 60%;
+            text-align: left;
+            width: 100%;
         }
 
     </style>
@@ -110,7 +110,10 @@
                                                 <tr>
                                                     <th></th>
                                                     <th>Leave Name</th>
-                                                    <th>Description</th>
+                                                    <th>Leave Short Name</th>
+                                                    <th>Is Payable?</th>
+                                                    <th>Is Forwardable?</th>
+                                                    <th>Total Grant</th>
                                                     <th><center>Action</center></th>
                                                  </tr>
                                             </thead>
@@ -163,13 +166,34 @@
                         <div class="modal-body">
                             <form id="frm_leave">
                             <div class="row">
-                              <div class="col-md-12">
+                              <div class="col-md-6">
                                 <div class="form-group" style="margin-bottom:0px;">
                                     <label class="boldlabel">Leave Name :</label>
                                     <input type="text" class="form-control" id="leave" name="leave_type" placeholder="Leave Name" data-error-msg="Leave name is Required!" required>
                                 </div>
                               </div>
-                            </div><br>
+                              <div class="col-md-6">
+                                <div class="form-group" style="margin-bottom:0px;">
+                                    <label class="boldlabel">Short Name :</label>
+                                    <input type="text" class="form-control" id="leave" name="leave_type_short_name" placeholder="Leave Short Name" data-error-msg="Leave name is Required!" required>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group" style="margin-bottom:0px;">
+                                    <label class="boldlabel">Total Grant :</label>
+                                    <input type="text" class="form-control numeric" id="total_grant" name="total_grant" placeholder="Total Grant" data-error-msg="Total Grant is Required!" required>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="checkbox" style="margin-top:35px;">
+                                  <label><input id="payable" type="checkbox" value=""><b>Is Payable?</b></label>
+                                  <label style="margin-left:20px;"><input id="forwardable" type="checkbox" value=""><b>Is Forwardable?</b></label>
+                                </div>
+                              </div>
+                            </div>
+                            <br>
                             <div class="row">
                               <div class="col-md-12">
                                 <div class="form-group" style="margin-bottom:0px;">
@@ -231,7 +255,7 @@
 <script>
 
 $(document).ready(function(){
-    var dt; var _txnMode; var _selectedID; var _selectRowObj;
+    var dt; var _txnMode; var _selectedID; var _selectRowObj; var _ispayable=1; var _isforwardable=1;
 
     var initializeControls=function(){
         dt=$('#tbl_leave').DataTable({
@@ -248,9 +272,13 @@ $(document).ready(function(){
                     "defaultContent": ""
                 },
                 { targets:[1],data: "leave_type" },
-                { targets:[2],data: "description" },
+                { targets:[2],data: "leave_type_short_name" },
+                { targets:[3],data: "ref_ispayable_status" },
+                { targets:[4],data: "ref_isforwardable_status" },
+                { targets:[5],data: "total_grant" },
                 {
-                    targets:[3],
+
+                    targets:[5],
                     render: function (data, type, full, meta){
                         var btn_edit='<button class="btn btn-default btn-sm" name="edit_info"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
                         var btn_trash='<button class="btn btn-default btn-sm" name="remove_info"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
@@ -315,6 +343,27 @@ $(document).ready(function(){
             var data=dt.row(_selectRowObj).data();
             _selectedID=data.ref_leave_type_id;
             $('.transaction_type').text('Edit');
+            if(data.is_payable==2){
+                $('#payable').prop('checked', true);
+                //alert(data.is_payable);
+                _ispayable = 2;
+            }
+            else{
+                $('#payable').prop('checked', false);
+                //alert(data.is_payable);
+                _ispayable = 1;
+            }
+            if(data.is_forwardable==2){
+                $('#forwardable').prop('checked', true);
+                //alert(data.is_forwardable);
+                _isforwardable = 2;
+            }
+            else{
+                $('#forwardable').prop('checked', false);
+                //alert(data.is_forwardable);
+                _isforwardable = 1;
+
+            }
             //$('#emp_exemptpagibig').val(data.emp_exemptphilhealth);
 
            // alert($('input[name="tax_exempt"]').length);
@@ -379,11 +428,47 @@ $(document).ready(function(){
             });
         });
 
+        $('#frm_leave').on('click','input[id="payable"]',function(){
+            //$('.single-checkbox').attr('checked', false);
+            if(_ispayable==1){
+                this.checked = true;
+                _ispayable = 2;
+                //alert(_ispayable);
+            }
+            else{
+                 this.checked = false;
+                 _ispayable = 1;
+                  //alert(_ispayable);
+            }
+            
+
+        });
+
+        $('#frm_leave').on('click','input[id="forwardable"]',function(){
+            //$('.single-checkbox').attr('checked', false);
+            if(_isforwardable==1){
+                this.checked = true;
+                _isforwardable = 2;
+                //alert(_isforwardable);
+            }
+            else{
+                 this.checked = false;
+                 _isforwardable = 1;
+                  //alert(_isforwardable);
+            }
+            
+
+        });
+
+
+
         $('#btn_new').click(function(){
             _txnMode="new";
             $('.transaction_type').text('New');
             $('#modal_create_leave').modal('show');
             clearFields($('#frm_leave'));
+            $('#payable').attr('checked', false);    //clear checkbox
+            $('#forwardable').attr('checked', false);
         });
 
         $('#btn_create').click(function(){
@@ -393,6 +478,8 @@ $(document).ready(function(){
                     createLeave().done(function(response){
                         showNotification(response);
                         dt.row.add(response.row_added[0]).draw();
+                        _ispayable = 1;
+                        _isforwardable = 1;
                         clearFields($('#frm_leave'))
                     }).always(function(){
                         $.unblockUI();
@@ -442,7 +529,8 @@ $(document).ready(function(){
 
     var createLeave=function(){
         var _data=$('#frm_leave').serializeArray();
-
+        _data.push({name : "is_payable" ,value : _ispayable});
+        _data.push({name : "is_forwardable" ,value : _isforwardable});
         return $.ajax({
             "dataType":"json",
             "type":"POST",
@@ -455,7 +543,8 @@ $(document).ready(function(){
 
     var updateLeave=function(){
         var _data=$('#frm_leave').serializeArray();
-
+        _data.push({name : "is_payable" ,value : _ispayable});
+        _data.push({name : "is_forwardable" ,value : _isforwardable});
         console.log(_data);
         _data.push({name : "ref_leave_type_id" ,value : _selectedID});
         //_data.push({name:"is_inventory",value: $('input[name="is_inventory"]').val()});
@@ -519,64 +608,10 @@ $(document).ready(function(){
     function format ( d ) {
         return '<div class="container-fluid">'+
         '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><span class="glyphicon glyphicon-user fa-lg"></span> ' + d.emp_fname +' ' + d.emp_mname + ' ' +d.emp_lname + '</h3>'+
-        '<p>[ ECODE : '+d.ecode+' ] [ ID : '+d.emp_idnumber+' ]</p>'+
+        '<h3 class="boldlabel"><span class="fa fa-info-circle fa-1x"></span> Description</h3>'+
+        '<p style="margin-left:30px;">'+d.description+' </p>'+
         '<hr style="height:1px;background-color:black;"></hr>'+
         '</div>'+ //First Row//
-        '<div class="row">'+
-        '<div class="col-md-2">'+
-        '<center><img style="margin-top:4px;" src="assets/img/anonymous-icon.png"></img></center>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Gender</b> : '+d.emp_gender+'</p>'+
-        '<p class="nomargin"><b>Birthdate</b> : '+d.emp_birthdate+'</p>'+
-        '<p class="nomargin"><b>Civil Status</b> : '+d.emp_civilstatus+'</p>'+
-        '<p class="nomargin"><b>Blood Type</b> : '+d.emp_bloodtype+'</p>'+
-        '<p class="nomargin"><b>Height</b> : '+d.emp_height+'</p>'+
-        '<p class="nomargin"><b>Weight</b> : '+d.emp_weight+'</p>'+
-        '<p class="nomargin"><b>Religion</b> : '+d.emp_religion+'</p>'+
-        '</div>'+
-        '<div class="col-md-4">'+
-        '<p class="nomargin"><b>SSS</b> : '+d.emp_sss+'</p>'+
-        '<p class="nomargin"><b>Phil Health</b> : '+d.emp_philhealth+'</p>'+
-        '<p class="nomargin"><b>Pag-Ibig :</b> : '+d.emp_pagibig+'</p>'+
-        '<p class="nomargin"><b>TIN :</b> : '+d.emp_tin+'</p>'+
-        '<p class="nomargin"><b>Account No.</b> : '+d.emp_accountno+'</p>'+
-        '<p class="nomargin"><b>Tax Code</b> : '+d.emp_taxcode+'</p>'+
-        '</div>'+
-        '</div>'+
-        '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><h4 class="boldlabel"><span class="glyphicon glyphicon-info-sign fa-lg"></span> Employee Information</h4><hr style="height:1px;background-color:black;"></hr></div>'+
-        '<div class="row">'+ //Second Row//
-        '<div class="col-md-2">'+
-        '<center></center>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Employee Type</b> : '+d.emp_gender+'</p>'+
-        '<p class="nomargin"><b>Remarks</b> : '+d.emp_birthdate+'</p>'+
-        '<p class="nomargin"><b>Department</b> : '+d.emp_civilstatus+'</p>'+
-        '<p class="nomargin"><b>Position</b> : '+d.emp_bloodtype+'</p>'+
-        '<p class="nomargin"><b>Branch</b> : '+d.emp_height+'</p>'+
-        '</div>'+
-        '<div class="col-md-4">'+
-        '<p class="nomargin"><b>Section</b> : '+d.emp_weight+'</p>'+
-        '<p class="nomargin"><b>Pay Type</b> : '+d.emp_religion+'</p>'+
-        '<p class="nomargin"><b>Employment Date</b> : '+d.emp_employmentdate+'</p>'+
-        '<p class="nomargin"><b>Date Regular</b> : '+d.emp_philhealth+'</p>'+
-        '</div>'+
-        '</div>'+
-        '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><h4 class="boldlabel"><span class="glyphicon glyphicon-info-sign fa-lg"></span> Contact Information</h4><hr style="height:1px;background-color:black;"></hr></div>'+
-        '<div class="row">'+ //Second Row//
-        '<div class="col-md-2">'+
-        '<center></center>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Address 1</b> : '+d.emp_address1+'</p>'+
-        '<p class="nomargin"><b>Address 2</b> : '+d.emp_address2+'</p>'+
-        '<p class="nomargin"><b>Email Address</b> : '+d.emp_email+'</p>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Mobile No.</b> : '+d.emp_cell+'</p>'+
-        '<p class="nomargin"><b> Phone No.</b> : '+d.emp_phone+'</p>'+
-        '</div>'+
-        '</div>'+
         '</div>';
     };
 

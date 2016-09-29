@@ -28,9 +28,10 @@ class Entitlement extends CORE_Controller
             case 'list':
                 $response['data']=$this->Entitlement_model->get_list(
                     array('emp_leaves_entitlement.is_deleted'=>FALSE),
-                    'emp_leaves_entitlement.*,ref_leave_type.leave_type',
+                    'emp_leaves_entitlement.*,ref_leave_type.leave_type,ref_leave_type.ref_leave_type_short_name,ref_leave_type.is_payable,ref_leave_type.is_forwardable',
                         array(
                             array('ref_leave_type','ref_leave_type.ref_leave_type_id=emp_leaves_entitlement.ref_leave_type_id','left'),
+                            array('emp_leave_year','emp_leave_year.emp_leave_year_id=emp_leaves_entitlement.emp_leave_year_id','left'),
                             )
                     );
                 echo json_encode($response);
@@ -44,6 +45,7 @@ class Entitlement extends CORE_Controller
                     'emp_leaves_entitlement.*,ref_leave_type.leave_type',
                         array(
                             array('ref_leave_type','ref_leave_type.ref_leave_type_id=emp_leaves_entitlement.ref_leave_type_id','left'),
+                            array('emp_leave_year','emp_leave_year.emp_leave_year_id=emp_leaves_entitlement.emp_leave_year_id','left'),
                             )
                     );
 
