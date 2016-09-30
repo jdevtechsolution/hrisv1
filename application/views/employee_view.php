@@ -1253,7 +1253,9 @@ $(document).ready(function(){
 
     var getratesandduties=function(){
                     dt_rates=$('#tbl_rates_duties_list').DataTable({
-
+            "fnInitComplete": function (oSettings, json) {
+                $.unblockUI();
+                },
             "dom": '<"toolbar">frtip',
             "bLengthChange":false,
             "ajax": {
@@ -1304,7 +1306,9 @@ $(document).ready(function(){
 
     var getentitlement=function(){
                     dt_rates=$('#tbl_entitlement').DataTable({
-
+            "fnInitComplete": function (oSettings, json) {
+                $.unblockUI();
+                },
             "dom": '<"toolbar">frtip',
             "bLengthChange":false,
             "ajax": {
@@ -1456,6 +1460,7 @@ $(document).ready(function(){
                 hideemployeeList();
                 hideemployeeFields();
                 showRatesduties();
+                showSpinningProgressDatatable();
                 getratesandduties(); 
             }
             else{
@@ -1474,6 +1479,7 @@ $(document).ready(function(){
                 hideemployeeFields();
                 hideRatesduties();
                 showEntitlement();
+                showSpinningProgressDatatable();
                 getentitlement();
             }
             else{
@@ -1855,7 +1861,6 @@ $(document).ready(function(){
                         showNotification(response);
                         dt.row.add(response.row_added[0]).draw();
                         clearFields($('#frm_employee'))
-
                     }).always(function(){
                         $.unblockUI();
                     });
@@ -2048,7 +2053,6 @@ $(document).ready(function(){
                         $('#postname').val('');
                         $('#postdescription').val('');
                         $('#ref_branch_id').val(data.ref_branch_id);
-
                     }).always(function(){
                         $.unblockUI();
                     });
@@ -2349,7 +2353,19 @@ $(document).ready(function(){
         });
 	
     var showSpinningProgress=function(e){
-        $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Saving Changes</h4>',
+        $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Saving Changes...</h4>',
+            css: { 
+            border: 'none', 
+            padding: '15px', 
+            backgroundColor: 'none', 
+            opacity: 1,
+            zIndex: 20000,
+        } });
+        $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
+    };
+
+    var showSpinningProgressDatatable=function(e){
+        $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Loading Data...</h4>',
             css: { 
             border: 'none', 
             padding: '15px', 
