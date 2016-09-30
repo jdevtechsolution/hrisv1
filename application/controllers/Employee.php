@@ -17,6 +17,7 @@ class Employee extends CORE_Controller
         $this->load->model('RefCourse_model');
         $this->load->model('RefRelationship_model');
         $this->load->model('RefPayment_model');
+        $this->load->model('RefLeave_model');
         
 
     }
@@ -37,6 +38,7 @@ class Employee extends CORE_Controller
         $data['ref_course_degree']=$this->RefCourse_model->get_list(array('ref_course_degree.is_deleted'=>FALSE));
         $data['ref_relationship']=$this->RefRelationship_model->get_list(array('ref_relationship.is_deleted'=>FALSE));
         $data['ref_payment']=$this->RefPayment_model->get_list(array('ref_payment_type.is_deleted'=>FALSE));
+        $data['ref_leave_type']=$this->RefLeave_model->get_list(array('ref_leave_type.is_deleted'=>FALSE));
         $this->load->view('employee_view', $data);
     }
 
@@ -212,7 +214,7 @@ class Employee extends CORE_Controller
                 $m_employee->loan_amount = $this->input->post('loan_amount', TRUE);
                 $m_employee->modify($employee_id);
 
-                $response['title']=$employee_id;
+                $response['title']='Success';
                 $response['stat']='success';
                 $response['msg']='Employee information successfully updated.';
                 $response['row_updated']=$this->Employee_model->get_list(

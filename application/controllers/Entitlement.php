@@ -10,6 +10,7 @@ class Entitlement extends CORE_Controller
         $this->load->model('Employee_model');
         $this->load->model('RatesDuties_model');
         $this->load->model('Entitlement_model');
+        $this->load->model('Employee_model');
     }
 
     public function index() {
@@ -28,10 +29,13 @@ class Entitlement extends CORE_Controller
             case 'list':
                 $response['data']=$this->Entitlement_model->get_list(
                     array('emp_leaves_entitlement.is_deleted'=>FALSE),
-                    'emp_leaves_entitlement.*,ref_leave_type.leave_type,ref_leave_type.ref_leave_type_short_name,ref_leave_type.is_payable,ref_leave_type.is_forwardable',
+                    'emp_leaves_entitlement.*,ref_leave_type.leave_type,ref_leave_type.leave_type_short_name,
+                    ref_ispayable.ref_ispayable_status,ref_isforwardable.ref_isforwardable_status',
                         array(
                             array('ref_leave_type','ref_leave_type.ref_leave_type_id=emp_leaves_entitlement.ref_leave_type_id','left'),
                             array('emp_leave_year','emp_leave_year.emp_leave_year_id=emp_leaves_entitlement.emp_leave_year_id','left'),
+                            array('ref_ispayable','ref_ispayable.ref_ispayable_id=emp_leaves_entitlement.is_payable','left'),
+                            array('ref_isforwardable','ref_isforwardable.ref_isforwardable_id=emp_leaves_entitlement.is_forwardable','left'),
                             )
                     );
                 echo json_encode($response);
@@ -42,10 +46,13 @@ class Entitlement extends CORE_Controller
 
                 $response['data']=$this->Entitlement_model->get_list(
                     array('emp_leaves_entitlement.employee_id'=>$employee_id,'emp_leaves_entitlement.is_deleted'=>FALSE),
-                    'emp_leaves_entitlement.*,ref_leave_type.leave_type',
+                    'emp_leaves_entitlement.*,ref_leave_type.leave_type,ref_leave_type.leave_type_short_name,
+                    ref_ispayable.ref_ispayable_status,ref_isforwardable.ref_isforwardable_status',
                         array(
                             array('ref_leave_type','ref_leave_type.ref_leave_type_id=emp_leaves_entitlement.ref_leave_type_id','left'),
                             array('emp_leave_year','emp_leave_year.emp_leave_year_id=emp_leaves_entitlement.emp_leave_year_id','left'),
+                            array('ref_ispayable','ref_ispayable.ref_ispayable_id=emp_leaves_entitlement.is_payable','left'),
+                            array('ref_isforwardable','ref_isforwardable.ref_isforwardable_id=emp_leaves_entitlement.is_forwardable','left'),
                             )
                     );
 
@@ -53,85 +60,42 @@ class Entitlement extends CORE_Controller
                 break;
 
             case 'create':
-                $m_ratesandduties = $this->RatesDuties_model;
-                $m_employee = $this->Employee_model;
-               
-                $date_starttemp = $this->input->post('date_start', TRUE);
-                $date_startendtemp = $this->input->post('date_end', TRUE);
+                $user_id=$this->session->user_id;
 
+                $m_leaves_entitlement = $this->Entitlement_model;
 
-				$date_start = date("Y-m-d", strtotime($date_starttemp));
-                $date_end = date("Y-m-d", strtotime($date_startendtemp));
+                $m_leaves_entitlement->emp_leave_year_id = 1; // current active year
+                $m_leaves_entitlement->employee_id = $this->input->post('employee_id', TRUE);
 
-                $employee_id = $this->input->post('employee_id', TRUE);
-// $pos_invoice_summary->total_after_tax=$this->get_numeric_value($summary_after_tax);
+                $m_leaves_entitlement->ref_leave_type_id = $this->input->post('ref_leave_type_id', TRUE);
+                $m_leaves_entitlement->total_grant = $this->input->post('total_grant', TRUE);
+                $m_leaves_entitlement->received_balance = $this->input->post('received_balance', TRUE);
+                $m_leaves_entitlement->current_balance = $this->input->post('current_balance', TRUE);
+                $m_leaves_entitlement->remark = $this->input->post('remark', TRUE);
+                $m_leaves_entitlement->is_payable = $this->input->post('is_payable', TRUE);
+                $m_leaves_entitlement->is_forwardable = $this->input->post('is_forwardable', TRUE);
+                $m_leaves_entitlement->is_forwarded = 0;
+                $m_leaves_entitlement->created_by_user_id = $user_id;
 
-                $m_ratesandduties->employee_id = $this->input->post('employee_id', TRUE);
-                $m_ratesandduties->ref_employment_type_id = $this->input->post('ref_employment_type_id', TRUE);
-                $m_ratesandduties->ref_payment_type_id = $this->input->post('ref_payment_type_id', TRUE);
-                $m_ratesandduties->ref_department_id = $this->input->post('ref_department_id', TRUE);
-                $m_ratesandduties->ref_position_id = $this->input->post('ref_position_id', TRUE);
-                $m_ratesandduties->ref_branch_id = $this->input->post('ref_branch_id', TRUE);
-                $m_ratesandduties->ref_section_id = $this->input->post('ref_section_id', TRUE);
-                $m_ratesandduties->date_start = $date_start;
-                $m_ratesandduties->date_end = $date_end;
+                $m_leaves_entitlement->save();
 
-                $leveltemp = $this->input->post('level', TRUE);
-                $salary_reg_rates_temp = $this->input->post('salary_reg_rates', TRUE);
-                $daily_rate_temp = $this->input->post('daily_rate', TRUE);
-                $daily_rate_factor_temp = $this->input->post('daily_rate_factor', TRUE);
-                $sss_phic_salary_credit = $this->input->post('sss_phic_salary_credit', TRUE);
-                $pagibig_salary_credit = $this->input->post('pagibig_salary_credit', TRUE);
-                $tax_shield_temp = $this->input->post('tax_shield', TRUE);
-                  
-                $m_ratesandduties->level=$this->get_numeric_value($leveltemp);
-                $m_ratesandduties->salary_reg_rates=$this->get_numeric_value($salary_reg_rates_temp);
-                $m_ratesandduties->daily_rate=$this->get_numeric_value($daily_rate_temp);
-                $m_ratesandduties->daily_rate_factor=$this->get_numeric_value($daily_rate_factor_temp);
-                $m_ratesandduties->sss_phic_salary_credit=$this->get_numeric_value($sss_phic_salary_credit);
-                $m_ratesandduties->pagibig_salary_credit=$this->get_numeric_value($pagibig_salary_credit);
-                $m_ratesandduties->tax_shield=$this->get_numeric_value($tax_shield_temp);
-                $m_ratesandduties->remarks = $this->input->post('remarks', TRUE);
-                $m_ratesandduties->save();
-
-                $emp_rates_duties_id = $m_ratesandduties->last_insert_id();
-                $m_employee->emp_rates_duties_id = $emp_rates_duties_id;
-                $m_employee->modify($employee_id);
+                $m_leaves_entitlement_id = $m_leaves_entitlement->last_insert_id();
 
 
                 $response['title'] = 'Success!';
                 $response['stat'] = 'success';
-                $response['msg'] = 'Rates and Duties successfully created.';
+                $response['msg'] = 'Entitlement successfully created.';
 
-                $response['row_added'] = $this->RatesDuties_model->get_list(
-                   $emp_rates_duties_id,
-                    'emp_rates_duties.*,ref_employment_type.employment_type,
-                    ref_position.position,ref_department.department,ref_section.section,ref_branch.branch,ref_payment_type.payment_type',
+                $response['row_added'] = $this->Entitlement_model->get_list(
+                   $m_leaves_entitlement_id,
+                    'emp_leaves_entitlement.*,ref_leave_type.leave_type,ref_leave_type.leave_type_short_name,
+                    ref_ispayable.ref_ispayable_status,ref_isforwardable.ref_isforwardable_status',
                         array(
-                            array('ref_employment_type','ref_employment_type.ref_employment_type_id=emp_rates_duties.ref_employment_type_id','left'),
-                            array('ref_position','ref_position.ref_position_id=emp_rates_duties.ref_position_id','left'),
-                            array('ref_department','ref_department.ref_department_id=emp_rates_duties.ref_department_id','left'),
-                            array('ref_section','ref_section.ref_section_id=emp_rates_duties.ref_section_id','left'),
-                            array('ref_branch','ref_branch.ref_branch_id=emp_rates_duties.ref_branch_id','left'),
-                            array('ref_payment_type','ref_payment_type.ref_payment_type_id=emp_rates_duties.ref_payment_type_id','left'),
+                            array('ref_leave_type','ref_leave_type.ref_leave_type_id=emp_leaves_entitlement.ref_leave_type_id','left'),
+                            array('emp_leave_year','emp_leave_year.emp_leave_year_id=emp_leaves_entitlement.emp_leave_year_id','left'),
+                            array('ref_ispayable','ref_ispayable.ref_ispayable_id=emp_leaves_entitlement.is_payable','left'),
+                            array('ref_isforwardable','ref_isforwardable.ref_isforwardable_id=emp_leaves_entitlement.is_forwardable','left'),
                             )
-
-                    );
-                        //For Employeee list dropdown update details
-                $response['row_update'] = $this->Employee_model->get_list(
-                   array('employee_list.employee_id='=>$employee_id,'employee_list.is_deleted'=>FALSE),
-                    'employee_list.*,ref_employment_type.employment_type,ref_department.department,ref_position.position,ref_branch.branch,ref_section.section,
-                    ref_religion.religion,ref_payment_type.payment_type',
-                    array(
-                            array('emp_rates_duties','emp_rates_duties.emp_rates_duties_id=employee_list.emp_rates_duties_id','left'),
-                            array('ref_employment_type','ref_employment_type.ref_employment_type_id=emp_rates_duties.ref_employment_type_id','left'),
-                            array('ref_department','ref_department.ref_department_id=emp_rates_duties.ref_department_id','left'),
-                            array('ref_position','ref_position.ref_position_id=emp_rates_duties.ref_position_id','left'),
-                            array('ref_branch','ref_branch.ref_branch_id=emp_rates_duties.ref_branch_id','left'),
-                            array('ref_section','ref_section.ref_section_id=emp_rates_duties.ref_section_id','left'),
-                            array('ref_payment_type','ref_payment_type.ref_payment_type_id=emp_rates_duties.ref_payment_type_id','left'),
-                            array('ref_religion','ref_religion.ref_religion_id=employee_list.ref_religion_id','left'),
-                            ) 
                     );
                 echo json_encode($response);
 
@@ -155,82 +119,42 @@ class Entitlement extends CORE_Controller
                 break;
 
             case 'update':
-                $m_ratesandduties = $this->RatesDuties_model;
-                $m_employee = $this->Employee_model;
-                $employee_id = $this->input->post('employee_id', TRUE);
-                $date_starttemp = $this->input->post('date_start', TRUE);
-                $date_startendtemp = $this->input->post('date_end', TRUE);
+                $user_id=$this->session->user_id;
 
+                $m_leaves_entitlement = $this->Entitlement_model;
 
-                $date_start = date("Y-m-d", strtotime($date_starttemp));
-                $date_end = date("Y-m-d", strtotime($date_startendtemp));
+                //$employee_id = $this->input->post('employee_id', TRUE);
+                $emp_leaves_entitlement_id = $this->input->post('emp_leaves_entitlement_id', TRUE);
 
-// $pos_invoice_summary->total_after_tax=$this->get_numeric_value($summary_after_tax);
-                $emp_rates_duties_id = $this->input->post('emp_rates_duties_id', TRUE);
-        //      $m_ratesandduties->employee_id = $this->input->post('employee_id', TRUE);
-                $m_ratesandduties->ref_employment_type_id = $this->input->post('ref_employment_type_id', TRUE);
-                $m_ratesandduties->ref_payment_type_id = $this->input->post('ref_payment_type_id', TRUE);
-                $m_ratesandduties->ref_department_id = $this->input->post('ref_department_id', TRUE);
-                $m_ratesandduties->ref_position_id = $this->input->post('ref_position_id', TRUE);
-                $m_ratesandduties->ref_branch_id = $this->input->post('ref_branch_id', TRUE);
-                $m_ratesandduties->ref_section_id = $this->input->post('ref_section_id', TRUE);
-                $m_ratesandduties->date_start = $date_start;
-                $m_ratesandduties->date_end = $date_end;
+                $m_leaves_entitlement->emp_leave_year_id = 1; // current active year
+                $m_leaves_entitlement->employee_id = $this->input->post('employee_id', TRUE);
 
-                $leveltemp = $this->input->post('level', TRUE);
-                $salary_reg_rates_temp = $this->input->post('salary_reg_rates', TRUE);
-                $daily_rate_temp = $this->input->post('daily_rate', TRUE);
-                $daily_rate_factor_temp = $this->input->post('daily_rate_factor', TRUE);
-                $sss_phic_salary_credit = $this->input->post('sss_phic_salary_credit', TRUE);
-                $pagibig_salary_credit = $this->input->post('pagibig_salary_credit', TRUE);
-                $tax_shield_temp = $this->input->post('tax_shield', TRUE);
-                  
-                $m_ratesandduties->level=$this->get_numeric_value($leveltemp);
-                $m_ratesandduties->salary_reg_rates=$this->get_numeric_value($salary_reg_rates_temp);
-                $m_ratesandduties->daily_rate=$this->get_numeric_value($daily_rate_temp);
-                $m_ratesandduties->daily_rate_factor=$this->get_numeric_value($daily_rate_factor_temp);
-                $m_ratesandduties->sss_phic_salary_credit=$this->get_numeric_value($sss_phic_salary_credit);
-                $m_ratesandduties->pagibig_salary_credit=$this->get_numeric_value($pagibig_salary_credit);
-                $m_ratesandduties->tax_shield=$this->get_numeric_value($tax_shield_temp);
-                $m_ratesandduties->remarks = $this->input->post('remarks', TRUE);
-                $m_ratesandduties->modify($emp_rates_duties_id);
-
-                $m_employee->emp_rates_duties_id= $this->input->post('emp_rates_duties_id', TRUE);
-                $m_employee->modify($employee_id);
+                $m_leaves_entitlement->ref_leave_type_id = $this->input->post('ref_leave_type_id', TRUE);
+                $m_leaves_entitlement->total_grant = $this->input->post('total_grant', TRUE);
+                $m_leaves_entitlement->received_balance = $this->input->post('received_balance', TRUE);
+                $m_leaves_entitlement->current_balance = $this->input->post('current_balance', TRUE);
+                $m_leaves_entitlement->remark = $this->input->post('remark', TRUE);
+                $m_leaves_entitlement->is_payable = $this->input->post('is_payable', TRUE);
+                $m_leaves_entitlement->is_forwardable = $this->input->post('is_forwardable', TRUE);
+                $m_leaves_entitlement->is_forwarded = 0;
+                $m_leaves_entitlement->modified_by_user_id = $user_id;
+                $m_leaves_entitlement->modify($emp_leaves_entitlement_id);
 
                 $response['title'] = 'Success!';
                 $response['stat'] = 'success';
-                $response['msg'] = 'Rates and Duties successfully Updated.';
+                $response['msg'] = 'Entitlement successfully Updated.';
                 
-                $response['row_updated']=$this->RatesDuties_model->get_list(
-                    $emp_rates_duties_id,
-                    'emp_rates_duties.*,ref_employment_type.employment_type,
-                    ref_position.position,ref_department.department,ref_section.section,ref_branch.branch,ref_payment_type.payment_type',
+                $response['row_updated']=$this->Entitlement_model->get_list(
+                    array('emp_leaves_entitlement.emp_leaves_entitlement_id'=>$emp_leaves_entitlement_id,'emp_leaves_entitlement.is_deleted'=>FALSE),
+                    'emp_leaves_entitlement.*,ref_leave_type.leave_type,ref_leave_type.leave_type_short_name,ref_leave_type.is_payable,ref_leave_type.is_forwardable,
+                    ref_ispayable.ref_ispayable_status,ref_isforwardable.ref_isforwardable_status',
                         array(
-                            array('ref_employment_type','ref_employment_type.ref_employment_type_id=emp_rates_duties.ref_employment_type_id','left'),
-                            array('ref_position','ref_position.ref_position_id=emp_rates_duties.ref_position_id','left'),
-                            array('ref_department','ref_department.ref_department_id=emp_rates_duties.ref_department_id','left'),
-                            array('ref_section','ref_section.ref_section_id=emp_rates_duties.ref_section_id','left'),
-                            array('ref_branch','ref_branch.ref_branch_id=emp_rates_duties.ref_branch_id','left'),
-                            array('ref_payment_type','ref_payment_type.ref_payment_type_id=emp_rates_duties.ref_payment_type_id','left'),
-                            )                    
+                            array('ref_leave_type','ref_leave_type.ref_leave_type_id=emp_leaves_entitlement.ref_leave_type_id','left'),
+                            array('emp_leave_year','emp_leave_year.emp_leave_year_id=emp_leaves_entitlement.emp_leave_year_id','left'),
+                            array('ref_ispayable','ref_ispayable.ref_ispayable_id=emp_leaves_entitlement.is_payable','left'),
+                            array('ref_isforwardable','ref_isforwardable.ref_isforwardable_id=emp_leaves_entitlement.is_forwardable','left'),
+                            )                 
                         );
-
-                $response['row_update'] = $this->Employee_model->get_list(
-                   array('employee_list.employee_id='=>$employee_id,'employee_list.is_deleted'=>FALSE),
-                    'employee_list.*,ref_employment_type.employment_type,ref_department.department,ref_position.position,ref_branch.branch,ref_section.section,
-                    ref_religion.religion,ref_payment_type.payment_type',
-                    array(
-                            array('emp_rates_duties','emp_rates_duties.emp_rates_duties_id=employee_list.emp_rates_duties_id','left'),
-                            array('ref_employment_type','ref_employment_type.ref_employment_type_id=emp_rates_duties.ref_employment_type_id','left'),
-                            array('ref_department','ref_department.ref_department_id=emp_rates_duties.ref_department_id','left'),
-                            array('ref_position','ref_position.ref_position_id=emp_rates_duties.ref_position_id','left'),
-                            array('ref_branch','ref_branch.ref_branch_id=emp_rates_duties.ref_branch_id','left'),
-                            array('ref_section','ref_section.ref_section_id=emp_rates_duties.ref_section_id','left'),
-                            array('ref_payment_type','ref_payment_type.ref_payment_type_id=emp_rates_duties.ref_payment_type_id','left'),
-                            array('ref_religion','ref_religion.ref_religion_id=employee_list.ref_religion_id','left'),
-                            ) 
-                    );
                 echo json_encode($response);
 
                 break;

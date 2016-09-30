@@ -255,7 +255,7 @@
 <script>
 
 $(document).ready(function(){
-    var dt; var _txnMode; var _selectedID; var _selectRowObj; var _ispayable=1; var _isforwardable=1;
+    var dt; var _txnMode; var _selectedID; var _selectRowObj; var _ispayable=0; var _isforwardable=0;
 
     var initializeControls=function(){
         dt=$('#tbl_leave').DataTable({
@@ -343,25 +343,25 @@ $(document).ready(function(){
             var data=dt.row(_selectRowObj).data();
             _selectedID=data.ref_leave_type_id;
             $('.transaction_type').text('Edit');
-            if(data.is_payable==2){
+            if(data.is_payable==1){
                 $('#payable').prop('checked', true);
                 //alert(data.is_payable);
-                _ispayable = 2;
+                _ispayable = 1;
             }
             else{
                 $('#payable').prop('checked', false);
                 //alert(data.is_payable);
-                _ispayable = 1;
+                _ispayable = 0;
             }
-            if(data.is_forwardable==2){
+            if(data.is_forwardable==1){
                 $('#forwardable').prop('checked', true);
                 //alert(data.is_forwardable);
-                _isforwardable = 2;
+                _isforwardable = 1;
             }
             else{
                 $('#forwardable').prop('checked', false);
                 //alert(data.is_forwardable);
-                _isforwardable = 1;
+                _isforwardable = 0;
 
             }
             //$('#emp_exemptpagibig').val(data.emp_exemptphilhealth);
@@ -430,14 +430,14 @@ $(document).ready(function(){
 
         $('#frm_leave').on('click','input[id="payable"]',function(){
             //$('.single-checkbox').attr('checked', false);
-            if(_ispayable==1){
+            if(_ispayable==0){
                 this.checked = true;
-                _ispayable = 2;
+                _ispayable = 1;
                 //alert(_ispayable);
             }
             else{
                  this.checked = false;
-                 _ispayable = 1;
+                 _ispayable = 0;
                   //alert(_ispayable);
             }
             
@@ -446,14 +446,14 @@ $(document).ready(function(){
 
         $('#frm_leave').on('click','input[id="forwardable"]',function(){
             //$('.single-checkbox').attr('checked', false);
-            if(_isforwardable==1){
+            if(_isforwardable==0){
                 this.checked = true;
-                _isforwardable = 2;
+                _isforwardable = 1;
                 //alert(_isforwardable);
             }
             else{
                  this.checked = false;
-                 _isforwardable = 1;
+                 _isforwardable = 0;
                   //alert(_isforwardable);
             }
             

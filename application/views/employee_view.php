@@ -767,6 +767,9 @@
                                                     <th>Short name</th>
                                                     <th>Is Payable</th>
                                                     <th>Is Forwardable</th>
+                                                    <th>Total Grant</th>
+                                                    <th>Received Balance</th>
+                                                    <th>Current Balance</th>
                                                     <th><center>Action</center></th>
                                                  </tr>
                                             </thead>
@@ -1094,17 +1097,68 @@
             </div><!---modal-->
 
             <div id="modal_create_entitlement" class="modal fade modal_create_entitlement" tabindex="-1" role="dialog"><!--modal-->
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-md">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:#2ecc71;">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Leave Entitletment : New</h4>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Leave Entitletment : <texttitle id="entitlementtittle"></texttitle></h4>
                             <p style="color:white;margin:0px;" id="dataname" class="dataname">name</p>
                         </div>
 
                         <div class="modal-body">
                             <form id="frm_entitlement">
-                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-bottom:2px; !important">
+                                                  <label class="boldlabel" style="margin-bottom:0px;">Leave Type:</label>
+                                                  <select class="form-control" id="ref_leave_type_id" name="ref_leave_type_id" id="sel1" required>
+                                                    <option value="0">[ Create Employment Type ]</option>
+                                                    <?php
+                                                                        foreach($ref_leave_type as $row)
+                                                                        {
+                                                                            echo '<option value="'.$row->ref_leave_type_id  .'">'.$row->leave_type.'</option>';
+                                                                        }
+                                                                        ?>
+                                                  </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-bottom:2px; !important">
+                                                  <label class="boldlabel" style="margin-bottom:0px;">Short Name:</label>
+                                                  <input type="text" class="form-control" placeholder="Short Name" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-bottom:2px; !important">
+                                            <div class="checkbox" style="margin-top:25px;">
+                                                 <label><input id="payable" type="checkbox" value=""><b>Is Payable?</b></label>
+                                                 <label style="margin-left:20px;"><input id="forwardable" type="checkbox" value=""><b>Is Forwardable?</b></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-bottom:2px; !important">
+                                            <label class="boldlabel">Total Grant :</label>
+                                            <input type="text" class="form-control numeric" id="total_grant" name="total_grant" placeholder="Total Grant" data-error-msg="Total Grant is Required!">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-bottom:2px; !important">
+                                            <label class="boldlabel">Received Balance :</label>
+                                            <input type="text" class="form-control numeric" id="received_balance" name="received_balance" placeholder="Total Grant" data-error-msg="Received Balance is Required!" required readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" style="margin-bottom:2px; !important">
+                                            <label class="boldlabel">Current Balance :</label>
+                                            <input type="text" class="form-control numeric" id="current_balance" name="current_balance" placeholder="Current Balance" data-error-msg="Current Balance is Required!" required readonly>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
 
@@ -1113,7 +1167,6 @@
                             <button id="btn_cancelcreateentitlement" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div><!---content---->
-                </div>
                 </div>
             </div><!---modal-->
 
@@ -1198,7 +1251,7 @@
 <script>
 
 $(document).ready(function(){
-    var dt; var _txnMode; var _txnModeRate; var _selectedID; var _selectedIDrates; var _selectedIDentitlement; var _selectRowObj; var _selectRowObjrates; var _selectRowObjentitlement; var _isChecked;
+    var dt; var _txnMode; var _txnModeRate; var _selectedID; var _selectedIDrates; var _selectedIDentitlement; var _selectRowObj; var _selectRowObjrates; var _selectRowObjentitlement; var _isChecked; var _ispayable=0; var _isforwardable=0; var _Leave_type_value;
 
     var initializeControls=function(){
         dt=$('#tbl_employee_list').DataTable({
@@ -1305,7 +1358,7 @@ $(document).ready(function(){
     }
 
     var getentitlement=function(){
-                    dt_rates=$('#tbl_entitlement').DataTable({
+                    dt_entitlement=$('#tbl_entitlement').DataTable({
             "fnInitComplete": function (oSettings, json) {
                 $.unblockUI();
                 },
@@ -1331,11 +1384,14 @@ $(document).ready(function(){
                     "bDestroy": true,
                 },
                 { targets:[1],data: "leave_type" },
-                { targets:[2],data: "ref_leave_type_short_name" },
-                { targets:[3],data: "is_payable" },
-                { targets:[4],data: "is_forwardable" },
+                { targets:[2],data: "leave_type_short_name" },
+                { targets:[3],data: "ref_ispayable_status" },
+                { targets:[4],data: "ref_isforwardable_status" },
+                { targets:[5],data: "total_grant" },
+                { targets:[6],data: "received_balance" },
+                { targets:[7],data: "current_balance" },
                 {
-                    targets:[5],
+                    targets:[8],
                     render: function (data, type, full, meta){
                         var btn_edit='<button class="btn btn-default btn-sm" name="entitlement_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
                         var btn_trash='<button class="btn btn-default btn-sm" name="entitlement_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
@@ -1384,7 +1440,7 @@ $(document).ready(function(){
             }
         } );
 
-
+            //detailed modal view of rates and duties
      $('#tbl_rates_duties_list tbody').on( 'click', 'tr td.details-control1', function () {
             _selectRowObjrates=$(this).closest('tr');
             var data=dt_rates.row(_selectRowObjrates).data();
@@ -1432,8 +1488,91 @@ $(document).ready(function(){
                 }
             }
         } );*/
+        $('#frm_entitlement').on('click','input[id="payable"]',function(){
+            //$('.single-checkbox').attr('checked', false);
+            if(_ispayable==0){
+                this.checked = true;
+                _ispayable = 1;
+                //alert(_ispayable);
+            }
+            else{
+                 this.checked = false;
+                 _ispayable = 0;
+                  //alert(_ispayable);
+            }
+            
 
-            //singlee checkbox EZ trick by jbpv
+        });
+
+        $('#frm_entitlement').on('click','input[id="forwardable"]',function(){
+            //$('.single-checkbox').attr('checked', false);
+            if(_isforwardable==0){
+                this.checked = true;
+                _isforwardable = 1;
+                //alert(_isforwardable);
+            }
+            else{
+                 this.checked = false;
+                 _isforwardable = 0;
+                  //alert(_isforwardable);
+            }
+            
+
+        });
+
+            //function for getting details of leave type//
+            $('#ref_leave_type_id').change(function() {
+            _Leave_type_value=$(this).val();
+            if(_Leave_type_value==0){
+                alert("create leave type");
+                return;
+            }
+            getLeaveTypeDetails().done(function(response){
+                        $('#total_grant').val(response.data[0].total_grant);
+                        $('#ref_leave_type_short_name').val(response.data[0].ref_leave_type_short_name);
+                        currentBalance();
+                        if(response.data[0].is_payable==1){
+                            $('#payable').prop('checked', true);
+                            //alert(data.is_payable);
+                            _ispayable = 1;
+                        }
+                        else{
+                            $('#payable').prop('checked', false);
+                            //alert(data.is_payable);
+                            _ispayable = 0;
+                        }
+                        if(response.data[0].is_forwardable==1){
+                            $('#forwardable').prop('checked', true);
+                            //alert(data.is_forwardable);
+                            _isforwardable = 1;
+                        }
+                        else{
+                            $('#forwardable').prop('checked', false);
+                            //alert(data.is_forwardable);
+                            _isforwardable = 0;
+
+                        }
+                        //alert("done");
+                        clearFields($('#'))
+                    }).always(function(){
+                        $.unblockUI();
+                    });
+            });
+
+
+            $("#total_grant").keyup(function(){
+                currentBalance();
+            });
+
+            var currentBalance=function(){
+                var total_grant = $('#total_grant').val();
+                var received_balance = $('#received_balance').val();
+                var current_balance = parseInt(total_grant) + parseInt(received_balance);
+                $('#current_balance').val(current_balance);
+            };
+            //synchronize total grant and current balance//
+
+            //high light row EZ trick by jbpv
             $('#tbl_employee_list tbody').delegate('tr', 'click', function() {
 
             $('.odd').closest("tr").css('background-color','white');
@@ -1460,7 +1599,7 @@ $(document).ready(function(){
                 hideemployeeList();
                 hideemployeeFields();
                 showRatesduties();
-                showSpinningProgressDatatable();
+                showSpinningProgressLoading();
                 getratesandduties(); 
             }
             else{
@@ -1479,7 +1618,7 @@ $(document).ready(function(){
                 hideemployeeFields();
                 hideRatesduties();
                 showEntitlement();
-                showSpinningProgressDatatable();
+                showSpinningProgressLoading();
                 getentitlement();
             }
             else{
@@ -1630,8 +1769,11 @@ $(document).ready(function(){
         });
 
         $('#btn_newentitlement').click(function(){
+            $('#entitlementtittle').text("New");
             clearFields($('#frm_entitlement'));
             _txnMode="newentitlement";
+            $('#ref_leave_type_id').val(0);
+            $('#received_balance').val("0.00");
 
            // $('#ref_employment_type_id').val(1);//
 
@@ -1697,13 +1839,37 @@ $(document).ready(function(){
             $('#modal_confirmation').modal('show');
         });
 
-        $('#tbl_rates_duties_list tbody').on('click','button[name="entitlement_edit"]',function(){
+        $('#tbl_entitlement tbody').on('click','button[name="entitlement_edit"]',function(){
             _txnMode="editentitlement";
-            $('.modal_create_entitlement').modal('show');
+            $('#entitlementtittle').text("Edit");
             _selectRowObjentitlement=$(this).closest('tr');
-            var data=dt_rates.row(_selectRowObjentitlement).data();
+            var data=dt_entitlement.row(_selectRowObjentitlement).data();
             _selectedIDentitlement=data.emp_leaves_entitlement_id;
-            alert(_selectedIDentitlement);
+            //alert(data.ref_leave_type_id);
+            $('#ref_leave_type_id').val(data.ref_leave_type_id);
+
+                         if(data.is_payable==1){
+                            $('#payable').prop('checked', true);
+                            //alert(data.is_payable);
+                            _ispayable = 1;
+                        }
+                        else{
+                            $('#payable').prop('checked', false);
+                            //alert(data.is_payable);
+                            _ispayable = 0;
+                        }
+                        if(data.is_forwardable==1){ 
+                            $('#forwardable').prop('checked', true);
+                            //alert(data.is_forwardable);
+                            _isforwardable = 1;
+                        }
+                        else{
+                            $('#forwardable').prop('checked', false);
+                            //alert(data.is_forwardable);
+                            _isforwardable = 0;
+
+                        }
+                        $('.modal_create_entitlement').modal('show');
             //console.log(_selectedID);
             //$('#ref_employment_type_id').val(data.ref_employment_type_id);//
            // alert($('input[name="tax_exempt"]').length);
@@ -1881,24 +2047,23 @@ $(document).ready(function(){
         });
 
             //CREATE ENTITLEMENT
-        $('.btn_createentitlement').click(function(){
+        $('#btn_createentitlement').click(function(){
             if(validateRequiredFields($('#frm_entitlement'))){
                 if(_txnMode=="newentitlement"){
                     createEntitlement().done(function(response){
                         showNotification(response);
                         dt_entitlement.row.add(response.row_added[0]).draw();
-                        dt.row(_selectRowObj).data(response.row_update[0]).draw(); //for updating employee list 
-                        clearFields($('#frm_ratesandduties'))
+                        clearFields($('#frm_entitlement'))
                     }).always(function(){
                         $.unblockUI();
                     });
                     return;
                 }
                 if(_txnMode=="editentitlement"){
+                    //alert(_selectedIDentitlement)
                     updateEntitlement().done(function(response){
                         showNotification(response);
                         dt_entitlement.row(_selectRowObjentitlement).data(response.row_updated[0]).draw();
-                        dt.row(_selectRowObj).data(response.row_update[0]).draw(); //for updating employee list 
                         clearFields($('#frm_entitlement'))
                     }).always(function(){
                         $.unblockUI();
@@ -2092,7 +2257,16 @@ $(document).ready(function(){
         $('div.form-group').removeClass('has-error');
         $('input[required],textarea[required],select[required]',f).each(function(){
 
-
+                if($(this).is('select')){
+                if($(this).val()==0){
+                    showNotification({title:"Error!",stat:"error",msg:"Employment Type is Required"});
+                    $(this).closest('div.form-group').addClass('has-error');
+                    $(this).focus();
+                    stat=false;
+                    return false;
+                }
+            
+                }else{
                 if($(this).val()==""){
                     showNotification({title:"Error!",stat:"error",msg:$(this).data('error-msg')});
                     $(this).closest('div.form-group').addClass('has-error');
@@ -2100,6 +2274,7 @@ $(document).ready(function(){
                     stat=false;
                     return false;
                 }
+            }
             
 
 
@@ -2186,6 +2361,8 @@ $(document).ready(function(){
     var createEntitlement=function(){
         var _data=$('#frm_entitlement').serializeArray();
         _data.push({name : "employee_id" ,value : _selectedID});
+        _data.push({name : "is_payable" ,value : _ispayable});
+        _data.push({name : "is_forwardable" ,value : _isforwardable});
         return $.ajax({
             "dataType":"json",
             "type":"POST",
@@ -2197,8 +2374,10 @@ $(document).ready(function(){
 
     var updateEntitlement=function(){
         var _data=$('#frm_entitlement').serializeArray();
-        _data.push({name : "emp_rates_duties_id" ,value : _selectedIDEntitlement});
+        _data.push({name : "emp_leaves_entitlement_id" ,value : _selectedIDentitlement});
         _data.push({name : "employee_id" ,value : _selectedID});
+        _data.push({name : "is_payable" ,value : _ispayable});
+        _data.push({name : "is_forwardable" ,value : _isforwardable});
         return $.ajax({
             "dataType":"json",
             "type":"POST",
@@ -2292,6 +2471,19 @@ $(document).ready(function(){
         });
     };
 
+    var getLeaveTypeDetails=function(){
+        var _data=$('#').serializeArray();
+        _data.push({name : "ref_leave_type_id" ,value : _Leave_type_value});
+
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"RefLeave/transaction/filterlist",
+            "data":_data,
+            "beforeSend": showSpinningProgressLoading()
+        });
+    };
+
     var showList=function(b){
         if(b){
             $('#div_product_list').show();
@@ -2364,7 +2556,7 @@ $(document).ready(function(){
         $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
     };
 
-    var showSpinningProgressDatatable=function(e){
+    var showSpinningProgressLoading=function(e){
         $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Loading Data...</h4>',
             css: { 
             border: 'none', 

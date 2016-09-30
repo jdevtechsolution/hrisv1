@@ -47,6 +47,19 @@ class RefLeave extends CORE_Controller
                 echo json_encode($response);
                 break;
 
+            case 'filterlist':
+                $ref_leave_type_id = $this->input->post('ref_leave_type_id', TRUE);
+                $response['data']=$this->RefLeave_model->get_list(
+                    array('ref_leave_type.ref_leave_type_id'=>$ref_leave_type_id,'ref_leave_type.is_deleted'=>FALSE),
+                    'ref_leave_type.*,ref_ispayable.ref_ispayable_status,ref_isforwardable.ref_isforwardable_status',
+                    array(
+                        array('ref_ispayable','ref_ispayable.ref_ispayable_id=ref_leave_type.is_payable','left'),
+                        array('ref_isforwardable','ref_isforwardable.ref_isforwardable_id=ref_leave_type.is_forwardable','left'),
+                        )
+                    );
+                echo json_encode($response);
+                break;
+
             case 'create':
                 $m_leave = $this->RefLeave_model;
                 $user_id=$this->session->user_id;
