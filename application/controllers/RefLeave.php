@@ -38,11 +38,7 @@ class RefLeave extends CORE_Controller
             case 'list':
                 $response['data']=$this->RefLeave_model->get_list(
                     array('ref_leave_type.is_deleted'=>FALSE),
-                    'ref_leave_type.*,ref_ispayable.ref_ispayable_status,ref_isforwardable.ref_isforwardable_status',
-                    array(
-                        array('ref_ispayable','ref_ispayable.ref_ispayable_id=ref_leave_type.is_payable','left'),
-                        array('ref_isforwardable','ref_isforwardable.ref_isforwardable_id=ref_leave_type.is_forwardable','left'),
-                        )
+                    'ref_leave_type.*'
                     );
                 echo json_encode($response);
                 break;
@@ -51,11 +47,7 @@ class RefLeave extends CORE_Controller
                 $ref_leave_type_id = $this->input->post('ref_leave_type_id', TRUE);
                 $response['data']=$this->RefLeave_model->get_list(
                     array('ref_leave_type.ref_leave_type_id'=>$ref_leave_type_id,'ref_leave_type.is_deleted'=>FALSE),
-                    'ref_leave_type.*,ref_ispayable.ref_ispayable_status,ref_isforwardable.ref_isforwardable_status',
-                    array(
-                        array('ref_ispayable','ref_ispayable.ref_ispayable_id=ref_leave_type.is_payable','left'),
-                        array('ref_isforwardable','ref_isforwardable.ref_isforwardable_id=ref_leave_type.is_forwardable','left'),
-                        )
+                    'ref_leave_type.*'
                     );
                 echo json_encode($response);
                 break;
@@ -83,11 +75,7 @@ class RefLeave extends CORE_Controller
 
                 $response['row_added'] = $this->RefLeave_model->get_list(
                     $ref_leave_type_id,
-                    'ref_leave_type.*,ref_ispayable.ref_ispayable_status,ref_isforwardable.ref_isforwardable_status',
-                    array(
-                        array('ref_ispayable','ref_ispayable.ref_ispayable_id=ref_leave_type.is_payable','left'),
-                        array('ref_isforwardable','ref_isforwardable.ref_isforwardable_id=ref_leave_type.is_forwardable','left'),
-                        )
+                    'ref_leave_type.*'
                     );
                 echo json_encode($response);
 
@@ -130,11 +118,7 @@ class RefLeave extends CORE_Controller
                 $response['msg']='Leave information successfully updated.';
                 $response['row_updated']=$this->RefLeave_model->get_list(
                     $ref_leave_type_id,
-                        'ref_leave_type.*,ref_ispayable.ref_ispayable_status,ref_isforwardable.ref_isforwardable_status',
-                    array(
-                        array('ref_ispayable','ref_ispayable.ref_ispayable_id=ref_leave_type.is_payable','left'),
-                        array('ref_isforwardable','ref_isforwardable.ref_isforwardable_id=ref_leave_type.is_forwardable','left'),
-                        )
+                        'ref_leave_type.*'
                     );
                 echo json_encode($response);
 

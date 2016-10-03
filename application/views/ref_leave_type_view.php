@@ -273,8 +273,32 @@ $(document).ready(function(){
                 },
                 { targets:[1],data: "leave_type" },
                 { targets:[2],data: "leave_type_short_name" },
-                { targets:[3],data: "ref_ispayable_status" },
-                { targets:[4],data: "ref_isforwardable_status" },
+                { targets:[3],data: "is_payable",
+                    render: function (data, type, full, meta){
+                        //alert(data);
+
+                        if(data == 1){
+                            return "<center><span style='color:#37d077' class='glyphicon glyphicon-ok'></span></center>";
+                        } 
+
+                        else{
+                            return "<center><span style='color:#e74c3c' class='glyphicon glyphicon-remove'></span></center>";
+                        }
+                    }
+                },
+                { targets:[4],data: "is_forwardable",
+                    render: function (data, type, full, meta){
+                        //alert(data);
+
+                        if(data == 1){
+                            return "<center><span style='color:#37d077' class='glyphicon glyphicon-ok'></span></center>";
+                        } 
+
+                        else{
+                            return "<center><span style='color:#e74c3c' class='glyphicon glyphicon-remove'></span></center>";
+                        }
+                    }
+                },
                 { targets:[5],data: "total_grant" },
                 {
 
@@ -482,6 +506,7 @@ $(document).ready(function(){
                         _isforwardable = 1;
                         clearFields($('#frm_leave'))
                     }).always(function(){
+                        $('#modal_create_leave').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -492,6 +517,7 @@ $(document).ready(function(){
                         showNotification(response);
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
                     }).always(function(){
+                        $('#modal_create_leave').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -608,9 +634,7 @@ $(document).ready(function(){
     function format ( d ) {
         return '<div class="container-fluid">'+
         '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><span class="fa fa-info-circle fa-1x"></span> Description</h3>'+
-        '<p style="margin-left:30px;">'+d.description+' </p>'+
-        '<hr style="height:1px;background-color:black;"></hr>'+
+        '<center><h4 class="boldlabel">Nothing Follows</h4></center>'+
         '</div>'+ //First Row//
         '</div>';
     };

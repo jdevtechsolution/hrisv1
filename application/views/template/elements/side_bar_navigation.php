@@ -41,6 +41,8 @@
                             <ul class="acc-menu">
                                 <li><a href="RefLeave" class="departmentjs" id="departmentjs">Leave Type</a>
                                 </li>
+                                <li><a href="RefYearSetup" class="departmentjs" id="departmentjs">Year Setup</a>
+                                </li>
                             </ul>
                         </li>
                         <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></i><span>Employee References</span></a>

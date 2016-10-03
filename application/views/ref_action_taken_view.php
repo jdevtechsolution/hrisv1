@@ -539,7 +539,7 @@ $(document).ready(function(){
     function format ( d ) {
         return '<div class="container-fluid">'+
         '<div class="col-md-12">'+ 
-        '<h5 class="boldlabel"><center>Nothing Follows</center></h5>'+
+        '<center><h4 class="boldlabel">Nothing Follows</h4></center>'+
         '</div>'+ //First Row//
         '</div>';
     };

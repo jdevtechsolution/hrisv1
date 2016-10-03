@@ -54,6 +54,14 @@
             background: url('assets/img/Folder_Opened.png') no-repeat center center;
         }
 
+        td.details-control2 {
+            background: url('assets/img/Folder_Closed.png') no-repeat center center !important;
+            cursor: pointer;
+        }
+        tr.details2 td.details-control2 {
+            background: url('assets/img/Folder_Opened.png') no-repeat center center;
+        }
+
         .child_table{
             padding: 5px;
             border: 1px #ff0000 solid;
@@ -101,18 +109,35 @@
                     <ol class="breadcrumb" style="margin-bottom:0px;">
                         <li><a href="dashboard">Dashboard</a></li>
                         <li><a href="employee">Employee</a></li>
+                        <li><currentyear class="boldlabel" style="color:black;"><?php
+                                                                    foreach($emp_leave_year as $row)
+                                                                    {
+                                                                        echo "[ Current Year : ";
+                                                                        echo $row->year_type;
+                                                                        echo " FROM : ";
+                                                                        echo $row->date_start;
+                                                                        echo " TO : ";
+                                                                         echo $row->date_end;
+                                                                    }
+                                                                    ?> ]</currentyear></li>
                     </ol>
 
                     <div class="container-fluid">
 
                         <div id="div_product_list">
                             <div class="panel panel-default">
+                                <!--
                                         <button class="btn"  id="btn_new" style="width:95px;height:80px;border:1px solid #2c3e50;font-family: Tahoma, Georgia, Serif;background-color:#27ae60;color:white;margin-top:10px;margin-left:17px;" title="Create New Employee" >
                                         <i class="fa fa-user-plus fa-2x"></i><h4 style="font-size:14px;margin:0px;color:white;">New<br>Employee</h4></button>
                                         <button class="btn"  id="edit_entitlement" style="width:95px;height:80px;border:1px solid #2c3e50;font-family: Tahoma, Georgia, Serif;background-color:#27ae60;color:white;margin-top:10px;margin-left:none;" title="Create New Employee" >
                                         <i class="fa fa-area-chart fa-2x"></i><h4 style="font-size:12px;margin:0px;color:white;">Leave<br>Entitlement</h4></button>
+                                        <button class="btn"  id="apply_leave" style="width:95px;height:80px;border:1px solid #2c3e50;font-family: Tahoma, Georgia, Serif;background-color:#27ae60;color:white;margin-top:10px;margin-left:none;" title="Create New Employee" >
+                                        <i class="fa fa-area-chart fa-2x"></i><h4 style="font-size:14px;margin:0px;color:white;">Apply<br>Leave</h4></button>
                                         <button class="btn"  id="edit_duties" style="width:95px;height:80px;border:1px solid #2c3e50;font-family: Tahoma, Georgia, Serif;background-color:#27ae60;color:white;margin-top:10px;margin-left:none;" title="Create New Employee" >
                                         <i class="fa fa-area-chart fa-2x"></i><h4 style="font-size:14px;margin:0px;color:white;">Rates &<br>Duties</h4></button>
+                                        <button class="btn"  id="edit_memorandum" style="width:95px;height:80px;border:1px solid #2c3e50;font-family: Tahoma, Georgia, Serif;background-color:#27ae60;color:white;margin-top:10px;margin-left:none;" title="Create New Employee" >
+                                        <i class="fa fa-area-chart fa-2x"></i><h4 style="font-size:11px;margin:0px;color:white;">Memorandum</h4></button>
+                                        -->
                                         <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
                                              <center><h2 style="color:white;font-weight:300;">Employee List</h2></center>
                                         </div>
@@ -755,7 +780,7 @@
                                    <displayname id="display_name" class="display_name"></displayname> </button>
                                     
                                         <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
-                                             <center><h2 style="color:white;font-weight:300;">Entitlement</h2></center>
+                                             <center><h2 style="color:white;font-weight:300;">Leave Entitlement Module  </h2></center>
                                         </div>
 
                                     <div class="panel-body table-responsive" style="padding-top:5px;">
@@ -827,6 +852,26 @@
                         <div class="modal-footer">
                             <button id="btn_yes_rates" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
                             <button id="btn_close_rates" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div id="modal_confirmation_entitlement" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title"><span id="modal_mode"> </span>Confirm Deletion</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <p id="modal-body-message">Are you sure ?</p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btn_yes_entitlement" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
+                            <button id="btn_close_entitlement" type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
                     </div>
                 </div>
@@ -911,6 +956,45 @@
 
                         <div class="modal-footer" style="padding:10px;">
                             <button id="btn_close_details" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div id="modal_entitlement_details" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#34495e;">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true" style="color:#ecf0f1;">X</button>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Leave Entitlement Details</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="col-md-12">
+                                <h3 class="boldlabel"><span class="fa fa-circle fa-lg"></span> <text id="leave_type"></text></h3>
+                                <p class="boldlabel">[ Shortname : <text id="leave_type_short_name"> </text>]</p>
+                                <hr style="height:1px;background-color:black;"></hr>
+                                </div>
+                                
+                                <div class="col-md-12">
+
+                                <div class="col-md-6">
+                                <p class="nomargin"><b>Payable</b> : <text id="is_payable_detail"></text></p>
+                                <p class="nomargin"><b>Forwardable</b> : <text id="is_forwardable_detail"></text></p>
+                                <p class="nomargin"><b>Total Grant</b> : <text id="total_grant_detail"></text></p>
+                                <p class="nomargin"><b>Received Balance</b> : <text id="received_balance_detail"></text></p>
+                                <p class="nomargin"><b>Current Balance</b> : <text id="current_balance_detail"></text></p>
+                                </div>  
+                                <div class="col-md-4">
+                                <p class="nomargin"><b>Remarks :</b><br><text id="remark"></text><br></p>
+                                </div>
+                                </div>
+                                </div>
+                        </div>
+
+                        <div class="modal-footer" style="padding:10px;">
+                            <button id="btn_close_details" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -1377,7 +1461,7 @@ $(document).ready(function(){
             "columns": [
                 {
                     "targets": [0],
-                    "class":          "details-control1",
+                    "class":          "details-control2",
                     "orderable":      false,
                     "data":           null,
                     "defaultContent": "",
@@ -1385,8 +1469,32 @@ $(document).ready(function(){
                 },
                 { targets:[1],data: "leave_type" },
                 { targets:[2],data: "leave_type_short_name" },
-                { targets:[3],data: "ref_ispayable_status" },
-                { targets:[4],data: "ref_isforwardable_status" },
+                { targets:[3],data: "is_payable",
+                    render: function (data, type, full, meta){
+                        //alert(data);
+
+                        if(data == 1){
+                            return "<center><span style='color:#37d077' class='glyphicon glyphicon-ok'></span></center>";
+                        } 
+
+                        else{
+                            return "<center><span style='color:#e74c3c' class='glyphicon glyphicon-remove'></span></center>";
+                        }
+                    }
+                },
+                { targets:[4],data: "is_forwardable",
+                    render: function (data, type, full, meta){
+                        //alert(data);
+
+                        if(data == 1){
+                            return "<center><span style='color:#37d077' class='glyphicon glyphicon-ok'></span></center>";
+                        } 
+
+                        else{
+                            return "<center><span style='color:#e74c3c' class='glyphicon glyphicon-remove'></span></center>";
+                        }
+                    }
+                },
                 { targets:[5],data: "total_grant" },
                 { targets:[6],data: "received_balance" },
                 { targets:[7],data: "current_balance" },
@@ -1466,6 +1574,22 @@ $(document).ready(function(){
             $('#modal_rates_details').modal('show');
 
         } );
+                //detailed modal view of entitlement
+        $('#tbl_entitlement tbody').on( 'click', 'tr td.details-control2', function () {
+            _selectRowObjentitlement=$(this).closest('tr');
+            var data=dt_entitlement.row(_selectRowObjentitlement).data();
+            _selectedIDentitlement=data.emp_leaves_entitlement_id
+            $('#leave_type').text(data.leave_type);
+            $('#leave_type_short_name').text(data.leave_type_short_name);
+            $('#is_payable_detail').text(data.ref_ispayable_status);
+            $('#is_forwardable_detail').text(data.ref_isforwardable_status);
+            $('#total_grant_detail').text(data.total_grant);
+            var current_balance = parseInt(data.total_grant) + parseInt(data.received_balance);
+            $('#received_balance_detail').text(accounting.formatNumber("0",2));
+            $('#current_balance_detail').text(accounting.formatNumber(current_balance,2));
+            $('#modal_entitlement_details').modal('show');
+
+        } );
 
      /*   $('#tbl_rates_duties_list tbody').on( 'click', 'tr td.details-control1', function () {
             var tr = $(this).closest('tr');
@@ -1488,6 +1612,7 @@ $(document).ready(function(){
                 }
             }
         } );*/
+            //checkbox value for payable
         $('#frm_entitlement').on('click','input[id="payable"]',function(){
             //$('.single-checkbox').attr('checked', false);
             if(_ispayable==0){
@@ -1503,7 +1628,7 @@ $(document).ready(function(){
             
 
         });
-
+             //checkbox value for forwardable
         $('#frm_entitlement').on('click','input[id="forwardable"]',function(){
             //$('.single-checkbox').attr('checked', false);
             if(_isforwardable==0){
@@ -1586,9 +1711,16 @@ $(document).ready(function(){
                 _selectedname= '[Name : ' + data.first_name +' ' + data.middle_name + ' ' + data.last_name + ']';
                 _selectedname1= data.first_name +' ' + data.middle_name + ' ' + data.last_name;
                 //alert(_selectedID);
-                _isChecked = this.checked = true;
+                _isChecked = this.checked = true; //for checking if there is any highlighted field
              
             });
+            //to remove higlight when going to the next page
+        $('.pagination').click(function(){
+            _selectRowObj="";
+            _isChecked = this.checked = false; //setting ischecked to no
+            $('.odd').closest("tr").css('background-color','white');
+            $('.even').closest("tr").css('background-color','white');
+        });
 
         $('#edit_duties').click(function(){
             if(_isChecked == true){
@@ -1926,6 +2058,14 @@ $(document).ready(function(){
            $('#modal_confirmation_rates').modal('show');
         });
 
+        $('#tbl_entitlement tbody').on('click','button[name="entitlement_remove"]',function(){
+            _selectRowObjentitlement=$(this).closest('tr');
+            var data=dt_entitlement.row(_selectRowObjentitlement).data();
+            _selectedIDentitlement=data.emp_leaves_entitlement_id;
+
+           $('#modal_confirmation_entitlement').modal('show');
+        });
+
         $('#btn_yes').click(function(){
             removeEmployee().done(function(response){
                 showNotification(response);
@@ -1938,6 +2078,14 @@ $(document).ready(function(){
             removeRates().done(function(response){
                 showNotification(response);
                 dt_rates.row(_selectRowObjrates).remove().draw();
+                $.unblockUI();
+            });
+        });
+
+        $('#btn_yes_entitlement').click(function(){
+            removeEntitlement().done(function(response){
+                showNotification(response);
+                dt_entitlement.row(_selectRowObjentitlement).remove().draw();
                 $.unblockUI();
             });
         });
@@ -2056,6 +2204,7 @@ $(document).ready(function(){
                         clearFields($('#frm_entitlement'))
                     }).always(function(){
                         $.unblockUI();
+                        $('#modal_create_entitlement').modal('hide');
                     });
                     return;
                 }
@@ -2066,7 +2215,9 @@ $(document).ready(function(){
                         dt_entitlement.row(_selectRowObjentitlement).data(response.row_updated[0]).draw();
                         clearFields($('#frm_entitlement'))
                     }).always(function(){
+                        $('#modal_create_entitlement').modal('hide');
                         $.unblockUI();
+                       
                     });
                     return;
                 }
@@ -2083,6 +2234,7 @@ $(document).ready(function(){
                         dt.row(_selectRowObj).data(response.row_update[0]).draw(); //for updating employee list 
                         clearFields($('#frm_ratesandduties'))
                     }).always(function(){
+                        $('#modal_create_entitlement').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -2117,6 +2269,7 @@ $(document).ready(function(){
                         clearFields($('#frm_religion'))
 
                     }).always(function(){
+                        $('#modal_create_religion').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -2144,6 +2297,7 @@ $(document).ready(function(){
                         $('#ref_employment_type_id').val(data.ref_employment_type_id);
 
                     }).always(function(){
+                        $('#modal_references').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -2163,6 +2317,7 @@ $(document).ready(function(){
                         $('#ref_payment_type_id').val(data.ref_payment_type_id);
 
                     }).always(function(){
+                        $('#modal_references').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -2182,6 +2337,7 @@ $(document).ready(function(){
                         $('#ref_department_id').val(data.ref_department_id);
 
                     }).always(function(){
+                        $('#modal_references').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -2201,6 +2357,7 @@ $(document).ready(function(){
                         $('#ref_position_id').val(data.ref_position_id);
 
                     }).always(function(){
+                        $('#modal_references').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -2219,6 +2376,7 @@ $(document).ready(function(){
                         $('#postdescription').val('');
                         $('#ref_branch_id').val(data.ref_branch_id);
                     }).always(function(){
+                        $('#modal_references').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -2237,6 +2395,7 @@ $(document).ready(function(){
                         $('#postdescription').val('');
                         $('#ref_section_id').val(data.ref_section_id);
                     }).always(function(){
+                        $('#modal_references').modal('hide');
                         $.unblockUI();
                     });
                     return;
@@ -2387,6 +2546,16 @@ $(document).ready(function(){
         });
     };
 
+    var removeEntitlement=function(){
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Entitlement/transaction/delete",
+            "data":{emp_leaves_entitlement_id : _selectedIDentitlement},
+            "beforeSend": showSpinningProgress($('#'))
+        });
+    };
+
     var createReligion=function(){
         var _data=$('#frm_religion').serializeArray();
 
@@ -2504,26 +2673,32 @@ $(document).ready(function(){
 
     var hideemployeeFields=function(){
         $('#div_product_fields').hide();
+        $('#icon_new_employee').show();
     };
 
     var showemployeeFields=function(){
         $('#div_product_fields').show();
+        $('#icon_new_employee').hide();
     };
 
     var hideRatesduties=function(){
         $('#div_rates_duties_list').hide();
+        $('#icon_rates').show();
     };
 
     var showRatesduties=function(){
         $('#div_rates_duties_list').show();
+        $('#icon_rates').hide();
     };
 
     var hideEntitlement=function(){
         $('#div_entitlement_list').hide();
+        $('#icon_entitlement').show();
     };
 
     var showEntitlement=function(){
         $('#div_entitlement_list').show();
+        $('#icon_entitlement').hide();
     };
 
     var showNotification=function(obj){

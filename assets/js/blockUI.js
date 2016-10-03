@@ -145,7 +145,7 @@
 			// styles for the overlay
 			overlayCSS:  {
 				backgroundColor:	'#000',
-				opacity:			0.6,
+				opacity:			0.7,
 				cursor:				'wait'
 			},
 
@@ -161,7 +161,7 @@
 				right:		'10px',
 				border:		'none',
 				padding:	'5px',
-				opacity:	0.6,
+				opacity:	1,
 				cursor:		'default',
 				color:		'#fff',
 				backgroundColor: '#000',
@@ -179,7 +179,7 @@
 			forceIframe: false,
 
 			// z-index for the blocking overlay
-			baseZ: 1000,
+			baseZ: 2000,
 
 			// set these to true to have the message automatically centered
 			centerX: true, // <-- only effects element blocking (page block controlled via css above)

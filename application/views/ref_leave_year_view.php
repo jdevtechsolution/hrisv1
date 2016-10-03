@@ -80,7 +80,6 @@
 <body class="animated-content" style="font-family: tahoma;">
 
 <?php echo $_top_navigation; ?>
-
 <div id="wrapper">
     <div id="layout-static">
 
@@ -92,26 +91,28 @@
 
                     <ol class="breadcrumb" style="margin-bottom:0px;">
                         <li><a href="dashboard">Dashboard</a></li>
-                        <li><a href="RefBranch">Branch</a></li>
+                        <li><a href="RefYearSetup">Leave Year Setup</a></li>
                     </ol>
 
                     <div class="container-fluid">
 
                         <div id="div_product_list">
                             <div class="panel panel-default">
-                                        <button class="btn"  id="btn_new" style="width:185px;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:17px;" title="Create New Branch" >
-                                        <i class="fa fa-file"></i> New Branch</button>
+                                        <button class="btn"  id="btn_new" style="width:185px;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:17px;" title="Create New Position" >
+                                        <i class="fa fa-file"></i> Create Year Setup</button>
                                         <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
-                                             <center><h2 style="color:white;font-weight:300;">Branch List</h2></center>
+                                             <center><h2 style="color:white;font-weight:300;">Leave Year Setup</h2></center><br>
+                                             <left><h5 style="color:white;font-weight:300;line-height:1px;margin-top:2px;">Manage the current (Calendar/Fiscal) year</h5></left>
                                         </div>
                                     <div class="panel-body table-responsive" style="padding-top:8px;">
-                                        <table id="tbl_branch" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <table id="tbl_leave_year" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                             <thead>
                                                 <tr>
-                                                    <th></th>
-                                                    <th>Branch Name</th>
-                                                    <th>Description</th>
-                                                    <th><center>Action</center></th>
+                                                    <th>Year Type</th>
+                                                    <th>Date Start</th>
+                                                    <th>Date End</th>
+                                                    <th>Note</th>
+                                                    <th>Active Year</th>
                                                  </tr>
                                             </thead>
                                             <tbody>
@@ -134,10 +135,10 @@
 
             <div id="modal_confirmation" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-sm">
-                    <div class="modal-content"><!---content--->
+                    <div class="modal-content"><!--content-->
                         <div class="modal-header">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title"><span id="modal_mode"> </span>Confirm Deletion</h4>
+                            <h4 class="modal-title"><span id="modal_mode"> </span>Confirm Deletion <transaction class="transaction_type"></transaction></h4>
                         </div>
 
                         <div class="modal-body">
@@ -148,36 +149,69 @@
                             <button id="btn_yes" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
                             <button id="btn_close" type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
-                    </div><!---content---->
+                    </div><!--content-->
                 </div>
                 </div>
             </div><!---modal-->
-            <div id="modal_create_branch" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+            <div id="modal_create_yearsetup" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
                         <div class="modal-header" style="background-color:#2ecc71;">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Branch : <transaction class="transaction_type"></transaction></h4>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Year Setup</h4>
                         </div>
 
                         <div class="modal-body">
-                            <form id="frm_branch">
+                            <form id="frm_yeartype">
                             <div class="row">
                               <div class="col-md-12">
                                 <div class="form-group" style="margin-bottom:0px;">
-                                    <label class="boldlabel">Branch Name :</label>
-                                    <input type="text" class="form-control" id="branch" name="branch" placeholder="Branch Name" data-error-msg="Branch name is Required!" required>
+                                    <label class="boldlabel">Year Type :</label>
+                                    <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-file-code-o"></i>
+                                    </span>
+	                                    <select class="form-control" id="year_type" name="year_type" data-error-msg="Process Account is required!">
+	                                      <option value="">Select...</option>
+	                                      <option value="Calendar Year">Calendar Year</option>
+	                                      <option value="Fiscal Year">Fiscal Year</option>
+	                                    </select>
+                                    </div>
                                 </div>
                               </div>
                             </div><br>
                             <div class="row">
                               <div class="col-md-12">
                                 <div class="form-group" style="margin-bottom:0px;">
-                                    <label class="boldlabel">Description :</label>
-                                    <textarea type="text" class="form-control" id="description" name="description" placeholder="Branch Description"></textarea>
+                                    <label class="boldlabel">Date Start :</label>
+                                    <input type="text" name="date_start" class="date-picker form-control" value="" placeholder="Date Start" data-error-msg="Date Start is required!">
                                 </div>
                               </div>
-                            </div>
+                            </div><br>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group" style="margin-bottom:0px;">
+                                    <label class="boldlabel">Date End :</label>
+                                    <input type="text" name="date_end" class="date-picker form-control" value="" placeholder="Date End" data-error-msg="Date End is required!">
+                                </div>
+                              </div>
+                            </div><br>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group" style="margin-bottom:0px;">
+                                    <label class="boldlabel">Note :</label>
+                                    <textarea type="text" class="form-control" id="note" name="note" placeholder="Note"></textarea>
+                                </div>
+                              </div>
+                            </div><br>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group" style="margin-bottom:0px;">
+                                    <label class="boldlabel">Set Active Year :</label>
+                                    <input type="checkbox" id="active_year" value="" style="vertical-align:top;display:inline-block;white-space:nowrap;width:18px;height:18px;">
+                                </div>
+                              </div>
+                            </div><br>
                             </form>
                         </div>
 
@@ -231,37 +265,36 @@
 <script>
 
 $(document).ready(function(){
-    var dt; var _txnMode; var _selectedID; var _selectRowObj;
+    var dt; var _txnMode; var _selectedID; var _selectRowObj; var _isactive=0; var _isChecked=0;
 
     var initializeControls=function(){
-        dt=$('#tbl_branch').DataTable({
+        dt=$('#tbl_leave_year').DataTable({
             "dom": '<"toolbar">frtip',
 
             "bLengthChange":false,
-            "ajax" : "RefBranch/transaction/list",
+            "ajax" : "RefYearSetup/transaction/list",
             "columns": [
-                {
-                    "targets": [0],
-                    "class":          "details-control",
-                    "orderable":      false,
-                    "data":           null,
-                    "defaultContent": ""
-                },
-                { targets:[1],data: "branch" },
-                { targets:[2],data: "description" },
-                {
-                    targets:[3],
-                    render: function (data, type, full, meta){
-                        var btn_edit='<button class="btn btn-default btn-sm" name="edit_info"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
-                        var btn_trash='<button class="btn btn-default btn-sm" name="remove_info"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+                { targets:[1],data: "year_type" },
+                { targets:[2],data: "date_start" },
+                { targets:[3],data: "date_end" },
+                { targets:[4],data: "note" },
+                { targets:[5],data: "active_year",
+                	render: function (data, type, full, meta){
+                       	//alert(data);
 
-                        return '<center>'+btn_edit+btn_trash+'</center>';
+                       	if(data == 1){
+                        	return "<center><span style='color:#37d077' class='glyphicon glyphicon-ok'></span></center>";
+                    	} 
+
+                        else{
+                        	return "<center><span style='color:#e74c3c' class='glyphicon glyphicon-remove'></span></center>";
+                        }
                     }
-                }
+            	}
 
             ],
             language: {
-                         searchPlaceholder: "Search Branch"
+                         searchPlaceholder: "Search Year Type"
                      },
             "rowCallback":function( row, data, index ){
 
@@ -285,36 +318,60 @@ $(document).ready(function(){
     var bindEventHandlers=(function(){
         var detailRows = [];
 
-        $('#tbl_branch tbody').on( 'click', 'tr td.details-control', function () {
-            var tr = $(this).closest('tr');
-            var row = dt.row( tr );
-            var idx = $.inArray( tr.attr('id'), detailRows );
+        $('#tbl_leave_year tbody').delegate('tr', 'click', function() {
 
-            if ( row.child.isShown() ) {
-                tr.removeClass( 'details' );
-                row.child.hide();
+            $('.odd').closest("tr").css('background-color','white');
+            $('.even').closest("tr").css('background-color','white');
 
-                detailRows.splice( idx, 1 );
+
+            $(this).closest("tr").css('background-color','#bdc3c7');
+                _selectRowObj=$(this).closest('tr');
+                var data=dt.row(_selectRowObj).data();
+                _selectedID=data.emp_leave_year_id;
+                //alert(_selectedID);
+                _isChecked = this.checked = true; //for checking if there is any highlighted field
+                _isChecked = 1;
+            });
+
+        $('#btn_active').click(function(){
+            if(_isChecked==1){
+                setActiveYear().done(function(response){
+                        showNotification(response); //dt.row(_selectRowObj).data(response.row_updated[0]).draw();
+                        _isChecked=0;
+                    }).always(function(){
+                        $('#tbl_leave_year').DataTable().ajax.reload();
+                        $.unblockUI();
+                    });
             }
-            else {
-                tr.addClass( 'details' );
-
-                row.child( format( row.data() ) ).show();
-
-                if ( idx === -1 ) {
-                    detailRows.push( tr.attr('id') );
-                }
+            else
+            {
+                alert("nothing Checked");
             }
-        } );
+            
+            
+        });
 
-
-        $('#tbl_branch tbody').on('click','button[name="edit_info"]',function(){
+       /* $('#tbl_leave_year tbody').on('click','button[name="edit_info"]',function(){
             _txnMode="edit";
-            $('.transaction_type').text('Edit');
-            $('#modal_create_branch').modal('show');
+            $('#modal_create_yearsetup').modal('show');
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
-            _selectedID=data.ref_branch_id;
+            _selectedID=data.emp_leave_year_id;
+            $('.transaction_type').text('Edit');
+            $('#year_type').val(data.year_type);
+            $('#year_type').css(data.year_type);
+             $('#active_year').prop('disabled', true);
+            if(data.active_year==1){
+                $('#active_year').prop('checked', true);
+                //alert(data.active_year);
+                _isactive = 1;
+            } 
+
+            else{
+                $('#active_year').prop('checked', false);
+                //alert(data.active_year);
+                _isactive = 0;
+            }
 
             //$('#emp_exemptpagibig').val(data.emp_exemptphilhealth);
 
@@ -322,7 +379,7 @@ $(document).ready(function(){
             //$('input[name="tax_exempt"]').val(0);
             //$('input[name="inventory"]').val(data.is_inventory);
 
-            $('input,textarea').each(function(){
+            $('date,input,textarea,checkbox').each(function(){
                 var _elem=$(this);
                 $.each(data,function(name,value){
                     if(_elem.attr('name')==name){
@@ -335,18 +392,18 @@ $(document).ready(function(){
             hideemployeeList();
             showemployeeFields();
 
-        });
+        }); */
 
-        $('#tbl_branch tbody').on('click','button[name="remove_info"]',function(){
+        $('#tbl_leave_year tbody').on('click','button[name="remove_info"]',function(){
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
-            _selectedID=data.ref_branch_id;
+            _selectedID=data.emp_leave_year_id;
 
             $('#modal_confirmation').modal('show');
         });
 
         $('#btn_yes').click(function(){
-            removeBranch().done(function(response){
+            removeYeartype().done(function(response){
                 showNotification(response);
                 dt.row(_selectRowObj).remove().draw();
             });
@@ -380,33 +437,64 @@ $(document).ready(function(){
             });
         });
 
+        $('.pagination').click(function(){
+            _selectRowObj="";
+            _isChecked = this.checked = false; //setting ischecked to no
+            $('.odd').closest("tr").css('background-color','white');
+            $('.even').closest("tr").css('background-color','white');
+        });
+
+        $('#frm_yeartype').on('click','input[id="active_year"]',function(){
+            //$('.single-checkbox').attr('checked', false);
+            if(_isactive==0){
+                this.checked = true;
+                _isactive = 1;
+                //alert(_isactive);
+            }
+
+            else{
+                this.checked = false;
+                _isactive = 0;
+                //alert(_isactive);
+            }
+
+        });
+
         $('#btn_new').click(function(){
             _txnMode="new";
             $('.transaction_type').text('New');
-            $('#modal_create_branch').modal('show');
-            clearFields($('#frm_branch'));
+            $('#modal_create_yearsetup').modal('show');
+            clearFields($('#frm_yeartype'));
+            $('#active_year').attr('checked', false);
         });
 
         $('#btn_create').click(function(){
-            if(validateRequiredFields($('#frm_branch'))){
+            if(validateRequiredFields($('#frm_yeartype'))){
                 if(_txnMode==="new"){
                     //alert("aw");
-                    createBranch().done(function(response){
+                    createYeartype().done(function(response){
                         showNotification(response);
-                        dt.row.add(response.row_added[0]).draw();
-                        clearFields($('#frm_branch'))
+                        dt.ajax.reload();
+                        clearFields($('#frm_yeartype'))
                     }).always(function(){
+                        $('#modal_create_yearsetup').modal('hide');
                         $.unblockUI();
+                        $('.datepicker').hide();
                     });
+
+                    $("input[type='checkbox']").on('change', function(){
+					  $(this).val(this.checked ? "TRUE" : "FALSE");
+					})
+
                     return;
                 }
                 if(_txnMode==="edit"){
                     //alert("update");
-                    updateBranch().done(function(response){
-                        showNotification(response);
-                        dt.row(_selectRowObj).data(response.row_updated[0]).draw();
+                    updateYeartype().done(function(response){
+                        showNotification(response); //dt.row(_selectRowObj).data(response.row_updated[0]).draw();
                     }).always(function(){
-                        $.unblockUI();
+                        $('#tbl_leave_year').DataTable().ajax.reload();
+                        showSpinningProgress($('#btn_create'));
                     });
                     return;
                 }
@@ -440,42 +528,56 @@ $(document).ready(function(){
         return stat;
     };
 
-    var createBranch=function(){
-        var _data=$('#frm_branch').serializeArray();
+    var createYeartype=function(){
+        var _data=$('#frm_yeartype').serializeArray();
+        _data.push({name : "active_year" ,value : _isactive});
 
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefBranch/transaction/create",
+            "url":"RefYearSetup/transaction/create",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_save'))
         });
     };
 
 
-    var updateBranch=function(){
-        var _data=$('#frm_branch').serializeArray();
+    var updateYeartype=function(){
+        var _data=$('#frm_yeartype').serializeArray();
+        _data.push({name : "active_year" ,value : _isactive});
 
         console.log(_data);
-        _data.push({name : "ref_branch_id" ,value : _selectedID});
+        _data.push({name : "emp_leave_year_id" ,value : _selectedID});
         //_data.push({name:"is_inventory",value: $('input[name="is_inventory"]').val()});
 
         //alert($('input[name="is_inventory"]').val());
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefBranch/transaction/update",
+            "url":"RefYearSetup/transaction/update",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_save'))
         });
     };
 
-    var removeBranch=function(){
+    var setActiveYear=function(){
+        //_data.push({name:"is_inventory",value: $('input[name="is_inventory"]').val()});
+        //alert($('input[name="is_inventory"]').val());
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"RefBranch/transaction/delete",
-            "data":{ref_branch_id : _selectedID}
+            "url":"RefYearSetup/transaction/activeyear",
+            "data":({active_year : 1,emp_leave_year_id : _selectedID}),
+            "beforeSend": showSpinningProgress($('#btn_save'))
+        });
+    };
+
+    var removeYeartype=function(){
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"RefYearSetup/transaction/delete",
+            "data":{emp_leave_year_id : _selectedID}
         });
     };
 
@@ -498,31 +600,22 @@ $(document).ready(function(){
         });
     
     var showSpinningProgress=function(e){
-                $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Saving Changes</h4>',
-                    css: { 
-                    border: 'none', 
-                    padding: '15px', 
-                    backgroundColor: 'none', 
-                    opacity: 1,
-                    zIndex: 20000,
-                } });
-                $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
-            };
+        $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Saving Changes...</h4>',
+            css: { 
+            border: 'none', 
+            padding: '15px', 
+            backgroundColor: 'none', 
+            opacity: 1,
+            zIndex: 20000,
+        } });
+        $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
+    };
 
     var clearFields=function(f){
         $('input,textarea',f).val('');
         $(f).find('input:first').focus();
     };
 
-
-
-    function format ( d ) {
-        return '<div class="container-fluid">'+
-        '<div class="col-md-12">'+ 
-        '<center><h4 class="boldlabel">Nothing Follows</h4></center>'+
-        '</div>'+ //First Row//
-        '</div>';
-    };
 
 
 

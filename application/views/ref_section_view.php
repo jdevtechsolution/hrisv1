@@ -520,64 +520,8 @@ $(document).ready(function(){
     function format ( d ) {
         return '<div class="container-fluid">'+
         '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><span class="glyphicon glyphicon-user fa-lg"></span> ' + d.emp_fname +' ' + d.emp_mname + ' ' +d.emp_lname + '</h3>'+
-        '<p>[ ECODE : '+d.ecode+' ] [ ID : '+d.emp_idnumber+' ]</p>'+
-        '<hr style="height:1px;background-color:black;"></hr>'+
+        '<center><h4 class="boldlabel">Nothing Follows</h4></center>'+
         '</div>'+ //First Row//
-        '<div class="row">'+
-        '<div class="col-md-2">'+
-        '<center><img style="margin-top:4px;" src="assets/img/anonymous-icon.png"></img></center>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Gender</b> : '+d.emp_gender+'</p>'+
-        '<p class="nomargin"><b>Birthdate</b> : '+d.emp_birthdate+'</p>'+
-        '<p class="nomargin"><b>Civil Status</b> : '+d.emp_civilstatus+'</p>'+
-        '<p class="nomargin"><b>Blood Type</b> : '+d.emp_bloodtype+'</p>'+
-        '<p class="nomargin"><b>Height</b> : '+d.emp_height+'</p>'+
-        '<p class="nomargin"><b>Weight</b> : '+d.emp_weight+'</p>'+
-        '<p class="nomargin"><b>Religion</b> : '+d.emp_religion+'</p>'+
-        '</div>'+
-        '<div class="col-md-4">'+
-        '<p class="nomargin"><b>SSS</b> : '+d.emp_sss+'</p>'+
-        '<p class="nomargin"><b>Phil Health</b> : '+d.emp_philhealth+'</p>'+
-        '<p class="nomargin"><b>Pag-Ibig :</b> : '+d.emp_pagibig+'</p>'+
-        '<p class="nomargin"><b>TIN :</b> : '+d.emp_tin+'</p>'+
-        '<p class="nomargin"><b>Account No.</b> : '+d.emp_accountno+'</p>'+
-        '<p class="nomargin"><b>Tax Code</b> : '+d.emp_taxcode+'</p>'+
-        '</div>'+
-        '</div>'+
-        '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><h4 class="boldlabel"><span class="glyphicon glyphicon-info-sign fa-lg"></span> Employee Information</h4><hr style="height:1px;background-color:black;"></hr></div>'+
-        '<div class="row">'+ //Second Row//
-        '<div class="col-md-2">'+
-        '<center></center>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Employee Type</b> : '+d.emp_gender+'</p>'+
-        '<p class="nomargin"><b>Remarks</b> : '+d.emp_birthdate+'</p>'+
-        '<p class="nomargin"><b>Department</b> : '+d.emp_civilstatus+'</p>'+
-        '<p class="nomargin"><b>Position</b> : '+d.emp_bloodtype+'</p>'+
-        '<p class="nomargin"><b>Branch</b> : '+d.emp_height+'</p>'+
-        '</div>'+
-        '<div class="col-md-4">'+
-        '<p class="nomargin"><b>Section</b> : '+d.emp_weight+'</p>'+
-        '<p class="nomargin"><b>Pay Type</b> : '+d.emp_religion+'</p>'+
-        '<p class="nomargin"><b>Employment Date</b> : '+d.emp_employmentdate+'</p>'+
-        '<p class="nomargin"><b>Date Regular</b> : '+d.emp_philhealth+'</p>'+
-        '</div>'+
-        '</div>'+
-        '<div class="col-md-12">'+ 
-        '<h3 class="boldlabel"><h4 class="boldlabel"><span class="glyphicon glyphicon-info-sign fa-lg"></span> Contact Information</h4><hr style="height:1px;background-color:black;"></hr></div>'+
-        '<div class="row">'+ //Second Row//
-        '<div class="col-md-2">'+
-        '<center></center>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Address 1</b> : '+d.emp_address1+'</p>'+
-        '<p class="nomargin"><b>Address 2</b> : '+d.emp_address2+'</p>'+
-        '<p class="nomargin"><b>Email Address</b> : '+d.emp_email+'</p>'+
-        '</div>'+
-        '<div class="col-md-4"><p class="nomargin"><b>Mobile No.</b> : '+d.emp_cell+'</p>'+
-        '<p class="nomargin"><b> Phone No.</b> : '+d.emp_phone+'</p>'+
-        '</div>'+
-        '</div>'+
         '</div>';
     };
 

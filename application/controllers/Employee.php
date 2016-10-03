@@ -18,6 +18,7 @@ class Employee extends CORE_Controller
         $this->load->model('RefRelationship_model');
         $this->load->model('RefPayment_model');
         $this->load->model('RefLeave_model');
+        $this->load->model('RefYearSetup_model');
         
 
     }
@@ -27,7 +28,7 @@ class Employee extends CORE_Controller
         $data['_def_js_files'] = $this->load->view('template/assets/js_files', '', TRUE);
         $data['_switcher_settings'] = $this->load->view('template/elements/switcher', '', TRUE);
         $data['_side_bar_navigation'] = $this->load->view('template/elements/side_bar_navigation', '', TRUE);
-        $data['_top_navigation'] = $this->load->view('template/elements/top_navigation', '', TRUE);
+        $data['_top_navigation'] = $this->load->view('template/elements/top_navigationforemployee', '', TRUE);
         $data['title'] = 'Employee';
         $data['ref_emptype']=$this->Ref_Emptype_model->get_list(array('ref_employment_type.is_deleted'=>FALSE));
         $data['ref_department']=$this->RefDepartment_model->get_list(array('ref_department.is_deleted'=>FALSE));
@@ -39,6 +40,7 @@ class Employee extends CORE_Controller
         $data['ref_relationship']=$this->RefRelationship_model->get_list(array('ref_relationship.is_deleted'=>FALSE));
         $data['ref_payment']=$this->RefPayment_model->get_list(array('ref_payment_type.is_deleted'=>FALSE));
         $data['ref_leave_type']=$this->RefLeave_model->get_list(array('ref_leave_type.is_deleted'=>FALSE));
+        $data['emp_leave_year']=$this->RefYearSetup_model->get_list(array('emp_leave_year.active_year'=>TRUE));
         $this->load->view('employee_view', $data);
     }
 
@@ -247,6 +249,11 @@ $ecode = $temp .'-'. $today = date("Y");
 echo $ecode;
 
 
+                break;
+                case 'test2': //traditional selecting of data
+                    $query = $this->db->query("SELECT * FROM employee_list");
+                    $response['data']=$query->result_array();
+                    echo json_encode($response);
                 break;
 
 
