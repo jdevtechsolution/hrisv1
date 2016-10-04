@@ -27,7 +27,7 @@
             <a href="#" id="edit_entitlement" title="Leave Entitlement"><span class="icon-bg"><i class="fa fa-file-text"></i></span></i></a>
         </li>
 
-        <li class="toolbar-icon-bg">
+        <li class="toolbar-icon-bg" id="icon_apply_leave">
             <a href="#" id="apply_leave" title="Apply Leave"><span class="icon-bg"><i class="fa fa-sign-out"></i></span></i></a>
         </li>
 
@@ -35,15 +35,15 @@
             <a href="#" id="edit_duties" title="Rates and Duties"><span class="icon-bg"><i class="fa fa-area-chart"></i></span></i></a>
         </li>
 
-        <li class="toolbar-icon-bg">
+        <li class="toolbar-icon-bg" id="edit_memorandum">
             <a href="#" id="edit_memorandum" title="Memorandum"><span class="icon-bg"><i class="glyphicon glyphicon-list-alt"></i></span></i></a>
         </li>
 
-        <li class="toolbar-icon-bg">
+        <li class="toolbar-icon-bg" id="edit_commendation">
             <a href="#" id="edit_commendation" title="Commendation"><span class="icon-bg"><i class="glyphicon glyphicon-thumbs-up"></i></span></i></a>
         </li>
 
-        <li class="toolbar-icon-bg">
+        <li class="toolbar-icon-bg" id="edit_seminar">
             <a href="#" id="edit_seminar" title="Seminars and Training"><span class="icon-bg"><i class="fa fa-suitcase"></i></span></i></a>
         </li>
         

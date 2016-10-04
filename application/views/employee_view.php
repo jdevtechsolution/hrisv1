@@ -809,6 +809,47 @@
 
                         </div> <!--entitlement list -->
 
+                        <div id="div_apply_leave" style="display:none;">
+                           
+                            <div class="panel panel-default">
+                                <button class="btn"  id="btn_cancelapplyleave" style="width:50px;font-family: Tahoma, Georgia, Serif;background-color:#e74c3c;color:white;margin-top:10px;margin-left:17px;" title="Create New Employee" >
+                                    <span class="glyphicon glyphicon-arrow-left"></span>
+                
+                                <button class="btn btn_newentitlement"  id="btn_newentitlement" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="Create New Employee" >
+                                    <i class="fa fa-file"></i> File a Leave  </button>
+                                <button class="btn"  id="btn_apply_leave" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#3498db;color:white;margin-top:10px;margin-left:0px;" title="Name" >
+                                   <displayname id="display_name" class="display_name"></displayname> </button>
+                                    
+                                        <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
+                                             <center><h2 style="color:white;font-weight:300;">Leave Application  </h2></center>
+                                             <div class="pull-right"><strong>[ <a id="btn_open_leave" href="#" style="text-decoration: underline;color:white;">Show Available Leave</a> ]</strong></div>
+                                        </div>
+
+                                    <div class="panel-body table-responsive" style="padding-top:5px;">
+                                        <table id="tbl_apply_leave" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Leave Type</th>
+                                                    <th>Date Filed</th>
+                                                    <th>Date Granted</th>
+                                                    <th>From</th>
+                                                    <th>To</th>
+                                                    <th>Purpose</th>
+                                                    <th>Total</th>
+                                                    <th><center>Action</center></th>
+                                                 </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                <div class="panel-footer"></div>
+                            </div> <!--panel default -->
+
+                        </div> <!--entitlement list -->
+
                     </div><!-- .container-fluid -->
                 </div> <!-- #page-content -->
             </div><!--static content -->
@@ -991,6 +1032,27 @@
                                 </div>
                                 </div>
                                 </div>
+                        </div>
+
+                        <div class="modal-footer" style="padding:10px;">
+                            <button id="btn_close_details" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div id="modal_leave_show" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#34495e;">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true" style="color:#ecf0f1;">X</button>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span>Available Leave</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="container-fluid" id="showavailableleave">
+                                    
+                            </div>
                         </div>
 
                         <div class="modal-footer" style="padding:10px;">
@@ -1521,7 +1583,56 @@ $(document).ready(function(){
         });
 
     }
-	
+
+    var getFiledLeave=function(){
+                    dt_apply_leave=$('#tbl_apply_leave').DataTable({
+            "fnInitComplete": function (oSettings, json) {
+                $.unblockUI();
+                },
+            "dom": '<"toolbar">frtip',
+            "bLengthChange":false,
+            "ajax": {
+            "url": "Leavefiled/transaction/getfiledleave",
+            "type": "POST",
+            "bDestroy": true,
+            "data": function ( d ) {
+                return $.extend( {}, d, {
+                    "employee_id": _selectedID //id of the user
+                    } );
+                }
+            },
+            "columns": [
+                { targets:[0],data: "leave_type" },
+                { targets:[1],data: "date_filed" },
+                { targets:[2],data: "date_granted" },
+                { targets:[3],data: "date_time_from" },
+                { targets:[4],data: "date_time_to" },
+                { targets:[5],data: "purpose" },
+                { targets:[6],data: "total" },
+                {
+                    targets:[7],
+                    render: function (data, type, full, meta){
+                        var btn_edit='<button class="btn btn-default btn-sm" name="leavefiled_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                        var btn_trash='<button class="btn btn-default btn-sm" name="entitlement_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+
+                        return '<center>'+btn_edit+'</center>';
+                    }
+                }
+            ],
+            language: {
+                         searchPlaceholder: "Search Filed Leave"
+                     },
+            "rowCallback":function( row, data, index ){
+
+                $(row).find('td').eq(10).attr({
+                    "align": "right"
+                });
+            }
+
+        });
+
+    }
+
     var bindEventHandlers=(function(){
         var detailRows = [];
          var detailRows1 = [];
@@ -1579,10 +1690,22 @@ $(document).ready(function(){
             _selectRowObjentitlement=$(this).closest('tr');
             var data=dt_entitlement.row(_selectRowObjentitlement).data();
             _selectedIDentitlement=data.emp_leaves_entitlement_id
+                if(data.is_payable==1){
+                    var  payable_detail = "<span style='color:#37d077' class='glyphicon glyphicon-ok'></span>";
+                }
+                else{
+                    var  payable_detail = "<span style='color:#e74c3c' class='glyphicon glyphicon-remove'></span>";
+                }
+                if(data.is_forwardable==1){
+                    var forwardable_detail = "<span style='color:#37d077' class='glyphicon glyphicon-ok'></span>";
+                }
+                else{
+                    var forwardable_detail = "<span style='color:#e74c3c' class='glyphicon glyphicon-remove'></span>";
+                }
             $('#leave_type').text(data.leave_type);
             $('#leave_type_short_name').text(data.leave_type_short_name);
-            $('#is_payable_detail').text(data.ref_ispayable_status);
-            $('#is_forwardable_detail').text(data.ref_isforwardable_status);
+            $('#is_payable_detail').html(payable_detail);
+            $('#is_forwardable_detail').html(forwardable_detail);
             $('#total_grant_detail').text(data.total_grant);
             var current_balance = parseInt(data.total_grant) + parseInt(data.received_balance);
             $('#received_balance_detail').text(accounting.formatNumber("0",2));
@@ -1721,7 +1844,7 @@ $(document).ready(function(){
             $('.odd').closest("tr").css('background-color','white');
             $('.even').closest("tr").css('background-color','white');
         });
-
+            //the following codes are for buttons at top navigations
         $('#edit_duties').click(function(){
             if(_isChecked == true){
                _txnMode="ratesduties";
@@ -1730,6 +1853,8 @@ $(document).ready(function(){
                 //alert(_selectedID);
                 hideemployeeList();
                 hideemployeeFields();
+                hideEntitlement();
+                hideApplyLeave();
                 showRatesduties();
                 showSpinningProgressLoading();
                 getratesandduties(); 
@@ -1749,6 +1874,7 @@ $(document).ready(function(){
                 hideemployeeList();
                 hideemployeeFields();
                 hideRatesduties();
+                hideApplyLeave();
                 showEntitlement();
                 showSpinningProgressLoading();
                 getentitlement();
@@ -1758,7 +1884,27 @@ $(document).ready(function(){
             }
             
         });
-        
+
+        $('#apply_leave').click(function(){
+            if(_isChecked == true){
+               _txnMode="applyleave";
+                $('.dataname').text(_selectedname);
+                $('.display_name').text(_selectedname1);
+                //alert(_selectedname1);
+                hideemployeeList();
+                hideemployeeFields();
+                hideRatesduties();
+                hideEntitlement();
+                showApplyLeave();
+                getFiledLeave();
+                
+            }
+            else{
+                alert("nothing checked");
+            }
+            
+        });
+            //end of top navigation buttons
 
 //SELECT CREATE OPTION WITH TXNMODE
         $('#emp_religion').change(function() {
@@ -1885,6 +2031,48 @@ $(document).ready(function(){
             showemployeeFields();
         });
 
+        $('#btn_newentitlement').click(function(){
+            $('#entitlementtittle').text("New");
+            clearFields($('#frm_entitlement'));
+            _txnMode="newentitlement";
+            $('#ref_leave_type_id').val(0);
+            $('#received_balance').val("0.00");
+
+           // $('#ref_employment_type_id').val(1);//
+
+            $('.modal_create_entitlement').modal('show');
+            
+        });
+
+        $('#btn_open_leave').click(function(){
+            getAvailLeave().done(function(response){
+                        var show1="";
+                        if(response.available_leave.length==0||response.available_leave.length==null){
+                                //alert("no data");
+                                $('#showavailableleave').html('<center><h1>No Available Leave</h1></center>');
+                                return;
+                            }
+                        var jsoncount=response.available_leave.length-1;
+                         for(var i=0;parseInt(jsoncount)>=i;i++){
+                            //alert(response.available_leave[i].leave_type);
+                            show1+='<div class="col-md-4"><div style="width:100%;height:120px;background-color:#2c3e50;border-radius:5px;" id="test">'+
+                            '<h2 class="boldlabel" style="padding:10px;color:#ecf0f1;"><leavetypeshow id="leavetypeshow">'+response.available_leave[i].leave_type+
+                            '</leavetypeshow></h2><p style="padding-left:10px;margin:0px;color:#ecf0f1;">Total Grant : <totalgrantshow id="totalgrantshow">'+response.available_leave[i].total_grant+
+                            '</totalgrantshow></p><p style="padding-left:10px;margin:0px;color:#ecf0f1;">Balance : <balanceshow id="balanceshow">'+response.available_leave[i].received_balance+'</balanceshow></p></div></div>';
+                         }
+                         $('#showavailableleave').html(show1);
+                        /*alert(data.religion);
+                        var arr = [];
+                        for (var prop in data) {
+                            arr.push(data[prop]);
+                        }*/
+                        //console.
+                    }).always(function(){
+                        $.unblockUI();
+                        $('#modal_leave_show').modal('show');
+                    });
+        })
+
         $('#btn_newratesandduties').click(function(){
             clearFields($('#frm_ratesandduties'));
             _txnMode="newrateandduties";
@@ -1897,19 +2085,6 @@ $(document).ready(function(){
             $('#ref_section_id').val(1);
 
             $('#modal_create_ratesandduties').modal('show');
-            
-        });
-
-        $('#btn_newentitlement').click(function(){
-            $('#entitlementtittle').text("New");
-            clearFields($('#frm_entitlement'));
-            _txnMode="newentitlement";
-            $('#ref_leave_type_id').val(0);
-            $('#received_balance').val("0.00");
-
-           // $('#ref_employment_type_id').val(1);//
-
-            $('.modal_create_entitlement').modal('show');
             
         });
 
@@ -2139,6 +2314,16 @@ $(document).ready(function(){
             showemployeeList();
             $('#tbl_entitlement').dataTable().fnDestroy();
             $('#tbl_entitlement').fnClearTable();
+        });
+
+        $('#btn_cancelapplyleave').click(function(){
+            hideRatesduties();
+            hideemployeeFields();
+            hideEntitlement();
+            hideApplyLeave();
+            showemployeeList();
+            $('#tbl_apply_leave').dataTable().fnDestroy();
+            $('#tbl_apply_leave').fnClearTable();
         });
 
        /* $('#btn_save').click(function(){
@@ -2653,6 +2838,19 @@ $(document).ready(function(){
         });
     };
 
+    var getAvailLeave=function(){
+        var _data=$('#').serializeArray();
+        _data.push({name : "employee_id" ,value : _selectedID});
+
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Entitlement/transaction/getavailableleave",
+            "data":_data,
+            "beforeSend": showSpinningProgressLoading()
+        });
+    };
+
     var showList=function(b){
         if(b){
             $('#div_product_list').show();
@@ -2669,36 +2867,102 @@ $(document).ready(function(){
 
     var showemployeeList=function(){
         $('#div_product_list').show();
+        $('#icon_new_employee').show();
+        $('#icon_entitlement').show();
+        $('#icon_apply_leave').show();
+        $('#icon_rates').show();
+        $('#edit_memorandum').show();
+        $('#edit_commendation').show();
+        $('#edit_seminar').show();
     };
 
     var hideemployeeFields=function(){
         $('#div_product_fields').hide();
         $('#icon_new_employee').show();
+        $('#icon_entitlement').show();
+        $('#icon_apply_leave').show();
+        $('#icon_rates').show();
+        $('#edit_memorandum').show();
+        $('#edit_commendation').show();
+        $('#edit_seminar').show();
     };
 
     var showemployeeFields=function(){
         $('#div_product_fields').show();
         $('#icon_new_employee').hide();
+        $('#icon_entitlement').hide();
+        $('#icon_apply_leave').hide();
+        $('#icon_rates').hide();
+        $('#edit_memorandum').hide();
+        $('#edit_commendation').hide();
+        $('#edit_seminar').hide();
     };
 
     var hideRatesduties=function(){
         $('#div_rates_duties_list').hide();
+        $('#icon_new_employee').show();
+        $('#icon_entitlement').show();
+        $('#icon_apply_leave').show();
         $('#icon_rates').show();
+        $('#edit_memorandum').show();
+        $('#edit_commendation').show();
+        $('#edit_seminar').show();
     };
 
     var showRatesduties=function(){
         $('#div_rates_duties_list').show();
+        $('#icon_new_employee').hide();
+        $('#icon_entitlement').hide();
+        $('#icon_apply_leave').hide();
         $('#icon_rates').hide();
+        $('#edit_memorandum').hide();
+        $('#edit_commendation').hide();
+        $('#edit_seminar').hide();
     };
 
     var hideEntitlement=function(){
         $('#div_entitlement_list').hide();
+        $('#icon_new_employee').show();
         $('#icon_entitlement').show();
+        $('#icon_apply_leave').show();
+        $('#icon_rates').show();
+        $('#edit_memorandum').show();
+        $('#edit_commendation').show();
+        $('#edit_seminar').show();
     };
 
     var showEntitlement=function(){
         $('#div_entitlement_list').show();
+        $('#icon_new_employee').hide();
         $('#icon_entitlement').hide();
+        $('#icon_apply_leave').hide();
+        $('#icon_rates').hide();
+        $('#edit_memorandum').hide();
+        $('#edit_commendation').hide();
+        $('#edit_seminar').hide();
+    };
+
+    var hideApplyLeave=function(){
+        $('#div_apply_leave').hide();
+        $('#icon_new_employee').show();
+        $('#icon_entitlement').show();
+        $('#icon_apply_leave').show();
+        $('#icon_rates').show();
+        $('#edit_memorandum').show();
+        $('#edit_commendation').show();
+        $('#edit_seminar').show();
+    };
+
+    var showApplyLeave=function(){
+        $('#div_apply_leave').show();
+        $('#div_entitlement_list').hide();
+        $('#icon_new_employee').hide();
+        $('#icon_entitlement').hide();
+        $('#icon_apply_leave').hide();
+        $('#icon_rates').hide();
+        $('#edit_memorandum').hide();
+        $('#edit_commendation').hide();
+        $('#edit_seminar').hide();
     };
 
     var showNotification=function(obj){

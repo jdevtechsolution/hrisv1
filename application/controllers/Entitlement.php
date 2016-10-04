@@ -55,6 +55,21 @@ class Entitlement extends CORE_Controller
                 echo json_encode($response);
                 break;
 
+            case 'getavailableleave':
+                $m_yearsetup = $this->RefYearSetup_model;
+                $active_year = $m_yearsetup->getactiveyear();
+                $employee_id = $this->input->post('employee_id', TRUE);
+                $response['available_leave']=$this->Entitlement_model->get_list(
+                    array('emp_leaves_entitlement.employee_id'=>$employee_id,'emp_leaves_entitlement.emp_leave_year_id'=>$active_year,'emp_leaves_entitlement.is_deleted'=>FALSE),
+                    'emp_leaves_entitlement.*,ref_leave_type.leave_type',
+                        array(
+                            array('ref_leave_type','ref_leave_type.ref_leave_type_id=emp_leaves_entitlement.ref_leave_type_id','left'),
+                            )
+                    );
+
+                echo json_encode($response);
+                break;
+
             case 'create':
                 $m_leaves_entitlement = $this->Entitlement_model;
                 $m_yearsetup = $this->RefYearSetup_model;
@@ -114,14 +129,15 @@ class Entitlement extends CORE_Controller
                 break;
 
             case 'update':
-                $user_id=$this->session->user_id;
-
+                $m_yearsetup = $this->RefYearSetup_model;
                 $m_leaves_entitlement = $this->Entitlement_model;
 
+                $user_id=$this->session->user_id;
+                $active_year = $m_yearsetup->getactiveyear();
                 //$employee_id = $this->input->post('employee_id', TRUE);
                 $emp_leaves_entitlement_id = $this->input->post('emp_leaves_entitlement_id', TRUE);
 
-                $m_leaves_entitlement->emp_leave_year_id = 1; // current active year
+                $m_leaves_entitlement->emp_leave_year_id = $active_year; // current active year
                 $m_leaves_entitlement->employee_id = $this->input->post('employee_id', TRUE);
 
                 $m_leaves_entitlement->ref_leave_type_id = $this->input->post('ref_leave_type_id', TRUE);

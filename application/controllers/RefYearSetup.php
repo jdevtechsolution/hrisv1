@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+    require 'application/third_party/Carbon.php';
+    use Carbon\Carbon;
 class RefYearSetup extends CORE_Controller
 {
 
@@ -147,6 +148,15 @@ class RefYearSetup extends CORE_Controller
 				echo $ecode;
 
 
+                break;
+                case 'getnextyear': //getting next year using carbon php
+                    $date_start=$this->input->post('date_start',TRUE);
+                    $newdate = date("Y-m-d", strtotime($date_start));
+
+                    $date =  $newdate; // Or Your date
+                    $reformat_date = Carbon::createFromFormat('Y-m-d', $date)->addYear(1);
+                    $response['next_year'] = date("Y-m-d", strtotime($reformat_date));
+                    echo json_encode($response);
                 break;
 
         }

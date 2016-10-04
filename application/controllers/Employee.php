@@ -20,6 +20,7 @@ class Employee extends CORE_Controller
         $this->load->model('RefLeave_model');
         $this->load->model('RefYearSetup_model');
         
+        
 
     }
 
@@ -251,9 +252,9 @@ echo $ecode;
 
                 break;
                 case 'test2': //traditional selecting of data
-                    $query = $this->db->query("SELECT * FROM employee_list");
-                    $response['data']=$query->result_array();
-                    echo json_encode($response);
+                    $date = "2016-02-16"; // Or Your date
+                    $newDate = Carbon::createFromFormat('Y-m-d', $date)->addYear(1);
+                    echo $newDate;
                 break;
 
 

@@ -184,7 +184,7 @@
                               <div class="col-md-12">
                                 <div class="form-group" style="margin-bottom:0px;">
                                     <label class="boldlabel">Date Start :</label>
-                                    <input type="text" name="date_start" class="date-picker form-control" value="" placeholder="Date Start" data-error-msg="Date Start is required!">
+                                    <input type="text" id="date_start" name="date_start" class="date-picker form-control" value="" placeholder="Date Start" data-error-msg="Date Start is required!">
                                 </div>
                               </div>
                             </div><br>
@@ -192,7 +192,7 @@
                               <div class="col-md-12">
                                 <div class="form-group" style="margin-bottom:0px;">
                                     <label class="boldlabel">Date End :</label>
-                                    <input type="text" name="date_end" class="date-picker form-control" value="" placeholder="Date End" data-error-msg="Date End is required!">
+                                    <input type="text" id="date_end" name="date_end" class="date-picker form-control" value="" placeholder="Date End" data-error-msg="Date End is required!" disabled>
                                 </div>
                               </div>
                             </div><br>
@@ -265,7 +265,7 @@
 <script>
 
 $(document).ready(function(){
-    var dt; var _txnMode; var _selectedID; var _selectRowObj; var _isactive=0; var _isChecked=0;
+    var dt; var _txnMode; var _selectedID; var _selectRowObj; var _isactive=0; var _isChecked=0; var a;
 
     var initializeControls=function(){
         dt=$('#tbl_leave_year').DataTable({
@@ -350,6 +350,16 @@ $(document).ready(function(){
             
             
         });
+
+        $('#date_start').change(function() {
+            _datestartvalue=$(this).val();
+            getNextYear().done(function(response){
+                        $('#date_end').val(response.next_year);
+                        _dateendvalue=response.next_year;
+                    }).always(function(){
+                        $.unblockUI();
+                    });
+            });
 
        /* $('#tbl_leave_year tbody').on('click','button[name="edit_info"]',function(){
             _txnMode="edit";
@@ -531,7 +541,7 @@ $(document).ready(function(){
     var createYeartype=function(){
         var _data=$('#frm_yeartype').serializeArray();
         _data.push({name : "active_year" ,value : _isactive});
-
+        _data.push({name : "date_end" ,value : _dateendvalue});
         return $.ajax({
             "dataType":"json",
             "type":"POST",
@@ -578,6 +588,16 @@ $(document).ready(function(){
             "type":"POST",
             "url":"RefYearSetup/transaction/delete",
             "data":{emp_leave_year_id : _selectedID}
+        });
+    };
+
+    var getNextYear=function(){
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"RefYearSetup/transaction/getnextyear",
+            "data":{date_start : _datestartvalue},
+            "beforeSend": showSpinningProgress($('#btn_save'))
         });
     };
 
