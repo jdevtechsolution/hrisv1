@@ -61,7 +61,7 @@ class Entitlement extends CORE_Controller
                 $employee_id = $this->input->post('employee_id', TRUE);
                 $response['available_leave']=$this->Entitlement_model->get_list(
                     array('emp_leaves_entitlement.employee_id'=>$employee_id,'emp_leaves_entitlement.emp_leave_year_id'=>$active_year,'emp_leaves_entitlement.is_deleted'=>FALSE),
-                    'emp_leaves_entitlement.*,ref_leave_type.leave_type',
+                    'emp_leaves_entitlement.*,ref_leave_type.leave_type,ref_leave_type.leave_type',
                         array(
                             array('ref_leave_type','ref_leave_type.ref_leave_type_id=emp_leaves_entitlement.ref_leave_type_id','left'),
                             )

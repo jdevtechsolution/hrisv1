@@ -815,10 +815,10 @@
                                 <button class="btn"  id="btn_cancelapplyleave" style="width:50px;font-family: Tahoma, Georgia, Serif;background-color:#e74c3c;color:white;margin-top:10px;margin-left:17px;" title="Create New Employee" >
                                     <span class="glyphicon glyphicon-arrow-left"></span>
                 
-                                <button class="btn btn_newentitlement"  id="btn_newentitlement" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="Create New Employee" >
+                                <button class="btn btn_newentitlement"  id="btn_apply_leave" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="Create New Employee" >
                                     <i class="fa fa-file"></i> File a Leave  </button>
                                 <button class="btn"  id="btn_apply_leave" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#3498db;color:white;margin-top:10px;margin-left:0px;" title="Name" >
-                                   <displayname id="display_name" class="display_name"></displayname> </button>
+                                   <displayname id="" class="display_name"></displayname> </button>
                                     
                                         <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
                                              <center><h2 style="color:white;font-weight:300;">Leave Application  </h2></center>
@@ -1311,6 +1311,94 @@
                         <div class="modal-footer">
                             <button id="btn_createentitlement" type="button" class="btn btn_createentitlement" style="background-color:#2ecc71;color:white;">Save</button>
                             <button id="btn_cancelcreateentitlement" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div><!---content---->
+                </div>
+            </div><!---modal-->
+
+            <div id="modal_file_leave" class="modal fade modal_file_leave" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#2ecc71;">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span><texttitle id="applyleavetitle"></texttitle></h4>
+                            <p style="color:white;margin:0px;" id="dataname" class="dataname">name</p>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="frm_apply_leave">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                  <label class="boldlabel" style="margin-bottom:0px;">Leave Type:</label>
+                                                  <availleavetype id="showavailableleave2select"></availleavetype>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:10px;margin-top:10px;">
+                                                    <label class="boldlabel" style="margin-bottom:0px;">Date Filed:</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                        <i class="fa fa-file-code-o"></i></span>
+                                                            <input type="text" name="date_filed" class="date-picker form-control" value="" placeholder="Date Filed" data-error-msg="Date Filed is required!" required>
+                                                    </div>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:10px;">
+                                                    <label class="boldlabel" style="margin-bottom:0px;margin-top:10px;">Date Granted:</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                        <i class="fa fa-file-code-o"></i></span>
+                                                            <input type="text" name="date_granted" class="date-picker form-control" value="" placeholder="Date Granted" data-error-msg="Date Granted is required!" required>
+                                                    </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                           <div class="form-group" style="margin-bottom:10px;">
+                                                    <label class="boldlabel" style="margin-bottom:0px;">From:</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                        <i class="fa fa-file-code-o"></i></span>
+                                                            <input type="text" name="date_time_from" class="date-picker form-control" value="" placeholder="From Date" data-error-msg="From Date is required!" required>
+                                                    </div>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                             <div class="form-group" style="margin-bottom:10px;">
+                                                    <label class="boldlabel" style="margin-bottom:0px;">To:</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                        <i class="fa fa-file-code-o"></i></span>
+                                                            <input type="text" name="date_time_to" class="date-picker form-control" value="" placeholder="To Date" data-error-msg="To Date is required!" required>
+                                                    </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Purpose" class="boldlabel" style="margin-bottom:0px;">Total:</label>
+                                                <input type="text" class="form-control numeric" name="total" placeholder="total">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Purpose" class="boldlabel" style="margin-bottom:0px;">Purpose:</label>
+                                                <textarea type="text" name="purpose" class="form-control" placeholder="Purpose" required></textarea>
+                                            </div>
+                                        </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btn_create_filed_leave" type="button" class="btn btn_createentitlement" style="background-color:#2ecc71;color:white;">Save</button>
+                            <button id="btn_cancel_filed_leave" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div><!---content---->
                 </div>
@@ -2044,9 +2132,13 @@ $(document).ready(function(){
             
         });
 
-        $('#btn_open_leave').click(function(){
+        $('#btn_apply_leave').click(function(){
+            $('#applyleavetitle').text("File a Leave");
+            clearFields($('#frm_apply_leave'));
+            _txnMode="newfileleave";
             getAvailLeave().done(function(response){
-                        var show1="";
+                        var show1todiv="";
+                        var show2select="<select class='form-control' name='emp_leaves_entitlement_id'>";
                         if(response.available_leave.length==0||response.available_leave.length==null){
                                 //alert("no data");
                                 $('#showavailableleave').html('<center><h1>No Available Leave</h1></center>');
@@ -2055,12 +2147,44 @@ $(document).ready(function(){
                         var jsoncount=response.available_leave.length-1;
                          for(var i=0;parseInt(jsoncount)>=i;i++){
                             //alert(response.available_leave[i].leave_type);
-                            show1+='<div class="col-md-4"><div style="width:100%;height:120px;background-color:#2c3e50;border-radius:5px;" id="test">'+
+                            show2select+='<option value='+response.available_leave[i].emp_leaves_entitlement_id+'>'+response.available_leave[i].leave_type+'</option>';
+                         }
+                         $('#showavailableleave2select').html(show2select+"</select>");
+                        /*alert(data.religion);
+                        var arr = [];
+                        for (var prop in data) {
+                            arr.push(data[prop]);
+                        }*/
+                        //console.
+                    }).always(function(){
+                        $.unblockUI();
+                    });
+            //$('#ref_leave_type_id').val(0);
+            //$('#received_balance').val("0.00");
+
+           // $('#ref_employment_type_id').val(1);//
+
+            $('.modal_file_leave').modal('show');
+            
+        });
+
+        $('#btn_open_leave').click(function(){
+            getAvailLeave().done(function(response){
+                        var show1todiv="";
+                        if(response.available_leave.length==0||response.available_leave.length==null){
+                                //alert("no data");
+                                $('#showavailableleave').html('<center><h1>No Available Leave</h1></center>');
+                                return;
+                            }
+                        var jsoncount=response.available_leave.length-1;
+                         for(var i=0;parseInt(jsoncount)>=i;i++){
+                            //alert(response.available_leave[i].leave_type);
+                            show1todiv+='<div class="col-md-4"><div style="width:100%;height:120px;background-color:#2c3e50;border-radius:5px;" id="test">'+
                             '<h2 class="boldlabel" style="padding:10px;color:#ecf0f1;"><leavetypeshow id="leavetypeshow">'+response.available_leave[i].leave_type+
                             '</leavetypeshow></h2><p style="padding-left:10px;margin:0px;color:#ecf0f1;">Total Grant : <totalgrantshow id="totalgrantshow">'+response.available_leave[i].total_grant+
                             '</totalgrantshow></p><p style="padding-left:10px;margin:0px;color:#ecf0f1;">Balance : <balanceshow id="balanceshow">'+response.available_leave[i].received_balance+'</balanceshow></p></div></div>';
                          }
-                         $('#showavailableleave').html(show1);
+                         $('#showavailableleave').html(show1todiv);
                         /*alert(data.religion);
                         var arr = [];
                         for (var prop in data) {
@@ -2437,6 +2561,32 @@ $(document).ready(function(){
                 }
             }
         });
+
+        $('#btn_create_filed_leave').click(function(){
+            if(validateRequiredFields($('#frm_apply_leave'))){
+                if(_txnMode=="newfileleave"){
+                    createFileLeave().done(function(response){
+                        showNotification(response);
+                        dt_apply_leave.row.add(response.row_added[0]).draw();
+                        clearFields($('#frm_apply_leave'))
+                    }).always(function(){
+                        $('#modal_file_leave').modal('hide');
+                        $.unblockUI();
+                    });
+                    return;
+                }
+                if(_txnMode=="editfileleave"){
+                    updateRatesandDuties().done(function(response){
+                        showNotification(response);
+                        dt_rates.row(_selectRowObjrates).data(response.row_updated[0]).draw();
+                        clearFields($('#frm_apply_leave'))
+                    }).always(function(){
+                        $.unblockUI();
+                    });
+                    return;
+                }
+            }
+        });
             //SELECT CREATE OPTION
         $('#btn_new_religion').click(function(){
             if(validateRequiredFields($('#frm_religion'))){
@@ -2713,6 +2863,18 @@ $(document).ready(function(){
             "url":"Entitlement/transaction/create",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_createentitlement'))
+        });
+    };
+
+    var createFileLeave=function(){
+        var _data=$('#frm_apply_leave').serializeArray();
+        _data.push({name : "employee_id" ,value : _selectedID});
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Leavefiled/transaction/create",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#btn_create_filed_leave'))
         });
     };
 

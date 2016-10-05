@@ -49,6 +49,7 @@
 	}
 	.dataTables_filter {
    float:left;
-}
+}	
+
 	
 </style>

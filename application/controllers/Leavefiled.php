@@ -47,7 +47,7 @@ class LeaveFiled extends CORE_Controller
                 $m_yearsetup = $this->RefYearSetup_model;
                 $active_year = $m_yearsetup->getactiveyear();
                 $response['data']=$this->Leavefiled_model->get_list(
-                   array('emp_leaves_filed.employee_id'=>$employee_id,'emp_leaves_entitlement.emp_leave_year_id'=>$active_year,'emp_leaves_entitlement.is_deleted'=>FALSE),
+                   array('emp_leaves_filed.employee_id'=>$employee_id,'emp_leaves_filed.emp_leave_year_id'=>$active_year,'emp_leaves_entitlement.is_deleted'=>FALSE),
                     'emp_leaves_filed.*,ref_leave_type.leave_type',
                         array(
                             array('emp_leaves_entitlement','emp_leaves_entitlement.emp_leaves_entitlement_id=emp_leaves_filed.emp_leaves_entitlement_id','left'),
@@ -59,7 +59,51 @@ class LeaveFiled extends CORE_Controller
                 break;
 
             case 'create':
+                $m_leavefiled = $this->Leavefiled_model;
+                $m_yearsetup = $this->RefYearSetup_model;
+                $date_filed_temp = $this->input->post('date_filed', TRUE);
+                $date_granted_temp = $this->input->post('date_granted', TRUE);
+                $date_time_from_temp = $this->input->post('date_time_from', TRUE);
+                $date_time_to_temp = $this->input->post('date_time_to', TRUE);
+                $total = $this->input->post('total', TRUE);
+                $date_filed = date("Y-m-d", strtotime($date_filed_temp));
+                $date_granted = date("Y-m-d", strtotime($date_granted_temp));
+                $date_time_from = date("Y-m-d", strtotime($date_time_from_temp));
+                $date_time_to = date("Y-m-d", strtotime($date_time_to_temp));
 
+                $user_id=$this->session->user_id;  // get id of current login user
+                $active_year = $m_yearsetup->getactiveyear(); //model funct. to get active year :)
+
+                $m_leavefiled->emp_leave_year_id = $active_year; // current active year
+                $m_leavefiled->employee_id = $this->input->post('employee_id', TRUE);
+                $m_leavefiled->emp_leaves_entitlement_id = $this->input->post('emp_leaves_entitlement_id', TRUE);
+                $m_leavefiled->date_filed = $date_filed;
+                $m_leavefiled->date_granted = $date_granted;
+                $m_leavefiled->date_time_from = $date_time_from;
+                $m_leavefiled->date_time_to = $date_time_to;
+                $m_leavefiled->purpose = $this->input->post('purpose', TRUE);
+                $m_leavefiled->total = $this->get_numeric_value($total);
+                $m_leavefiled->created_by_user_id = $user_id;
+                $m_leavefiled->save();
+
+                $m_leaves_filed_id = $m_leavefiled->last_insert_id();
+
+                $m_products->set('quantity','quantity-'.$pos_qty[$i]);
+                $m_products->modify($product_id[$i]);
+
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Entitlement successfully created.';
+
+                $response['row_added'] = $this->Leavefiled_model->get_list(
+                   $m_leaves_filed_id,
+                    'emp_leaves_filed.*,ref_leave_type.leave_type',
+                        array(
+                            array('emp_leaves_entitlement','emp_leaves_entitlement.emp_leaves_entitlement_id=emp_leaves_filed.emp_leaves_entitlement_id','left'),
+                            array('ref_leave_type','ref_leave_type.ref_leave_type_id=emp_leaves_entitlement.ref_leave_type_id','left'),
+                            )
+                    );
+                echo json_encode($response);
                 break;
 
             case 'delete':
