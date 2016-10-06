@@ -19,6 +19,9 @@ class Employee extends CORE_Controller
         $this->load->model('RefPayment_model');
         $this->load->model('RefLeave_model');
         $this->load->model('RefYearSetup_model');
+        $this->load->model('RefDiscipline_model');
+        $this->load->model('RefAction_model');
+        
         
         
 
@@ -42,6 +45,8 @@ class Employee extends CORE_Controller
         $data['ref_payment']=$this->RefPayment_model->get_list(array('ref_payment_type.is_deleted'=>FALSE));
         $data['ref_leave_type']=$this->RefLeave_model->get_list(array('ref_leave_type.is_deleted'=>FALSE));
         $data['emp_leave_year']=$this->RefYearSetup_model->get_list(array('emp_leave_year.active_year'=>TRUE));
+        $data['ref_disciplinary_action_policy']=$this->RefDiscipline_model->get_list(array('ref_disciplinary_action_policy.is_deleted'=>FALSE));
+        $data['ref_action_taken']=$this->RefAction_model->get_list(array('ref_action_taken.is_deleted'=>FALSE));
         $this->load->view('employee_view', $data);
     }
 

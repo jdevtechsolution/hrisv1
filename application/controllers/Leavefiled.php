@@ -88,8 +88,8 @@ class LeaveFiled extends CORE_Controller
 
                 $m_leaves_filed_id = $m_leavefiled->last_insert_id();
 
-                $m_products->set('quantity','quantity-'.$pos_qty[$i]);
-                $m_products->modify($product_id[$i]);
+                //$m_products->set('quantity','quantity-'.$pos_qty[$i]);
+                //$m_products->modify($product_id[$i]);
 
                 $response['title'] = 'Success!';
                 $response['stat'] = 'success';

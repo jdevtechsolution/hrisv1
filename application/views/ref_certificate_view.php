@@ -349,6 +349,7 @@ $(document).ready(function(){
             removeCertificate().done(function(response){
                 showNotification(response);
                 dt.row(_selectRowObj).remove().draw();
+                $.unblockUI();
             });
         });
 
@@ -397,6 +398,7 @@ $(document).ready(function(){
                         clearFields($('#frm_certificate'))
                     }).always(function(){
                         $.unblockUI();
+                        $('#modal_create_certificate').modal('toggle');
                     });
                     return;
                 }
@@ -407,6 +409,7 @@ $(document).ready(function(){
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
                     }).always(function(){
                         $.unblockUI();
+                        $('#modal_create_certificate').modal('toggle');
                     });
                     return;
                 }
@@ -414,25 +417,6 @@ $(document).ready(function(){
             else{}
         });
 
-
-        $('#btn_saveratesandduties').click(function(){
-            if(validateRequiredFields($('#frm_certificate'))){
-                if(_txnMode=="ratesduties"){
-                    createRatesandDuties().done(function(response){
-                        showNotification(response);
-                        dt.row.add(response.row_added[0]).draw();
-                        clearFields($('#frm_certificate'))
-
-                    }).always(function(){
-                       
-                    });
-                    return;
-                }
-                else{
-                    //do nothing :D
-                }
-            }
-        });
 
     })();
 
@@ -495,7 +479,8 @@ $(document).ready(function(){
             "dataType":"json",
             "type":"POST",
             "url":"RefCertificate/transaction/delete",
-            "data":{ref_certificate_id : _selectedID}
+            "data":{ref_certificate_id : _selectedID},
+            "beforeSend": showSpinningProgress($('#btn_save'))
         });
     };
 

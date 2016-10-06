@@ -349,6 +349,7 @@ $(document).ready(function(){
             removeRelationship().done(function(response){
                 showNotification(response);
                 dt.row(_selectRowObj).remove().draw();
+                $.unblockUI();
             });
         });
 
@@ -397,6 +398,7 @@ $(document).ready(function(){
                         clearFields($('#frm_relationship'))
                     }).always(function(){
                         $.unblockUI();
+                        $('#modal_create_relationship').modal('toggle');
                     });
                     return;
                 }
@@ -407,6 +409,7 @@ $(document).ready(function(){
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
                     }).always(function(){
                         $.unblockUI();
+                        $('#modal_create_relationship').modal('toggle');
                     });
                     return;
                 }
@@ -476,7 +479,8 @@ $(document).ready(function(){
             "dataType":"json",
             "type":"POST",
             "url":"RefRelationship/transaction/delete",
-            "data":{ref_relationship_id : _selectedID}
+            "data":{ref_relationship_id : _selectedID},
+            "beforeSend": showSpinningProgress($('#btn_save'))
         });
     };
 

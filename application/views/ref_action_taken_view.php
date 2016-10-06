@@ -349,6 +349,7 @@ $(document).ready(function(){
             removeAction().done(function(response){
                 showNotification(response);
                 dt.row(_selectRowObj).remove().draw();
+                $.unblockUI();
             });
         });
 
@@ -397,6 +398,7 @@ $(document).ready(function(){
                         clearFields($('#frm_action'))
                     }).always(function(){
                         $.unblockUI();
+                        $('#modal_create_action').modal('toggle');
                     });
                     return;
                 }
@@ -407,6 +409,7 @@ $(document).ready(function(){
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
                     }).always(function(){
                         $.unblockUI();
+                        $('#modal_create_action').modal('toggle');
                     });
                     return;
                 }
@@ -415,24 +418,6 @@ $(document).ready(function(){
         });
 
 
-        $('#btn_saveratesandduties').click(function(){
-            if(validateRequiredFields($('#frm_action'))){
-                if(_txnMode=="ratesduties"){
-                    createRatesandDuties().done(function(response){
-                        showNotification(response);
-                        dt.row.add(response.row_added[0]).draw();
-                        clearFields($('#frm_action'))
-
-                    }).always(function(){
-                       
-                    });
-                    return;
-                }
-                else{
-                    //do nothing :D
-                }
-            }
-        });
 
     })();
 
@@ -495,7 +480,8 @@ $(document).ready(function(){
             "dataType":"json",
             "type":"POST",
             "url":"RefAction/transaction/delete",
-            "data":{ref_action_taken_id : _selectedID}
+            "data":{ref_action_taken_id : _selectedID},
+            "beforeSend": showSpinningProgress($('#btn_save'))
         });
     };
 

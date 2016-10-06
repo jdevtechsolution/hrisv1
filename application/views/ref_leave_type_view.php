@@ -362,7 +362,7 @@ $(document).ready(function(){
 
         $('#tbl_leave tbody').on('click','button[name="edit_info"]',function(){
             _txnMode="edit";
-            $('#modal_create_leave').modal('show');
+            $('#modal_create_leave').modal('toggle');
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
             _selectedID=data.ref_leave_type_id;
@@ -421,6 +421,7 @@ $(document).ready(function(){
             removeLeave().done(function(response){
                 showNotification(response);
                 dt.row(_selectRowObj).remove().draw();
+                $.unblockUI();
             });
         });
 
@@ -590,7 +591,8 @@ $(document).ready(function(){
             "dataType":"json",
             "type":"POST",
             "url":"RefLeave/transaction/delete",
-            "data":{ref_leave_type_id : _selectedID}
+            "data":{ref_leave_type_id : _selectedID},
+            "beforeSend": showSpinningProgress($('#btn_save'))
         });
     };
 

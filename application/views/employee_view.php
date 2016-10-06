@@ -33,7 +33,6 @@
 
     <link href="assets/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
     <style>
-
         .toolbar{
             float: left;
         }
@@ -812,12 +811,12 @@
                         <div id="div_apply_leave" style="display:none;">
                            
                             <div class="panel panel-default">
-                                <button class="btn"  id="btn_cancelapplyleave" style="width:50px;font-family: Tahoma, Georgia, Serif;background-color:#e74c3c;color:white;margin-top:10px;margin-left:17px;" title="Create New Employee" >
+                                <button class="btn"  id="btn_cancelapplyleave" style="width:50px;font-family: Tahoma, Georgia, Serif;background-color:#e74c3c;color:white;margin-top:10px;margin-left:17px;" title="Back" >
                                     <span class="glyphicon glyphicon-arrow-left"></span>
                 
-                                <button class="btn btn_newentitlement"  id="btn_apply_leave" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="Create New Employee" >
+                                <button class="btn btn_apply_leave"  id="btn_apply_leave" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="File a Leave" >
                                     <i class="fa fa-file"></i> File a Leave  </button>
-                                <button class="btn"  id="btn_apply_leave" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#3498db;color:white;margin-top:10px;margin-left:0px;" title="Name" >
+                                <button class="btn"  id="" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#3498db;color:white;margin-top:10px;margin-left:0px;" title="Name" >
                                    <displayname id="" class="display_name"></displayname> </button>
                                     
                                         <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
@@ -836,6 +835,45 @@
                                                     <th>To</th>
                                                     <th>Purpose</th>
                                                     <th>Total</th>
+                                                 </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                <div class="panel-footer"></div>
+                            </div> <!--panel default -->
+
+                        </div> <!--Applied Leaved list -->
+                                <!--Memorandum list -->
+                        <div id="div_memorandum_list" style="display:none;">
+                           
+                            <div class="panel panel-default">
+                                <button class="btn"  id="btn_cancelmemorandum" style="width:50px;font-family: Tahoma, Georgia, Serif;background-color:#e74c3c;color:white;margin-top:10px;margin-left:17px;" title="Create New Employee" >
+                                    <span class="glyphicon glyphicon-arrow-left"></span>
+                
+                                <button class="btn btn_newmemo"  id="btn_newmemo" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="Create New Employee" >
+                                    <i class="fa fa-file"></i> Create Memo  </button>
+                                <button class="btn"  id="" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#3498db;color:white;margin-top:10px;margin-left:0px;" title="Name" >
+                                   <displayname id="" class="display_name"></displayname> </button>
+                                    
+                                        <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
+                                             <center><h2 style="color:white;font-weight:300;">Memorandum List  </h2></center>
+                                             <div class="pull-right"><strong>[ <a id="btn_open_leave" href="#" style="text-decoration: underline;color:white;">Show Available Leave</a> ]</strong></div>
+                                        </div>
+
+                                    <div class="panel-body table-responsive" style="padding-top:5px;">
+                                        <table id="tbl_memo" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Memo #</th>
+                                                    <th>Disciplinary Action</th>
+                                                    <th>Action Taken</th>
+                                                    <th>Date Granted</th>
+                                                    <th>Remarks</th>
                                                     <th><center>Action</center></th>
                                                  </tr>
                                             </thead>
@@ -848,7 +886,7 @@
                                 <div class="panel-footer"></div>
                             </div> <!--panel default -->
 
-                        </div> <!--entitlement list -->
+                        </div> <!--Memorandum list -->
 
                     </div><!-- .container-fluid -->
                 </div> <!-- #page-content -->
@@ -913,6 +951,26 @@
                         <div class="modal-footer">
                             <button id="btn_yes_entitlement" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
                             <button id="btn_close_entitlement" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div id="modal_confirmation_memo" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title"><span id="modal_mode"> </span>Confirm Deletion</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <p id="modal-body-message">Are you sure ?</p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btn_yes_memo" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
+                            <button id="btn_close_memo" type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
                     </div>
                 </div>
@@ -1404,6 +1462,86 @@
                 </div>
             </div><!---modal-->
 
+            <div id="modal_create_memo" class="modal fade modal_create_memo" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#2ecc71;">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span><texttitle id="memotitle"></texttitle></h4>
+                            <p style="color:white;margin:0px;" id="dataname" class="dataname">name</p>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="frm_memo">
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Purpose" class="boldlabel" style="margin-bottom:0px;">Date:</label>
+                                                <input type="text" name="date_memo" class="date-picker form-control" value="" placeholder="Date of Memo" data-error-msg="Date is required!" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Memo #" class="boldlabel" style="margin-bottom:0px;">Memo #:</label>
+                                                <input type="text" class="form-control" name="memo_number" placeholder="Memo #" required>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                          <label class="boldlabel" style="margin-bottom:0px;">Disciplinary Action Policy:</label>
+                                          <select class="form-control" id="ref_disciplinary_action_policy_id" name="ref_disciplinary_action_policy_id" id="sel1">
+                                            <option value="0">[ Create Disciplinary Policy ]</option>
+                                            <?php
+                                                                foreach($ref_disciplinary_action_policy as $row)
+                                                                {
+                                                                    echo '<option value="'.$row->ref_disciplinary_action_policy_id  .'">'.$row->disciplinary_action_policy.'</option>';
+                                                                }
+                                                                ?>
+                                          </select>
+                                        </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                          <label class="boldlabel" style="margin-bottom:0px;">Action Taken:</label>
+                                          <select class="form-control" id="ref_action_taken_id" name="ref_action_taken_id" id="sel1">
+                                            <option value="0">[ Create Action Taken ]</option>
+                                            <?php
+                                                                foreach($ref_action_taken as $row)
+                                                                {
+                                                                    echo '<option value="'.$row->ref_action_taken_id  .'">'.$row->action_taken.'</option>';
+                                                                }
+                                                                ?>
+                                          </select>
+                                        </div>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Purpose" class="boldlabel" style="margin-bottom:0px;">Date Granted:</label>
+                                                <input type="text" name="date_granted" class="date-picker form-control" value="" placeholder="Date Granted" data-error-msg="Date Granted is required!" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Remarks" class="boldlabel" style="margin-bottom:0px;">Remarks:</label>
+                                                <textarea type="text" name="remarks" class="form-control" placeholder="Remarks"></textarea>
+                                            </div>
+                                        </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btn_creatememo" type="button" class="btn btn_creatememo" style="background-color:#2ecc71;color:white;">Save</button>
+                            <button id="btn_cancelmemo" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div><!---content---->
+                </div>
+            </div><!---modal create memo-->
+
                 <div id="modal_references" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
@@ -1485,7 +1623,9 @@
 <script>
 
 $(document).ready(function(){
-    var dt; var _txnMode; var _txnModeRate; var _selectedID; var _selectedIDrates; var _selectedIDentitlement; var _selectRowObj; var _selectRowObjrates; var _selectRowObjentitlement; var _isChecked; var _ispayable=0; var _isforwardable=0; var _Leave_type_value;
+    var dt; var _txnMode; var _txnModeRate; var _selectedID; var _selectedIDrates; var _selectedIDentitlement; var _selectRowObj;
+    var _selectRowObjrates; var _selectRowObjentitlement; var _isChecked; var _ispayable=0; var _isforwardable=0; var _Leave_type_value;
+    var _selectRowObjmemorandum; var _selectedIDmemo;
 
     var initializeControls=function(){
         dt=$('#tbl_employee_list').DataTable({
@@ -1697,13 +1837,52 @@ $(document).ready(function(){
                 { targets:[4],data: "date_time_to" },
                 { targets:[5],data: "purpose" },
                 { targets:[6],data: "total" },
-                {
-                    targets:[7],
-                    render: function (data, type, full, meta){
-                        var btn_edit='<button class="btn btn-default btn-sm" name="leavefiled_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
-                        var btn_trash='<button class="btn btn-default btn-sm" name="entitlement_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+            ],
+            language: {
+                         searchPlaceholder: "Search Filed Leave"
+                     },
+            "rowCallback":function( row, data, index ){
 
-                        return '<center>'+btn_edit+'</center>';
+                $(row).find('td').eq(10).attr({
+                    "align": "right"
+                });
+            }
+
+        });
+
+    }
+
+    var getMemo=function(){
+                    dt_memo=$('#tbl_memo').DataTable({
+            "fnInitComplete": function (oSettings, json) {
+                $.unblockUI();
+                },
+            "dom": '<"toolbar">frtip',
+            "bLengthChange":false,
+            "ajax": {
+            "url": "Memorandum/transaction/list",
+            "type": "POST",
+            "bDestroy": true,
+            "data": function ( d ) {
+                return $.extend( {}, d, {
+                    "employee_id": _selectedID //id of the user
+                    } );
+                }
+            },
+            "columns": [
+                { targets:[0],data: "date_memo" },
+                { targets:[1],data: "memo_number" },
+                { targets:[2],data: "disciplinary_action_policy" },
+                { targets:[3],data: "action_taken" },
+                { targets:[4],data: "date_granted" },
+                { targets:[5],data: "remarks" },
+                {
+                    targets:[6],
+                    render: function (data, type, full, meta){
+                        var btn_edit='<button class="btn btn-default btn-sm" name="memorandum_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                        var btn_trash='<button class="btn btn-default btn-sm" name="memorandum_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+
+                        return '<center>'+btn_edit+btn_trash+'</center>';
                     }
                 }
             ],
@@ -1770,7 +1949,7 @@ $(document).ready(function(){
             $('#tax_shield').text(data.tax_shield);
             $('#remarks').text(data.remarks);
             
-            $('#modal_rates_details').modal('show');
+            $('#modal_rates_details').modal('toggle');
 
         } );
                 //detailed modal view of entitlement
@@ -1798,7 +1977,7 @@ $(document).ready(function(){
             var current_balance = parseInt(data.total_grant) + parseInt(data.received_balance);
             $('#received_balance_detail').text(accounting.formatNumber("0",2));
             $('#current_balance_detail').text(accounting.formatNumber(current_balance,2));
-            $('#modal_entitlement_details').modal('show');
+            $('#modal_entitlement_details').modal('toggle');
 
         } );
 
@@ -1973,6 +2152,27 @@ $(document).ready(function(){
             
         });
 
+        $('#edit_memorandum').click(function(){
+            if(_isChecked == true){
+               _txnMode="memorandum";
+                $('.dataname').text(_selectedname);
+                $('.display_name').text(_selectedname1);
+                //alert(_selectedname1);
+                hideemployeeList();
+                hideemployeeFields();
+                hideRatesduties();
+                hideApplyLeave();
+                hideEntitlement();
+                showMemorandum();
+                showSpinningProgressLoading();
+                getMemo();
+            }
+            else{
+                alert("nothing checked");
+            }
+            
+        });
+
         $('#apply_leave').click(function(){
             if(_isChecked == true){
                _txnMode="applyleave";
@@ -2104,6 +2304,38 @@ $(document).ready(function(){
             }
         });
 
+        $('#ref_disciplinary_action_policy_id').change(function() {
+            var a = $('#ref_disciplinary_action_policy_id').val();
+            if(a=="0"){
+                _txnModeRate="actionpolicy";
+                $('#ref_disciplinary_action_policy_id').val(1);
+                $('#title_modal').text('Create Disciplinary Action Policy');
+                $('#name_modal').text('Disciplinary Action Policy Name');
+                $('#description_modal').text('Description');
+                $('#modal_references').modal('show');
+                return;
+            }
+            else{
+
+            }
+        });
+
+        $('#ref_action_taken_id').change(function() {
+            var a = $('#ref_action_taken_id').val();
+            if(a=="0"){
+                _txnModeRate="actiontaken";
+                $('#ref_action_taken_id').val(1);
+                $('#title_modal').text('Create Action Taken');
+                $('#name_modal').text('Action Taken Name');
+                $('#description_modal').text('Description');
+                $('#modal_references').modal('show');
+                return;
+            }
+            else{
+
+            }
+        });
+
         $('#btn_new').click(function(){
             clearFields($('#frm_employee'))
             _txnMode="new";
@@ -2196,6 +2428,17 @@ $(document).ready(function(){
                         $('#modal_leave_show').modal('show');
                     });
         })
+
+        $('#btn_newmemo').click(function(){
+            $('#memotitle').text("New");
+            clearFields($('#frm_memo'));
+            _txnMode="newmemo";
+
+            $('#ref_disciplinary_action_policy_id').val(1);
+            $('#ref_action_taken_id').val(1);
+            $('.modal_create_memo').modal('show');
+            
+        });
 
         $('#btn_newratesandduties').click(function(){
             clearFields($('#frm_ratesandduties'));
@@ -2365,6 +2608,36 @@ $(document).ready(function(){
            $('#modal_confirmation_entitlement').modal('show');
         });
 
+        $('#tbl_memo tbody').on('click','button[name="memorandum_edit"]',function(){
+            _txnMode="editmemo";
+            _selectRowObjmemorandum=$(this).closest('tr');
+            var data=dt_memo.row(_selectRowObjmemorandum).data();
+            _selectedIDmemo=data.emp_memo_id;
+            $('#ref_disciplinary_action_policy_id').val(data.ref_disciplinary_action_policy_id);
+            $('#ref_action_taken_id').val(data.ref_action_taken_id);
+            //alert(_selectedIDmemo);
+
+
+            $('input,textarea').each(function(){
+                var _elem=$(this);
+                $.each(data,function(name,value){
+                    if(_elem.attr('name')==name){
+                        _elem.val(value);
+                    }
+                });
+            });
+
+           $('#modal_create_memo').modal('show');
+        });
+
+        $('#tbl_memo tbody').on('click','button[name="memorandum_remove"]',function(){
+            _selectRowObjmemorandum=$(this).closest('tr');
+            var data=dt_memo.row(_selectRowObjmemorandum).data();
+            _selectedIDmemo=data.emp_memo_id;
+
+           $('#modal_confirmation_memo').modal('show');
+        });
+
         $('#btn_yes').click(function(){
             removeEmployee().done(function(response){
                 showNotification(response);
@@ -2385,6 +2658,14 @@ $(document).ready(function(){
             removeEntitlement().done(function(response){
                 showNotification(response);
                 dt_entitlement.row(_selectRowObjentitlement).remove().draw();
+                $.unblockUI();
+            });
+        });
+
+        $('#btn_yes_memo').click(function(){
+            removeMemo().done(function(response){
+                showNotification(response);
+                dt_memo.row(_selectRowObjmemorandum).remove().draw();
                 $.unblockUI();
             });
         });
@@ -2450,6 +2731,16 @@ $(document).ready(function(){
             $('#tbl_apply_leave').fnClearTable();
         });
 
+        $('#btn_cancelmemorandum').click(function(){
+            hideRatesduties();
+            hideemployeeFields();
+            hideEntitlement();
+            hideApplyLeave();
+            hideMemorandum();
+            showemployeeList();
+            $('#tbl_memo').dataTable().fnDestroy();
+            $('#tbl_memo').fnClearTable();
+        });
        /* $('#btn_save').click(function(){
             if(validateRequiredFields($('#frm_employee'))){
                 if(_txnMode=="new"){
@@ -2572,6 +2863,7 @@ $(document).ready(function(){
                     }).always(function(){
                         $('#modal_file_leave').modal('hide');
                         $.unblockUI();
+                        $('.datepicker').remove();
                     });
                     return;
                 }
@@ -2582,6 +2874,35 @@ $(document).ready(function(){
                         clearFields($('#frm_apply_leave'))
                     }).always(function(){
                         $.unblockUI();
+                    });
+                    return;
+                }
+            }
+        });
+
+        $('#btn_creatememo').click(function(){
+            if(validateRequiredFields($('#frm_memo'))){
+                if(_txnMode=="newmemo"){
+                    createMemo().done(function(response){
+                        showNotification(response);
+                        dt_memo.row.add(response.row_added[0]).draw();
+                        clearFields($('#frm_memo'))
+                    }).always(function(){
+                        $('#modal_create_memo').modal('hide');
+                        $.unblockUI();
+                        $('.datepicker').remove();
+                    });
+                    return;
+                }
+                if(_txnMode=="editmemo"){
+                    updateMemo().done(function(response){
+                        showNotification(response);
+                        dt_memo.row(_selectRowObjmemorandum).data(response.row_updated[0]).draw(); 
+                        clearFields($('#frm_memo'))
+                    }).always(function(){
+                        $('#modal_create_memo').modal('hide');
+                        $.unblockUI();
+                        $('.datepicker').remove();
                     });
                     return;
                 }
@@ -2735,6 +3056,44 @@ $(document).ready(function(){
                     });
                     return;
                 }
+                if(_txnModeRate=="actionpolicy"){
+                    createPolicy().done(function(response){
+                        showNotification(response);
+                        data=response.row_added[0];
+                        /*var arr = [];
+                        for (var prop in data) {
+                            arr.push(data[prop]);
+                        }
+                        console.log(arr);*/
+                        $('#ref_disciplinary_action_policy_id').append($('<option>', {value:data.ref_disciplinary_action_policy_id, text:data.disciplinary_action_policy}));
+                        $('#postname').val('');
+                        $('#postdescription').val('');
+                        $('#ref_disciplinary_action_policy_id').val(data.ref_disciplinary_action_policy_id);
+                    }).always(function(){
+                        $('#modal_references').modal('hide');
+                        $.unblockUI();
+                    });
+                    return;
+                }
+                if(_txnModeRate=="actiontaken"){
+                    createAction().done(function(response){
+                        showNotification(response);
+                        data=response.row_added[0];
+                        /*var arr = [];
+                        for (var prop in data) {
+                            arr.push(data[prop]);
+                        }
+                        console.log(arr);*/
+                        $('#ref_action_taken_id').append($('<option>', {value:data.ref_action_taken_id, text:data.action_taken}));
+                        $('#postname').val('');
+                        $('#postdescription').val('');
+                        $('#ref_action_taken_id').val(data.ref_action_taken_id);
+                    }).always(function(){
+                        $('#modal_references').modal('hide');
+                        $.unblockUI();
+                    });
+                    return;
+                }
                 else{
                     //do nothing :D
                 }
@@ -2878,6 +3237,30 @@ $(document).ready(function(){
         });
     };
 
+    var createMemo=function(){
+        var _data=$('#frm_memo').serializeArray();
+        _data.push({name : "employee_id" ,value : _selectedID});
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Memorandum/transaction/create",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#btn_creatememo'))
+        });
+    };
+
+    var updateMemo=function(){
+        var _data=$('#frm_memo').serializeArray();
+        _data.push({name : "emp_memo_id" ,value : _selectedIDmemo});
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Memorandum/transaction/update",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#btn_creatememo'))
+        });
+    };
+
     var updateEntitlement=function(){
         var _data=$('#frm_entitlement').serializeArray();
         _data.push({name : "emp_leaves_entitlement_id" ,value : _selectedIDentitlement});
@@ -2899,6 +3282,16 @@ $(document).ready(function(){
             "type":"POST",
             "url":"Entitlement/transaction/delete",
             "data":{emp_leaves_entitlement_id : _selectedIDentitlement},
+            "beforeSend": showSpinningProgress($('#'))
+        });
+    };
+
+    var removeMemo=function(){
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Memorandum/transaction/delete",
+            "data":{emp_memo_id : _selectedIDmemo},
             "beforeSend": showSpinningProgress($('#'))
         });
     };
@@ -2984,6 +3377,30 @@ $(document).ready(function(){
             "url":"RefSection/transaction/createdirect",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_new_section'))
+        });
+    };
+
+    var createPolicy=function(){
+        var _data=$('#frm_references').serializeArray();
+
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"RefDiscipline/transaction/createdirect",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#'))
+        });
+    };
+
+    var createAction=function(){
+        var _data=$('#frm_references').serializeArray();
+
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"RefAction/transaction/createdirect",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#'))
         });
     };
 
@@ -3117,6 +3534,29 @@ $(document).ready(function(){
 
     var showApplyLeave=function(){
         $('#div_apply_leave').show();
+        $('#div_entitlement_list').hide();
+        $('#icon_new_employee').hide();
+        $('#icon_entitlement').hide();
+        $('#icon_apply_leave').hide();
+        $('#icon_rates').hide();
+        $('#edit_memorandum').hide();
+        $('#edit_commendation').hide();
+        $('#edit_seminar').hide();
+    };
+
+    var hideMemorandum=function(){
+        $('#div_memorandum_list').hide();
+        $('#icon_new_employee').show();
+        $('#icon_entitlement').show();
+        $('#icon_apply_leave').show();
+        $('#icon_rates').show();
+        $('#edit_memorandum').show();
+        $('#edit_commendation').show();
+        $('#edit_seminar').show();
+    };
+
+    var showMemorandum=function(){
+        $('#div_memorandum_list').show();
         $('#div_entitlement_list').hide();
         $('#icon_new_employee').hide();
         $('#icon_entitlement').hide();

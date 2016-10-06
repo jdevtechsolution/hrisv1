@@ -69,7 +69,7 @@ class RefDiscipline extends CORE_Controller
                 $m_discipline = $this->RefDiscipline_model;
                
                 $m_discipline->disciplinary_action_policy = $this->input->post('postname', TRUE);
-                $m_discipline->description = $this->input->post('post_description', TRUE);
+                $m_discipline->description = $this->input->post('postdescription', TRUE);
                 $m_discipline->save();
 
                 $ref_disciplinary_action_policy_id = $m_discipline->last_insert_id();

@@ -349,6 +349,7 @@ $(document).ready(function(){
             removeBranch().done(function(response){
                 showNotification(response);
                 dt.row(_selectRowObj).remove().draw();
+                $.unblockUI();
             });
         });
 
@@ -397,6 +398,7 @@ $(document).ready(function(){
                         clearFields($('#frm_branch'))
                     }).always(function(){
                         $.unblockUI();
+                        $('#modal_create_branch').modal('toggle');
                     });
                     return;
                 }
@@ -407,6 +409,7 @@ $(document).ready(function(){
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
                     }).always(function(){
                         $.unblockUI();
+                        $('#modal_create_branch').modal('toggle');
                     });
                     return;
                 }
@@ -475,7 +478,8 @@ $(document).ready(function(){
             "dataType":"json",
             "type":"POST",
             "url":"RefBranch/transaction/delete",
-            "data":{ref_branch_id : _selectedID}
+            "data":{ref_branch_id : _selectedID},
+            "beforeSend": showSpinningProgress($('#'))
         });
     };
 

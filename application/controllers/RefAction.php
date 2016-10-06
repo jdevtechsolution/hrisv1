@@ -68,7 +68,7 @@ class RefAction extends CORE_Controller
                 $m_action = $this->RefAction_model;
                
                 $m_action->action_taken = $this->input->post('postname', TRUE);
-                $m_action->description = $this->input->post('post_description', TRUE);
+                $m_action->description = $this->input->post('postdescription', TRUE);
                 $m_action->save();
 
                 $ref_action_taken_id = $m_action->last_insert_id();

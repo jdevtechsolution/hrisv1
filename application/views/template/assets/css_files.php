@@ -50,6 +50,9 @@
 	.dataTables_filter {
    float:left;
 }	
+	.ui-pnotify{
+            top:50px;
+        }
 
 	
 </style>
