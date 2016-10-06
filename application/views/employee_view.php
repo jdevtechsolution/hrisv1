@@ -2184,6 +2184,7 @@ $(document).ready(function(){
                 hideRatesduties();
                 hideEntitlement();
                 showApplyLeave();
+                showSpinningProgressLoading();
                 getFiledLeave();
                 
             }
