@@ -393,7 +393,7 @@ $(document).ready(function(){
                 if(_txnMode==="new"){
                     //alert("aw");
                     createRelationship().done(function(response){
-                        showNotification(response);
+                        showNotification(response); 
                         dt.row.add(response.row_added[0]).draw();
                         clearFields($('#frm_relationship'))
                     }).always(function(){

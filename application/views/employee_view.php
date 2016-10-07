@@ -861,8 +861,7 @@
                                     
                                         <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
                                              <center><h2 style="color:white;font-weight:300;">Memorandum List  </h2></center>
-                                             <div class="pull-right"><strong>[ <a id="btn_open_leave" href="#" style="text-decoration: underline;color:white;">Show Available Leave</a> ]</strong></div>
-                                        </div>
+                                              </div>
 
                                     <div class="panel-body table-responsive" style="padding-top:5px;">
                                         <table id="tbl_memo" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -873,6 +872,42 @@
                                                     <th>Disciplinary Action</th>
                                                     <th>Action Taken</th>
                                                     <th>Date Granted</th>
+                                                    <th>Remarks</th>
+                                                    <th><center>Action</center></th>
+                                                 </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                <div class="panel-footer"></div>
+                            </div> <!--panel default -->
+
+                        </div> <!--Memorandum list -->
+
+                        <div id="div_commendation_list" style="display:none;">
+                           
+                            <div class="panel panel-default">
+                                <button class="btn"  id="btn_cancelcommendation" style="width:50px;font-family: Tahoma, Georgia, Serif;background-color:#e74c3c;color:white;margin-top:10px;margin-left:17px;" title="Create New Employee" >
+                                    <span class="glyphicon glyphicon-arrow-left"></span>
+                
+                                <button class="btn btn_newcommendation"  id="btn_newcommendation" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="Create New Employee" >
+                                    <i class="fa fa-file"></i> Create Commendation  </button>
+                                <button class="btn"  id="" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#3498db;color:white;margin-top:10px;margin-left:0px;" title="Name" >
+                                   <displayname id="" class="display_name"></displayname> </button>
+                                    
+                                        <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
+                                             <center><h2 style="color:white;font-weight:300;">Commendation List  </h2></center>
+                                              </div>
+
+                                    <div class="panel-body table-responsive" style="padding-top:5px;">
+                                        <table id="tbl_commendation" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Memo #</th>
                                                     <th>Remarks</th>
                                                     <th><center>Action</center></th>
                                                  </tr>
@@ -971,6 +1006,26 @@
                         <div class="modal-footer">
                             <button id="btn_yes_memo" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
                             <button id="btn_close_memo" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div id="modal_confirmation_commendation" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title"><span id="modal_mode"> </span>Confirm Deletion</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <p id="modal-body-message">Are you sure ?</p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btn_yes_commendation" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
+                            <button id="btn_close_commendation" type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
                     </div>
                 </div>
@@ -1542,6 +1597,50 @@
                 </div>
             </div><!---modal create memo-->
 
+            <div id="modal_create_commendation" class="modal fade modal_create_commendation" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#2ecc71;">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span><texttitle id="commendationtitle"></texttitle></h4>
+                            <p style="color:white;margin:0px;" id="dataname" class="dataname">name</p>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="frm_commendation">
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Purpose" class="boldlabel" style="margin-bottom:0px;">Date:</label>
+                                                <input type="text" name="date_commendation" class="date-picker form-control" value="" placeholder="Date of Memo" data-error-msg="Date is required!" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Memo #" class="boldlabel" style="margin-bottom:0px;">Memo #:</label>
+                                                <input type="text" class="form-control" name="memo_number" placeholder="Memo #" required>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Remarks" class="boldlabel" style="margin-bottom:0px;">Remarks:</label>
+                                                <textarea type="text" name="remarks" class="form-control" placeholder="Remarks"></textarea>
+                                            </div>
+                                        </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btn_createcommendation" type="button" class="btn btn_createcommendation" style="background-color:#2ecc71;color:white;">Save</button>
+                            <button id="btn_cancelcommendation" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div><!---content---->
+                </div>
+            </div><!---modal create memo-->
+
                 <div id="modal_references" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
@@ -1625,7 +1724,7 @@
 $(document).ready(function(){
     var dt; var _txnMode; var _txnModeRate; var _selectedID; var _selectedIDrates; var _selectedIDentitlement; var _selectRowObj;
     var _selectRowObjrates; var _selectRowObjentitlement; var _isChecked; var _ispayable=0; var _isforwardable=0; var _Leave_type_value;
-    var _selectRowObjmemorandum; var _selectedIDmemo;
+    var _selectRowObjmemorandum; var _selectedIDmemo; var _selectRowObjcommendation; var _selectedIDcommendation;
 
     var initializeControls=function(){
         dt=$('#tbl_employee_list').DataTable({
@@ -1887,7 +1986,52 @@ $(document).ready(function(){
                 }
             ],
             language: {
-                         searchPlaceholder: "Search Filed Leave"
+                         searchPlaceholder: "Search Memorandum"
+                     },
+            "rowCallback":function( row, data, index ){
+
+                $(row).find('td').eq(10).attr({
+                    "align": "right"
+                });
+            }
+
+        });
+
+    }
+
+    var getCommendation=function(){
+                    dt_commendation=$('#tbl_commendation').DataTable({
+            "fnInitComplete": function (oSettings, json) {
+                $.unblockUI();
+                },
+            "dom": '<"toolbar">frtip',
+            "bLengthChange":false,
+            "ajax": {
+            "url": "Commendation/transaction/list",
+            "type": "POST",
+            "bDestroy": true,
+            "data": function ( d ) {
+                return $.extend( {}, d, {
+                    "employee_id": _selectedID //id of the user
+                    } );
+                }
+            },
+            "columns": [
+                { targets:[0],data: "date_commendation" },
+                { targets:[1],data: "memo_number" },
+                { targets:[2],data: "remarks" },
+                {
+                    targets:[3],
+                    render: function (data, type, full, meta){
+                        var btn_edit='<button class="btn btn-default btn-sm" name="commendation_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                        var btn_trash='<button class="btn btn-default btn-sm" name="commendation_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+
+                        return '<center>'+btn_edit+btn_trash+'</center>';
+                    }
+                }
+            ],
+            language: {
+                         searchPlaceholder: "Search Commendation"
                      },
             "rowCallback":function( row, data, index ){
 
@@ -2173,6 +2317,28 @@ $(document).ready(function(){
             
         });
 
+        $('#edit_commendation').click(function(){
+            if(_isChecked == true){
+               _txnMode="commendation";
+                $('.dataname').text(_selectedname);
+                $('.display_name').text(_selectedname1);
+                //alert(_selectedname1);
+                hideemployeeList();
+                hideemployeeFields();
+                hideRatesduties();
+                hideApplyLeave();
+                hideEntitlement();
+                hideMemorandum();
+                showCommendation();
+                showSpinningProgressLoading();
+                getCommendation();
+            }
+            else{
+                alert("nothing checked");
+            }
+            
+        });
+
         $('#apply_leave').click(function(){
             if(_isChecked == true){
                _txnMode="applyleave";
@@ -2391,13 +2557,14 @@ $(document).ready(function(){
                         //console.
                     }).always(function(){
                         $.unblockUI();
+                        $('.modal_file_leave').modal('show');
                     });
             //$('#ref_leave_type_id').val(0);
             //$('#received_balance').val("0.00");
 
            // $('#ref_employment_type_id').val(1);//
 
-            $('.modal_file_leave').modal('show');
+            
             
         });
 
@@ -2438,6 +2605,14 @@ $(document).ready(function(){
             $('#ref_disciplinary_action_policy_id').val(1);
             $('#ref_action_taken_id').val(1);
             $('.modal_create_memo').modal('show');
+            
+        });
+
+        $('#btn_newcommendation').click(function(){
+            $('#commendationtitle').text("New commendation");
+            clearFields($('#frm_commendation'));
+            _txnMode="newcommendation";
+            $('.modal_create_commendation').modal('show');
             
         });
 
@@ -2544,7 +2719,7 @@ $(document).ready(function(){
                             _isforwardable = 0;
 
                         }
-                        $('.modal_create_entitlement').modal('show');
+                        $('.modal_create_entitlement').modal('toggle');
             //console.log(_selectedID);
             //$('#ref_employment_type_id').val(data.ref_employment_type_id);//
            // alert($('input[name="tax_exempt"]').length);
@@ -2565,7 +2740,7 @@ $(document).ready(function(){
 
         $('#tbl_rates_duties_list tbody').on('click','button[name="rates_duties_edit"]',function(){
             _txnMode="editratesandduties";
-            $('.modal_create_ratesandduties').modal('show');
+            $('.modal_create_ratesandduties').modal('toggle');
             _selectRowObjrates=$(this).closest('tr');
             var data=dt_rates.row(_selectRowObjrates).data();
             _selectedIDrates=data.emp_rates_duties_id;
@@ -2611,6 +2786,7 @@ $(document).ready(function(){
 
         $('#tbl_memo tbody').on('click','button[name="memorandum_edit"]',function(){
             _txnMode="editmemo";
+            $('#memotitle').text("Edit Memo");
             _selectRowObjmemorandum=$(this).closest('tr');
             var data=dt_memo.row(_selectRowObjmemorandum).data();
             _selectedIDmemo=data.emp_memo_id;
@@ -2628,7 +2804,28 @@ $(document).ready(function(){
                 });
             });
 
-           $('#modal_create_memo').modal('show');
+           $('#modal_create_memo').modal('toggle');
+        });
+
+        $('#tbl_commendation tbody').on('click','button[name="commendation_edit"]',function(){
+            _txnMode="editcommendation";
+            $('#commendationtitle').text("Edit Commendation");
+            _selectRowObjcommendation=$(this).closest('tr');
+            var data=dt_commendation.row(_selectRowObjcommendation).data();
+            _selectedIDcommendation=data.emp_commendation_id;
+            //alert(_selectedIDcommendation);
+
+
+            $('input,textarea').each(function(){
+                var _elem=$(this);
+                $.each(data,function(name,value){
+                    if(_elem.attr('name')==name){
+                        _elem.val(value);
+                    }
+                });
+            });
+
+           $('#modal_create_commendation').modal('toggle');
         });
 
         $('#tbl_memo tbody').on('click','button[name="memorandum_remove"]',function(){
@@ -2637,6 +2834,14 @@ $(document).ready(function(){
             _selectedIDmemo=data.emp_memo_id;
 
            $('#modal_confirmation_memo').modal('show');
+        });
+
+        $('#tbl_commendation tbody').on('click','button[name="commendation_remove"]',function(){
+            _selectRowObjcommendation=$(this).closest('tr');
+            var data=dt_commendation.row(_selectRowObjcommendation).data();
+            _selectedIDcommendation=data.emp_commendation_id;
+            //alert(_selectedIDcommendation);
+           $('#modal_confirmation_commendation').modal('show');
         });
 
         $('#btn_yes').click(function(){
@@ -2667,6 +2872,14 @@ $(document).ready(function(){
             removeMemo().done(function(response){
                 showNotification(response);
                 dt_memo.row(_selectRowObjmemorandum).remove().draw();
+                $.unblockUI();
+            });
+        });
+
+        $('#btn_yes_commendation').click(function(){
+            removeCommendation().done(function(response){
+                showNotification(response);
+                dt_commendation.row(_selectRowObjcommendation).remove().draw();
                 $.unblockUI();
             });
         });
@@ -2741,6 +2954,18 @@ $(document).ready(function(){
             showemployeeList();
             $('#tbl_memo').dataTable().fnDestroy();
             $('#tbl_memo').fnClearTable();
+        });
+
+        $('#btn_cancelcommendation').click(function(){
+            hideRatesduties();
+            hideemployeeFields();
+            hideEntitlement();
+            hideApplyLeave();
+            hideMemorandum();
+            hideCommendation();
+            showemployeeList();
+            $('#tbl_commendation').dataTable().fnDestroy();
+            $('#tbl_commendation').fnClearTable();
         });
        /* $('#btn_save').click(function(){
             if(validateRequiredFields($('#frm_employee'))){
@@ -2902,6 +3127,35 @@ $(document).ready(function(){
                         clearFields($('#frm_memo'))
                     }).always(function(){
                         $('#modal_create_memo').modal('hide');
+                        $.unblockUI();
+                        $('.datepicker').remove();
+                    });
+                    return;
+                }
+            }
+        });
+
+        $('#btn_createcommendation').click(function(){
+            if(validateRequiredFields($('#frm_commendation'))){
+                if(_txnMode=="newcommendation"){
+                    createCommendation().done(function(response){
+                        showNotification(response);
+                        dt_commendation.row.add(response.row_added[0]).draw();
+                        clearFields($('#frm_commendation'))
+                    }).always(function(){
+                        $('#modal_create_commendation').modal('hide');
+                        $.unblockUI();
+                        $('.datepicker').remove();
+                    });
+                    return;
+                }
+                if(_txnMode=="editcommendation"){
+                    updateCommendation().done(function(response){
+                        showNotification(response);
+                        dt_commendation.row(_selectRowObjcommendation).data(response.row_updated[0]).draw(); 
+                        clearFields($('#frm_commendation'))
+                    }).always(function(){
+                        $('#modal_create_commendation').modal('hide');
                         $.unblockUI();
                         $('.datepicker').remove();
                     });
@@ -3262,6 +3516,31 @@ $(document).ready(function(){
         });
     };
 
+    var createCommendation=function(){
+        var _data=$('#frm_commendation').serializeArray();
+        _data.push({name : "employee_id" ,value : _selectedID});
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Commendation/transaction/create",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#btn_createcommendation'))
+        });
+    };
+
+    var updateCommendation=function(){
+        var _data=$('#frm_commendation').serializeArray();
+        _data.push({name : "emp_commendation_id" ,value : _selectedIDcommendation});
+        _data.push({name : "employee_id" ,value : _selectedID});
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Commendation/transaction/update",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#btn_creatememo'))
+        });
+    };
+
     var updateEntitlement=function(){
         var _data=$('#frm_entitlement').serializeArray();
         _data.push({name : "emp_leaves_entitlement_id" ,value : _selectedIDentitlement});
@@ -3293,6 +3572,16 @@ $(document).ready(function(){
             "type":"POST",
             "url":"Memorandum/transaction/delete",
             "data":{emp_memo_id : _selectedIDmemo},
+            "beforeSend": showSpinningProgress($('#'))
+        });
+    };
+
+    var removeCommendation=function(){
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"Commendation/transaction/delete",
+            "data":{emp_commendation_id : _selectedIDcommendation},
             "beforeSend": showSpinningProgress($('#'))
         });
     };
@@ -3558,6 +3847,29 @@ $(document).ready(function(){
 
     var showMemorandum=function(){
         $('#div_memorandum_list').show();
+        $('#div_entitlement_list').hide();
+        $('#icon_new_employee').hide();
+        $('#icon_entitlement').hide();
+        $('#icon_apply_leave').hide();
+        $('#icon_rates').hide();
+        $('#edit_memorandum').hide();
+        $('#edit_commendation').hide();
+        $('#edit_seminar').hide();
+    };
+
+    var hideCommendation=function(){
+        $('#div_commendation_list').hide();
+        $('#icon_new_employee').show();
+        $('#icon_entitlement').show();
+        $('#icon_apply_leave').show();
+        $('#icon_rates').show();
+        $('#edit_memorandum').show();
+        $('#edit_commendation').show();
+        $('#edit_seminar').show();
+    };
+
+    var showCommendation=function(){
+        $('#div_commendation_list').show();
         $('#div_entitlement_list').hide();
         $('#icon_new_employee').hide();
         $('#icon_entitlement').hide();
