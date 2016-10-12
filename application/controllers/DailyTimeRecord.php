@@ -42,9 +42,21 @@ class DailyTimeRecord extends CORE_Controller
                 echo json_encode($response);
                 break;
 
+            case 'getdtrlist':
+                $pay_period_id = $this->input->post('pay_period_id', TRUE);
+                $response['data']=$this->DailyTimeRecord_model->get_list(
+                    array('daily_time_record.is_deleted'=>FALSE,'daily_time_record.pay_period_id'=>$pay_period_id),
+                    'daily_time_record.*,employee_list.*',
+                    array(
+                         array('employee_list','employee_list.employee_id=daily_time_record.employee_id','left'),
+                        )
+                    );
+                echo json_encode($response);
+                break;
+
             case 'getdtr':
-                $employee_id = $this->input->post('employee_id', TRUE);
-                $query = $this->db->query('SELECT * FROM employee_list WHERE employee_id NOT IN(SELECT employee_id FROM daily_time_record WHERE pay_period_id = 1)');
+                $pay_period_id = $this->input->post('pay_period_id', TRUE);;
+                $query = $this->db->query('SELECT * FROM employee_list WHERE employee_id NOT IN(SELECT employee_id FROM daily_time_record WHERE pay_period_id ='.$pay_period_id.')');
                 $response['data']=$query->result_array();
 
                 

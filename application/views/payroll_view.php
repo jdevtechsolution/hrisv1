@@ -846,7 +846,9 @@
                               <div class="col-md-8">
                                 <div class="form-group" style="margin-bottom:0px;">
                                     <label class="boldlabel">Pay Period : </label>
-                                    <payperiodhere id="payperiodhere"></payperiodhere>
+                                    <select id='pay_period' class='form-control' name='emp_leaves_entitlement_id'>
+                                    
+                                </select>
                                 </div>
                               </div>
                             </div><br>
@@ -854,13 +856,13 @@
                               <div class="col-md-6">
                                 <div class="form-group" style="margin-bottom:0px;">
                                     <label class="boldlabel">Period Start:</label>
-                                    <input type="text" class="form-control" id="period_start" name="pay_period_start" placeholder="" data-error-msg="This Field is Required!" required>
+                                    <input type="text" class="form-control" id="period_start" name="pay_period_start" placeholder="" data-error-msg="This Field is Required!" disabled required>
                                 </div>
                               </div>    
                               <div class="col-md-6">
                                 <div class="form-group" style="margin-bottom:0px;">
                                     <label class="boldlabel">Period End:</label>
-                                    <input type="text" class="form-control" id="period_end" name="pay_period_end" placeholder="" data-error-msg="This Field is Required!" required>
+                                    <input type="text" class="form-control" id="period_end" name="pay_period_end" placeholder="" data-error-msg="This Field is Required!" disabled required>
                                 </div>
                               </div>
                             </div>
@@ -971,7 +973,7 @@
 
 $(document).ready(function(){
     var dt; var _txnMode; var _txnModeRate; var _selectedID;
-    var _selectedDateCovered; var _selectedYear;
+    var _selectedDateCovered; var _selectedYear; var _periodstart; var _periodend;
 
     var initializeControls=function(){
         dt=$('#tbl_employee_list').DataTable({
@@ -1027,12 +1029,12 @@ $(document).ready(function(){
             "dom": '<"toolbar">frtip',
             "bLengthChange":false,
             "ajax": {
-            "url": "DailyTimeRecord/transaction/getdtr",
+            "url": "DailyTimeRecord/transaction/getdtrlist",
             "type": "POST",
             "bDestroy": true,
             "data": function ( d ) {
                 return $.extend( {}, d, {
-                    "employee_id": _selectedID //id of the user
+                    "pay_period_id": _selectedYear //id of the user
                     } );
                 }
             },
@@ -1094,17 +1096,25 @@ $(document).ready(function(){
             _selectedYear=$(this).val();
             //alert(_selectedYear);
             getpayperiod().done(function(response){
-                        var show2select="<select class='form-control' name='emp_leaves_entitlement_id'>";
+                        var show2select="";
                         if(response.data.length==0){
-                            $('#payperiodhere').html("<select class='form-control'><option>No Result</option></select>");
+                            $('#pay_period').html("<option>No Result</option>");
+                            $('#period_start').val("");
+                            $('#period_end').val("");
                             return;
                         }
                         var jsoncount=response.data.length-1;
                          for(var i=0;parseInt(jsoncount)>=i;i++){
                             //alert(response.available_leave[i].leave_type);
-                            show2select+='<option>'+response.data[i].pay_period_start+' - '+response.data[i].pay_period_end+'</option>';
+                            show2select+='<option value='+response.data[i].pay_period_start+'~'+response.data[i].pay_period_end+'~'+response.data[i].pay_period_id+'>'+response.data[i].pay_period_start+' - '+response.data[i].pay_period_end+'</option>';
                          }
-                         $('#payperiodhere').html(show2select+"</select>");
+                         $('#pay_period').html(show2select);
+                         var temppayperiod = $('#pay_period').val();
+                        var payperiod = temppayperiod.split(/~/)
+                        $('#period_start').val(payperiod[0]);
+                        $('#period_end').val(payperiod[1]);
+                        _selectedYear=payperiod[2];
+
                         /*alert(data.religion);
                         var arr = [];
                         for (var prop in data) {
@@ -1117,6 +1127,15 @@ $(document).ready(function(){
                     });
 
             
+            });
+
+        $('#pay_period').change(function() {
+            _payperiod=$(this).val();
+            //alert(_yearperiod);
+            var payperiod = _payperiod.split(/~/)
+            $('#period_start').val(payperiod[0]);
+            $('#period_end').val(payperiod[1]);
+            _selectedYear=payperiod[2];
             });
 
 
@@ -1229,7 +1248,7 @@ $(document).ready(function(){
 
         $('#btn_dtr').click(function(){
             $('#modal_dtr').modal('toggle');
-            $('#payperiodhere').html("<select class='form-control'><option>No Result</option></select>"); //noresult for option
+            $('#payperiodhere').html("<option>aw</option>"); //noresult for option
         });
 
         $('#btn_select_dtr').click(function(){
