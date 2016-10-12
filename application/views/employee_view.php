@@ -448,11 +448,12 @@
                                                                 <hr style="margin-top:0px !important;height:1px;background-color:black;"></hr>
                                                         </div>
                                                         <div style="width:100%; height:300px;border:2px solid #34495e;border-radius:5px;">
-                                                        <center><img src="assets/img/anonymous-icon.png"></img></center>
+                                                        <center><img name="img_user" src="assets/img/anonymous-icon.png" height="130px;"width="130px;"></img></center>
                                                         <hr style="margin-top:0px !important;height:1px;background-color:black;"></hr>
                                                         <center>
-                                                             <button type="button" style="width:150px;margin-bottom:5px;" class="btn btn-primary">Browse Photo</button>
-                                                             <button type="button" style="width:150px;" class="btn btn-danger">Remove</button>
+                                                             <button type="button" id="btn_browse" style="width:150px;margin-bottom:5px;" class="btn btn-primary">Browse Photo</button>
+                                                             <button type="button" id="btn_remove_photo" style="width:150px;" class="btn btn-danger">Remove</button>
+                                                             <input type="file" name="file_upload[]" class="hidden">
                                                            
                                                     </div>
                                                       
@@ -923,6 +924,47 @@
 
                         </div> <!--Memorandum list -->
 
+                        <div id="div_seminartraining_list" style="display:none;">
+                           
+                            <div class="panel panel-default">
+                                <button class="btn"  id="btn_cancelseminarstraining" style="width:50px;font-family: Tahoma, Georgia, Serif;background-color:#e74c3c;color:white;margin-top:10px;margin-left:17px;" title="Create New Employee" >
+                                    <span class="glyphicon glyphicon-arrow-left"></span>
+                
+                                <button class="btn btn_newseminartraining"  id="btn_newseminartraining" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#2ecc71;color:white;margin-top:10px;margin-left:5px;" title="Create New Employee" >
+                                    <i class="fa fa-file"></i> Create Seminar and Training  </button>
+                                <button class="btn"  id="" style="width:120;font-family: Tahoma, Georgia, Serif;background-color:#3498db;color:white;margin-top:10px;margin-left:0px;" title="Name" >
+                                   <displayname id="" class="display_name"></displayname> </button>
+                                    
+                                        <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:5px;margin-left:17px;margin-right:17px;border-radius:5px;">
+                                             <center><h2 style="color:white;font-weight:300;">Seminars And Training List  </h2></center>
+                                              </div>
+
+                                    <div class="panel-body table-responsive" style="padding-top:5px;">
+                                        <table id="tbl_seminarstraining" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Title</th>
+                                                    <th>Given By</th>
+                                                    <th>From</th>
+                                                    <th>To</th>
+                                                    <th>Venue</th>
+                                                    <th>Certificate</th>
+                                                    <th>Remarks</th>
+                                                    <th><center>Action</center></th>
+                                                 </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                <div class="panel-footer"></div>
+                            </div> <!--panel default -->
+
+                        </div> <!--Seminars and training list -->
+
                     </div><!-- .container-fluid -->
                 </div> <!-- #page-content -->
             </div><!--static content -->
@@ -1026,6 +1068,26 @@
                         <div class="modal-footer">
                             <button id="btn_yes_commendation" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
                             <button id="btn_close_commendation" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div id="modal_confirmation_seminarstraining" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title"><span id="modal_mode"> </span>Confirm Deletion</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <p id="modal-body-message">Are you sure ?</p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btn_yes_seminarstraining" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
+                            <button id="btn_close_seminarstraining" type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
                     </div>
                 </div>
@@ -1641,6 +1703,91 @@
                 </div>
             </div><!---modal create memo-->
 
+            <div id="modal_create_seminarstraining" class="modal fade modal_create_seminarstraining" tabindex="-1" role="dialog"><!--modal-->
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color:#2ecc71;">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title" style="color:#ecf0f1;"><span id="modal_mode"> </span><texttitle id="seminarstrainingtitle"></texttitle></h4>
+                            <p style="color:white;margin:0px;" id="dataname" class="dataname">name</p>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="frm_seminarstraining">
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Date" class="boldlabel" style="margin-bottom:0px;">Date:</label>
+                                                <input type="text" name="date" class="date-picker form-control" value="" placeholder="Date of Seminar" data-error-msg="Date of Seminar is required!" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Seminar Title" class="boldlabel" style="margin-bottom:0px;">Title:</label>
+                                                <input type="text" class="form-control" name="seminar_title" placeholder="Seminar Title " data-error-msg="Title of Seminar is required!" required>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Given By" class="boldlabel" style="margin-bottom:0px;">Given By:</label>
+                                                <input type="text" class="form-control" name="given_by" placeholder="Give By" data-error-msg="Given By is required!" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Venue" class="boldlabel" style="margin-bottom:0px;">Venue:</label>
+                                                <input type="text" class="form-control" name="venue" placeholder="Venue" data-error-msg="Venue is required!" required>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Date From" class="boldlabel" style="margin-bottom:0px;">Date From:</label>
+                                                <input type="text" name="date_from" class="date-picker form-control" value="" placeholder="Date From" data-error-msg="Date From is required!" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Date To " class="boldlabel" style="margin-bottom:0px;">Date To:</label>
+                                                <input type="text" name="date_to" class="date-picker form-control" value="" placeholder="Date From" data-error-msg="Date To is required!" required>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                          <label class="boldlabel" style="margin-bottom:0px;">Action Taken:</label>
+                                          <select class="form-control" id="ref_certificate_id" name="ref_certificate_id" id="sel1" data-error-msg="Certificate is required!" required>
+                                            <option value="0">[ Create Seminars And Training ]</option>
+                                            <?php
+                                                                foreach($ref_certificate as $row)
+                                                                {
+                                                                    echo '<option value="'.$row->ref_certificate_id  .'">'.$row->certificate.'</option>';
+                                                                }
+                                                                ?>
+                                          </select>
+                                        </div>
+                                        </div>
+                                <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom:2px; !important">
+                                                <label for="Remarks" class="boldlabel" style="margin-bottom:0px;">Remarks:</label>
+                                                <textarea type="text" name="remarks" class="form-control" placeholder="Remarks"></textarea>
+                                            </div>
+                                        </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button id="btn_createseminarstraining" type="button" class="btn btn_createseminarstraining" style="background-color:#2ecc71;color:white;">Save</button>
+                            <button id="btn_cancelseminarstraining" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div><!---content---->
+                </div>
+            </div><!---modal create memo-->
+
                 <div id="modal_references" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
@@ -1725,6 +1872,7 @@ $(document).ready(function(){
     var dt; var _txnMode; var _txnModeRate; var _selectedID; var _selectedIDrates; var _selectedIDentitlement; var _selectRowObj;
     var _selectRowObjrates; var _selectRowObjentitlement; var _isChecked; var _ispayable=0; var _isforwardable=0; var _Leave_type_value;
     var _selectRowObjmemorandum; var _selectedIDmemo; var _selectRowObjcommendation; var _selectedIDcommendation;
+    var _selectRowObjseminarstraining; var _selectedIDseminarstraining;
 
     var initializeControls=function(){
         dt=$('#tbl_employee_list').DataTable({
@@ -1959,7 +2107,7 @@ $(document).ready(function(){
             "dom": '<"toolbar">frtip',
             "bLengthChange":false,
             "ajax": {
-            "url": "Memorandum/transaction/list",
+            "url": "Memorandum/transaction/getmemorandum",
             "type": "POST",
             "bDestroy": true,
             "data": function ( d ) {
@@ -2007,7 +2155,7 @@ $(document).ready(function(){
             "dom": '<"toolbar">frtip',
             "bLengthChange":false,
             "ajax": {
-            "url": "Commendation/transaction/list",
+            "url": "Commendation/transaction/getcommendation",
             "type": "POST",
             "bDestroy": true,
             "data": function ( d ) {
@@ -2032,6 +2180,56 @@ $(document).ready(function(){
             ],
             language: {
                          searchPlaceholder: "Search Commendation"
+                     },
+            "rowCallback":function( row, data, index ){
+
+                $(row).find('td').eq(10).attr({
+                    "align": "right"
+                });
+            }
+
+        });
+
+    }
+
+    var getSeminarsTraining=function(){
+                    dt_seminarstraining=$('#tbl_seminarstraining').DataTable({
+            "fnInitComplete": function (oSettings, json) {
+                $.unblockUI();
+                },
+            "dom": '<"toolbar">frtip',
+            "bLengthChange":false,
+            "ajax": {
+            "url": "SeminarsTraining/transaction/getseminarstraining",
+            "type": "POST",
+            "bDestroy": true,
+            "data": function ( d ) {
+                return $.extend( {}, d, {
+                    "employee_id": _selectedID //id of the user
+                    } );
+                }
+            },
+            "columns": [
+                { targets:[0],data: "date" },
+                { targets:[1],data: "seminar_title" },
+                { targets:[2],data: "given_by" },
+                { targets:[3],data: "date_from" },
+                { targets:[4],data: "date_to" },
+                { targets:[5],data: "venue" },
+                { targets:[6],data: "certificate" },
+                { targets:[7],data: "remarks" },
+                {
+                    targets:[8],
+                    render: function (data, type, full, meta){
+                        var btn_edit='<button class="btn btn-default btn-sm" name="seminarstraining_edit"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                        var btn_trash='<button class="btn btn-default btn-sm" name="seminarstraining_remove"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+
+                        return '<center>'+btn_edit+btn_trash+'</center>';
+                    }
+                }
+            ],
+            language: {
+                         searchPlaceholder: "Search Seminars and Training"
                      },
             "rowCallback":function( row, data, index ){
 
@@ -2248,6 +2446,8 @@ $(document).ready(function(){
                 _isChecked = this.checked = true; //for checking if there is any highlighted field
              
             });
+
+
             //to remove higlight when going to the next page
         $('.pagination').click(function(){
             _selectRowObj="";
@@ -2332,6 +2532,29 @@ $(document).ready(function(){
                 showCommendation();
                 showSpinningProgressLoading();
                 getCommendation();
+            }
+            else{
+                alert("nothing checked");
+            }
+            
+        });
+
+        $('#edit_seminar').click(function(){
+            if(_isChecked == true){
+               _txnMode="seminartraining";
+                $('.dataname').text(_selectedname);
+                $('.display_name').text(_selectedname1);
+                //alert(_selectedname1);
+                hideemployeeList();
+                hideemployeeFields();
+                hideRatesduties();
+                hideApplyLeave();
+                hideEntitlement();
+                hideMemorandum();
+                hideCommendation();
+                showSeminarTraining();
+                showSpinningProgressLoading();
+                getSeminarsTraining();
             }
             else{
                 alert("nothing checked");
@@ -2513,6 +2736,7 @@ $(document).ready(function(){
             $('#emp_exemptphilhealth').val(1);
             $('#emp_exemptpagibig').val(0);
             $('#emp_taxcode').val(0);
+            $(".date-picker").val('<?php echo date("m/d/Y"); ?>');
             hideemployeeList();
             hideRatesduties();
             showemployeeFields();
@@ -2535,6 +2759,7 @@ $(document).ready(function(){
             $('#applyleavetitle').text("File a Leave");
             clearFields($('#frm_apply_leave'));
             _txnMode="newfileleave";
+            $(".date-picker").val('<?php echo date("m/d/Y"); ?>');
             getAvailLeave().done(function(response){
                         var show1todiv="";
                         var show2select="<select class='form-control' name='emp_leaves_entitlement_id'>";
@@ -2601,6 +2826,7 @@ $(document).ready(function(){
             $('#memotitle').text("New");
             clearFields($('#frm_memo'));
             _txnMode="newmemo";
+            $(".date-picker").val('<?php echo date("m/d/Y"); ?>');
 
             $('#ref_disciplinary_action_policy_id').val(1);
             $('#ref_action_taken_id').val(1);
@@ -2612,13 +2838,26 @@ $(document).ready(function(){
             $('#commendationtitle').text("New commendation");
             clearFields($('#frm_commendation'));
             _txnMode="newcommendation";
+            $(".date-picker").val('<?php echo date("m/d/Y"); ?>');
             $('.modal_create_commendation').modal('show');
+            
+        });
+
+        $('#btn_newseminartraining').click(function(){
+            $('#seminarstrainingtitle').text("New Seminar and Training");
+            clearFields($('#frm_seminarstraining'));
+            $(".date-picker").val('<?php echo date("m/d/Y"); ?>');
+            _txnMode="newseminarstraining";
+
+            $('#ref_certificate_id').val(1);
+            $('.modal_create_seminarstraining').modal('show');
             
         });
 
         $('#btn_newratesandduties').click(function(){
             clearFields($('#frm_ratesandduties'));
             _txnMode="newrateandduties";
+            $(".date-picker").val('<?php echo date("m/d/Y"); ?>');
 
             $('#ref_employment_type_id').val(1);
             $('#ref_payment_type_id').val(1);
@@ -2661,6 +2900,12 @@ $(document).ready(function(){
             $('#emp_exemptss').val(data.exmpt_sss);
             $('#emp_exemptphilhealth').val(data.exmpt_philhealth);
             $('#emp_exemptpagibig').val(data.exmpt_pagibig);
+            if(data.image_name==""){
+                 $('img[name="img_user"]').attr('src','assets/img/anonymous-icon.png');
+            }
+            else{
+                $('img[name="img_user"]').attr('src',data.image_name);
+            }
 
            // alert($('input[name="tax_exempt"]').length);
             //$('input[name="tax_exempt"]').val(0);
@@ -2680,6 +2925,11 @@ $(document).ready(function(){
             showemployeeFields();
 
         });
+
+        $('#btn_remove_photo').click(function(event){
+                event.preventDefault();
+                $('img[name="img_user"]').attr('src','assets/img/anonymous-icon.png');
+            });
 
         $('#tbl_employee_list tbody').on('click','button[name="remove_info"]',function(){
             _selectRowObj=$(this).closest('tr');
@@ -2843,6 +3093,34 @@ $(document).ready(function(){
             //alert(_selectedIDcommendation);
            $('#modal_confirmation_commendation').modal('show');
         });
+        
+        $('#tbl_seminarstraining tbody').on('click','button[name="seminarstraining_edit"]',function(){
+            _txnMode="editseminarstraining";
+            $('#seminarstrainingtitle').text("Edit Seminar and Training");
+            _selectRowObjseminarstraining=$(this).closest('tr');
+            var data=dt_seminarstraining.row(_selectRowObjseminarstraining).data();
+            _selectedIDseminarstraining=data.emp_seminar_training_id;
+            $('#ref_certificate_id').val(data.ref_certificate_id);
+            //alert(_selectedIDseminarstraining);
+            $('input,textarea').each(function(){
+                var _elem=$(this);
+                $.each(data,function(name,value){
+                    if(_elem.attr('name')==name){
+                        _elem.val(value);
+                    }
+                });
+            });
+
+           $('#modal_create_seminarstraining').modal('toggle');
+        });
+
+        $('#tbl_seminarstraining tbody').on('click','button[name="seminarstraining_remove"]',function(){
+            _selectRowObjseminarstraining=$(this).closest('tr');
+            var data=dt_seminarstraining.row(_selectRowObjseminarstraining).data();
+            _selectedIDseminarstraining=data.emp_seminar_training_id;
+            alert(_selectedIDseminarstraining);
+           $('#modal_confirmation_seminarstraining').modal('toggle');
+        });
 
         $('#btn_yes').click(function(){
             removeEmployee().done(function(response){
@@ -2884,11 +3162,20 @@ $(document).ready(function(){
             });
         });
 
+        $('#btn_yes_seminarstraining').click(function(){
+            removeSeminarsTraining().done(function(response){
+                showNotification(response);
+                dt_seminarstraining.row(_selectRowObjseminarstraining).remove().draw();
+                $.unblockUI();
+            });
+        });
+
         $('input[name="file_upload[]"]').change(function(event){
             var _files=event.target.files;
 
-            $('#div_img_product').hide();
-            $('#div_img_loader').show();
+            //$('#div_img_product').hide();
+           // $('#div_img_loader').show();
+           showSpinningProgressUpload();
 
             var data=new FormData();
             $.each(_files,function(key,value){
@@ -2898,7 +3185,7 @@ $(document).ready(function(){
             console.log(_files);
 
             $.ajax({
-                url : 'Products/transaction/upload',
+                url : 'Employee/transaction/upload',
                 type : "POST",
                 data : data,
                 cache : false,
@@ -2906,9 +3193,14 @@ $(document).ready(function(){
                 processData : false,
                 contentType : false,
                 success : function(response){
-                    $('#div_img_loader').hide();
-                    $('#div_img_product').show();
-                }
+                            //console.log(response);
+                            //alert(response.path);
+                           // $('#div_img_loader').hide();
+                           // $('#div_img_user').show();
+                            $.unblockUI();
+                            $('img[name="img_user"]').attr('src',response.path);
+
+                        }
             });
         });
         // for back and cancel buttons to destroy datatables
@@ -2966,6 +3258,19 @@ $(document).ready(function(){
             showemployeeList();
             $('#tbl_commendation').dataTable().fnDestroy();
             $('#tbl_commendation').fnClearTable();
+        });
+
+        $('#btn_cancelseminarstraining').click(function(){
+            hideRatesduties();
+            hideemployeeFields();
+            hideEntitlement();
+            hideApplyLeave();
+            hideMemorandum();
+            hideCommendation();
+            hideSeminarTraining();
+            showemployeeList();
+            $('#tbl_seminarstraining').dataTable().fnDestroy();
+            $('#tbl_seminarstraining').fnClearTable();
         });
        /* $('#btn_save').click(function(){
             if(validateRequiredFields($('#frm_employee'))){
@@ -3156,6 +3461,35 @@ $(document).ready(function(){
                         clearFields($('#frm_commendation'))
                     }).always(function(){
                         $('#modal_create_commendation').modal('hide');
+                        $.unblockUI();
+                        $('.datepicker').remove();
+                    });
+                    return;
+                }
+            }
+        });
+
+        $('#btn_createseminarstraining').click(function(){
+            if(validateRequiredFields($('#frm_seminarstraining'))){
+                if(_txnMode=="newseminarstraining"){
+                    createSeminarsTraining().done(function(response){
+                        showNotification(response);
+                        dt_seminarstraining.row.add(response.row_added[0]).draw();
+                        clearFields($('#frm_seminarstraining'))
+                    }).always(function(){
+                        $('#modal_create_seminarstraining').modal('hide');
+                        $.unblockUI();
+                        $('.datepicker').remove();
+                    });
+                    return;
+                }
+                if(_txnMode=="editseminarstraining"){
+                    updateSeminarsTraining().done(function(response){
+                        showNotification(response);
+                        dt_seminarstraining.row(_selectRowObjseminarstraining).data(response.row_updated[0]).draw(); 
+                        clearFields($('#frm_seminarstraining'))
+                    }).always(function(){
+                        $('#modal_create_seminarstraining').modal('hide');
                         $.unblockUI();
                         $('.datepicker').remove();
                     });
@@ -3367,7 +3701,7 @@ $(document).ready(function(){
 
                 if($(this).is('select')){
                 if($(this).val()==0){
-                    showNotification({title:"Error!",stat:"error",msg:"Employment Type is Required"});
+                    showNotification({title:"Error!",stat:"error",msg:$(this).data('error-msg')});
                     $(this).closest('div.form-group').addClass('has-error');
                     $(this).focus();
                     stat=false;
@@ -3392,9 +3726,14 @@ $(document).ready(function(){
         return stat;
     };
 
+    $('#btn_browse').click(function(event){
+                    event.preventDefault();
+                    $('input[name="file_upload[]"]').click();
+             });
+
     var createEmployee=function(){
         var _data=$('#frm_employee').serializeArray();
-
+        _data.push({name : "image_name" ,value : $('img[name="img_user"]').attr('src')});
         return $.ajax({
             "dataType":"json",
             "type":"POST",
@@ -3406,6 +3745,7 @@ $(document).ready(function(){
 
     var updateEmployee=function(){
         var _data=$('#frm_employee').serializeArray();
+        _data.push({name : "image_name" ,value : $('img[name="img_user"]').attr('src')});
 
         console.log(_data);
         _data.push({name : "employee_id" ,value : _selectedID});
@@ -3541,6 +3881,31 @@ $(document).ready(function(){
         });
     };
 
+    var createSeminarsTraining=function(){
+        var _data=$('#frm_seminarstraining').serializeArray();
+        _data.push({name : "employee_id" ,value : _selectedID});
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"SeminarsTraining/transaction/create",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#btn_createseminarstraining'))
+        });
+    };
+
+    var updateSeminarsTraining=function(){
+        var _data=$('#frm_seminarstraining').serializeArray();
+        _data.push({name : "emp_seminar_training_id" ,value : _selectedIDseminarstraining});
+        _data.push({name : "employee_id" ,value : _selectedID});
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"SeminarsTraining/transaction/update",
+            "data":_data,
+            "beforeSend": showSpinningProgress($('#btn_createseminarstrainings'))
+        });
+    };
+
     var updateEntitlement=function(){
         var _data=$('#frm_entitlement').serializeArray();
         _data.push({name : "emp_leaves_entitlement_id" ,value : _selectedIDentitlement});
@@ -3582,6 +3947,16 @@ $(document).ready(function(){
             "type":"POST",
             "url":"Commendation/transaction/delete",
             "data":{emp_commendation_id : _selectedIDcommendation},
+            "beforeSend": showSpinningProgress($('#'))
+        });
+    };
+
+    var removeSeminarsTraining=function(){
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"SeminarsTraining/transaction/delete",
+            "data":{emp_seminar_training_id : _selectedIDseminarstraining},
             "beforeSend": showSpinningProgress($('#'))
         });
     };
@@ -3880,6 +4255,29 @@ $(document).ready(function(){
         $('#edit_seminar').hide();
     };
 
+    var hideSeminarTraining=function(){
+        $('#div_seminartraining_list').hide();
+        $('#icon_new_employee').show();
+        $('#icon_entitlement').show();
+        $('#icon_apply_leave').show();
+        $('#icon_rates').show();
+        $('#edit_memorandum').show();
+        $('#edit_commendation').show();
+        $('#edit_seminar').show();
+    };
+
+    var showSeminarTraining=function(){
+        $('#div_seminartraining_list').show();
+        $('#div_entitlement_list').hide();
+        $('#icon_new_employee').hide();
+        $('#icon_entitlement').hide();
+        $('#icon_apply_leave').hide();
+        $('#icon_rates').hide();
+        $('#edit_memorandum').hide();
+        $('#edit_commendation').hide();
+        $('#edit_seminar').hide();
+    };
+
     var showNotification=function(obj){
         PNotify.removeAll();
         new PNotify({
@@ -3922,6 +4320,18 @@ $(document).ready(function(){
         $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
     };
 
+    var showSpinningProgressUpload=function(e){
+        $.blockUI({ message: '<img src="assets/img/gears.svg"/><br><h4 style="color:#ecf0f1;">Uploading Image...</h4>',
+            css: { 
+            border: 'none', 
+            padding: '15px', 
+            backgroundColor: 'none', 
+            opacity: 1,
+            zIndex: 20000,
+        } });
+        $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);  
+    };
+
     var clearFields=function(f){
         $('input,textarea',f).val('');
         $(f).find('input:first').focus();
@@ -3938,7 +4348,7 @@ $(document).ready(function(){
         '</div>'+ //First Row//
         '<div class="row">'+
         '<div class="col-md-2">'+
-        '<center><img style="margin-top:4px;" src="assets/img/anonymous-icon.png"></img></center>'+
+        '<center><img style="margin-top:4px;width:150px;height:150px;" src="'+d.image_name+'"></img></center>'+
         '</div>'+
         '<div class="col-md-4"><p class="nomargin"><b>Gender</b> : '+d.gender+'</p>'+
         '<p class="nomargin"><b>Birthdate</b> : '+d.birthdate+'</p>'+

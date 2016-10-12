@@ -30,14 +30,14 @@
                                 <li><a href="#">Item Adjustment</a></li>
                             </ul>
                         </li>-->
-                        <li><a href="#"><i class="fa fa-users" aria-hidden="true"></i><span>Personal Information</span></a>
+                        <li><a href="#/"><i class="fa fa-users" aria-hidden="true"></i><span>Personal Information</span></a>
                             <ul class="acc-menu">
                                 <li><a href="Employee" class="employeejs" id="employeejs" >Employee Management</a>
                                 </li>
 								
                             </ul>
                         </li>
-                        <li><a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i><span>Leave Management</span></a>
+                        <li><a href="#/"><i class="fa fa-sign-out" aria-hidden="true"></i><span>Leave Management</span></a>
                             <ul class="acc-menu">
                                 <li><a href="RefLeave" class="departmentjs" id="departmentjs">Leave Type</a>
                                 </li>
@@ -45,7 +45,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></i><span>Employee References</span></a>
+                        <li><a href="#/"><i class="fa fa-user" aria-hidden="true"></i></i><span>Employee References</span></a>
                             <ul class="acc-menu">
                                 <li><a href="RefDepartment" class="departmentjs" id="departmentjs">Department</a>
                                 </li>
@@ -64,7 +64,7 @@
                                 
                             </ul>
                         </li>
-                        <li><a href="#"><i class="fa fa-folder" aria-hidden="true"></i><span>Document References</span></a>
+                        <li><a href="#/"><i class="fa fa-folder" aria-hidden="true"></i><span>Document References</span></a>
                             <ul class="acc-menu">
                                 <li><a href="RefCertificate" class="departmentjs" id="departmentjs">Certificate</a>
                                 </li>
@@ -75,9 +75,49 @@
                                 
                             </ul>
                         </li>
-                        <li><a href="#"><i class="fa fa-money" aria-hidden="true"></i><span>Compensation References</span></a>
+                        <li><a href="#/"><i class="fa fa-money" aria-hidden="true"></i><span>Compensation References</span></a>
                             <ul class="acc-menu">
                                 <li><a href="RefCompensation" class="departmentjs" id="departmentjs">Compensation Type</a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li><a href="#/"><i class="fa fa-heart" aria-hidden="true"></i><span>Contribution References</span></a>
+                            <ul class="acc-menu">
+                                <li><a href="RefSSS_Contribution" class="departmentjs" id="departmentjs">SSS Contribution</a>
+                                </li>
+                                <li><a href="RefPhilHealth_Contribution" class="departmentjs" id="departmentjs">Philhealth Contribution</a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li><a href="#/"><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Payroll</span></a>
+                            <ul class="acc-menu">
+                                <li><a href="Payroll" class="departmentjs" id="departmentjs">Daily time Record</a>
+                                </li>
+                                <li><a href="test" class="departmentjs" id="departmentjs">Process Payroll</a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li><a href="#/"><i class="fa fa-pie-chart" aria-hidden="true"></i><span>Payroll References</span></a>
+                            <ul class="acc-menu">
+                                <li><a href="RefPayPeriodSetup" class="departmentjs" id="departmentjs">Pay Period</a>
+                                </li>
+                                <li><a href="RefEarningSetup" class="departmentjs" id="departmentjs">Earning Setup</a>
+                                </li>
+                                <li><a href="RefEarningType" class="departmentjs" id="departmentjs">Earning Type</a>
+                                </li>
+                                <li><a href="RefGroup" class="departmentjs" id="departmentjs">Group</a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li><a href="#/"><i class="fa fa-cog" aria-hidden="true"></i><span>Admin</span></a>
+                            <ul class="acc-menu">
+                                <li><a href="Users" class="usersjs" id="departmentjs">User Account</a>
+                                </li>
+                                <li><a href="" class="" id="departmentjs">User Rights</a>
                                 </li>
                                 
                             </ul>

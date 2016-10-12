@@ -41,6 +41,21 @@ class Memorandum extends CORE_Controller
                 echo json_encode($response);
                 break;
 
+            case 'getmemorandum':
+                $employee_id = $this->input->post('employee_id', TRUE);
+                $m_yearsetup = $this->RefYearSetup_model;
+                $active_year = $m_yearsetup->getactiveyear();
+                $response['data']=$this->Memorandum_model->get_list(
+                   array('emp_memo.employee_id'=>$employee_id,'emp_memo.is_deleted'=>FALSE),
+                    'emp_memo.*,ref_disciplinary_action_policy.disciplinary_action_policy,ref_action_taken.action_taken',
+                        array(
+                                array('ref_disciplinary_action_policy','ref_disciplinary_action_policy.ref_disciplinary_action_policy_id=emp_memo.ref_disciplinary_action_policy_id','left'),
+                                array('ref_action_taken','ref_action_taken.ref_action_taken_id=emp_memo.ref_action_taken_id','left'),
+                                )
+                    );
+                echo json_encode($response);
+                break;
+
             case 'create':
                 $m_memorandum = $this->Memorandum_model;
 

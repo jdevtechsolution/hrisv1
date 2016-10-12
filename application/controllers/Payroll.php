@@ -1,13 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Employee extends CORE_Controller
+class Payroll extends CORE_Controller
 {
 
     function __construct() {
         parent::__construct('');
         $this->validate_session();
         $this->load->model('Employee_model');
+        $this->load->model('Payroll_model');
         $this->load->model('Ref_Emptype_model');
         $this->load->model('RefDepartment_model');
         $this->load->model('RefPosition_model');
@@ -33,7 +34,7 @@ class Employee extends CORE_Controller
         $data['_def_js_files'] = $this->load->view('template/assets/js_files', '', TRUE);
         $data['_switcher_settings'] = $this->load->view('template/elements/switcher', '', TRUE);
         $data['_side_bar_navigation'] = $this->load->view('template/elements/side_bar_navigation', '', TRUE);
-        $data['_top_navigation'] = $this->load->view('template/elements/top_navigationforemployee', '', TRUE);
+        $data['_top_navigation'] = $this->load->view('template/elements/top_navigationforpayroll', '', TRUE);
         $data['title'] = 'Employee';
         $data['ref_emptype']=$this->Ref_Emptype_model->get_list(array('ref_employment_type.is_deleted'=>FALSE));
         $data['ref_department']=$this->RefDepartment_model->get_list(array('ref_department.is_deleted'=>FALSE));
@@ -49,7 +50,7 @@ class Employee extends CORE_Controller
         $data['ref_disciplinary_action_policy']=$this->RefDiscipline_model->get_list(array('ref_disciplinary_action_policy.is_deleted'=>FALSE));
         $data['ref_action_taken']=$this->RefAction_model->get_list(array('ref_action_taken.is_deleted'=>FALSE));
         $data['ref_certificate']=$this->RefCertificate_model->get_list(array('ref_certificate.is_deleted'=>FALSE));
-        $this->load->view('employee_view', $data);
+        $this->load->view('payroll_view', $data);
     }
 
     function transaction($txn = null) {

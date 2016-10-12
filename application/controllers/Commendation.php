@@ -38,6 +38,17 @@ class Commendation extends CORE_Controller
                 echo json_encode($response);
                 break;
 
+            case 'getcommendation':
+                $employee_id = $this->input->post('employee_id', TRUE);
+                $m_yearsetup = $this->RefYearSetup_model;
+                $active_year = $m_yearsetup->getactiveyear();
+                $response['data']=$this->Commendation_model->get_list(
+                   array('emp_commendation.employee_id'=>$employee_id,'emp_commendation.is_deleted'=>FALSE),
+                    'emp_commendation.*'
+                    );
+                echo json_encode($response);
+                break;
+
             case 'create':
                 $m_commendation = $this->Commendation_model;
 
