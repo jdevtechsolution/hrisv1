@@ -1237,7 +1237,7 @@ $(document).ready(function(){
                         showNotification(response);
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
                         clearFields($('#frm_employee'))
-                        showList(true);
+                        showemployeeList();
                     }).always(function(){
                         $.unblockUI();
                     });
