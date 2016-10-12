@@ -1237,6 +1237,7 @@ $(document).ready(function(){
                         showNotification(response);
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
                         clearFields($('#frm_employee'))
+                        hideemployeeFields();
                         showemployeeList();
                     }).always(function(){
                         $.unblockUI();
@@ -1506,7 +1507,7 @@ $(document).ready(function(){
         '<hr style="height:1px;background-color:black;"></hr>'+
         '</div>'+ //First Row//
         '<div class="row">'+
-        '<div class="col-md-2">'+
+        '<div class="col-md-3">'+
         '<center><img style="margin-top:4px;width:150px;height:150px;" src="'+d.image_name+'"></img></center>'+
         '</div>'+
         '<div class="col-md-4"><p class="nomargin"><b>Gender</b> : '+d.gender+'</p>'+
@@ -1529,7 +1530,7 @@ $(document).ready(function(){
         '<div class="col-md-12">'+ 
         '<h3 class="boldlabel"><h4 class="boldlabel"><span class="glyphicon glyphicon-info-sign fa-lg"></span> Employee Information</h4><hr style="height:1px;background-color:black;"></hr></div>'+
         '<div class="row">'+ //Second Row//
-        '<div class="col-md-2">'+
+        '<div class="col-md-3">'+
         '<center></center>'+
         '</div>'+
         '<div class="col-md-4"><p class="nomargin"><b>Employee Type</b> : '+d.employment_type+'</p>'+
@@ -1547,8 +1548,8 @@ $(document).ready(function(){
         '</div>'+
         '<div class="col-md-12">'+ 
         '<h3 class="boldlabel"><h4 class="boldlabel"><span class="glyphicon glyphicon-info-sign fa-lg"></span> Contact Information</h4><hr style="height:1px;background-color:black;"></hr></div>'+
-        '<div class="row">'+ //Second Row//
-        '<div class="col-md-2">'+
+        '<div class="row">'+ //Third Row//
+        '<div class="col-md-3">'+
         '<center></center>'+
         '</div>'+
         '<div class="col-md-4"><p class="nomargin"><b>Address 1</b> : '+d.address_one+'</p>'+
